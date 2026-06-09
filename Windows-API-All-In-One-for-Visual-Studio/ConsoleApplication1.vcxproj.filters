@@ -20,8 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="winc++.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <ClInclude Include="winc++.h" />
   </ItemGroup>
 </Project>
