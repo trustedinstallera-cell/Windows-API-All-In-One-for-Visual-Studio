@@ -88,6 +88,12 @@
 #pragma warning(disable: 4477)
 #pragma warning(push)
 #pragma warning(disable: 4091)
+#pragma warning(push)
+#pragma warning(disable: 4290)
+#pragma warning(push)
+#pragma warning(disable: 4005)
+#pragma warning(push)
+#pragma warning(disable: 4038)
 #endif
 #endif
 
@@ -938,7 +944,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 //#include "contactdeviceservice.h"
 #include "contentpartner.h"
 #include <control.h>
+#if NTDDI_VERSION > 0x0A000C00 // v143
 #include <cor.h>
+#endif
 #if cppver >= 2017
 #include <corecrt.h>
 #include <corecrt_io.h>
@@ -966,7 +974,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #endif
 //#include "corewrappers.h"
 #include "corrEngine.h"
+#if NTDDI_VERSION > 0x0A000C00 // v143
 #include <corhdr.h>
+#endif
 #if cppver > 2017
 #include <coroutine>
 #endif
@@ -2210,14 +2220,13 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 //#include "returncontext.h"
 #include "Richedit.h"
 //#include "ringtonedeviceservice.h"
+#if NTDDI_VERSION > 0x0A000C00 // v143
 #include "RoMetadataApi.h"
+#endif
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <roapi.h>
 #endif
 #include "robuffer.h"
-#if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
-#include <rometadataresolution.h>
-#endif
 //#define MPR60 1
 //#include "Routprot.h"
 #include "roparameterizediid.h"
@@ -3101,7 +3110,9 @@ typedef unsigned __int64   uintmax_t;
 #include <tuple>
 #endif
 #include "txlogpub.h"
+#if NTDDI_VERSION > 0x0A000C00 // v143
 #include "typeresolution.h"
+#endif
 //#include "types.h"
 #if VS_VER > VCPP_6
 #include <tvout.h>
