@@ -96,18 +96,6 @@
 #pragma warning(disable: 4038)
 #endif
 #endif
-
-// Check SDK Version
-#if defined(_MSC_VER) && (_MSC_VER > 1400)
-#include <sdkddkver.h>
-#endif
-#define CALC_SDK_VERSION_VARC(major,minor,build) ((major << 24) | (minor << 16) | (build & 0xFF))
-#define CALC_SDK_VERSION_VARB(major,minor) (CALC_SDK_VERSION_VARC(major,minor,0))
-#define CALC_SDK_VERSION_VARB(major) (CALC_SDK_VERSION_VARC(major,0,0))
-#define GET_VERSION_MACRO(_1, _2, _3, NAME, ...) NAME
-#define CALC_SDK_VERSION(...) \
-	GET_VERSION_MACRO(__VA_ARGS__, CALC_SDK_VERSION_VARC, CALC_SDK_VERSION_VARB, CALC_SDK_VERSION_VARA)(__VA_ARGS__)
-
 // todo The macros the header uses
 
 #if ((defined(_WIN32_WINNT) && _WIN32_WINNT == 0x0603) || (defined(NTDDI_VERSION) && NTDDI_VERSION == 0x06030000)) && (defined(_MSC_VER) && _MSC_VER >= 1951) // VS 2026, SDK 8.1
@@ -1954,7 +1942,10 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <nettypes.h>
 #endif
+#if _WIN32_WINNT > 0x0A00 // Windows 8.1
+// redefinition errors on Windows 8.1
 #include "networkisolation.h"
+#endif
 #include <new.h>
 #include <new>
 #include "nfcradiodev.h"
