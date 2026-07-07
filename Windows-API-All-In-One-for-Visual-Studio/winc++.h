@@ -12,7 +12,11 @@
 #endif
 #endif
 
-#if __cplusplus >= 201703L || _MSVC_LANG >= 201703L
+#if __cplusplus >= 202302L || _MSVC_LANG >= 202302L
+#define cppver 2023
+#elif __cplusplus >= 202002L || _MSVC_LANG >= 202002L
+#define cppver 2020
+#elif __cplusplus >= 201703L || _MSVC_LANG >= 201703L
 #define cppver 2017
 #elif __cplusplus >= 201402L || _MSVC_LANG >= 201402L
 #define cppver 2014
@@ -33,13 +37,32 @@
 #ifdef _MSC_VER
 #define VS_VERSION _MSC_VER
 #else
-#define VS_VERSION 1000
+#define VS_VERSION 700
 #endif
-#define VS_VER VS_VERSION
-#define VCPP_6 1200
-#define VS_6 VCPP_6
-#define VS_2003 1310
 
+#define VC_1     800
+#define VC_2     900
+#define VC_4     1000
+#define VC_5     1100
+#define VC_6     1200
+#define VS_2002  1300
+#define VS_2003  1310
+#define VS_2005  1400
+#define VS_2008  1500
+#define VS_2010  1600
+#define VS_2012  1700
+#define VS_2013  1800
+#define VS_2015  1900
+#define VS_2017  1910
+#define VS_2019  1920
+#define VS_2022  1930
+#define VS_2026  1950
+
+#define VS_VER VS_VERSION
+#define MSVC_VER VS_VERSION
+#define MSVC_VERSION VS_VERSION
+
+#if MSVC_VER >= VS_2005
 #ifdef NOWARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
@@ -56,6 +79,7 @@
 #define _AFX_SECURE_NO_WARNINGS // Suppresses compiler warnings for the use of deprecated MFC functions.
 #define _CRT_OBSOLETE_NO_WARNINGS   // MFC or ATL code
 #define SUPPRESS_LEGACY_ICU_HEADER_WARNINGS // The wchar_t versions of the ICU headers are no longer being updated...
+#define _CRT_SILENCE_NONCONFORMING_TGMATH_H
 #pragma warning(push)
 #pragma warning(disable: 5040)
 #pragma warning(push)
@@ -65,6 +89,18 @@
 #pragma warning(push)
 #pragma warning(disable: 4091)
 #endif
+#endif
+
+// Check SDK Version
+#if defined(_MSC_VER) && (_MSC_VER > 1400)
+#include <sdkddkver.h>
+#endif
+#define CALC_SDK_VERSION_VARC(major,minor,build) ((major << 24) | (minor << 16) | (build & 0xFF))
+#define CALC_SDK_VERSION_VARB(major,minor) (CALC_SDK_VERSION_VARC(major,minor,0))
+#define CALC_SDK_VERSION_VARB(major) (CALC_SDK_VERSION_VARC(major,0,0))
+#define GET_VERSION_MACRO(_1, _2, _3, NAME, ...) NAME
+#define CALC_SDK_VERSION(...) \
+	GET_VERSION_MACRO(__VA_ARGS__, CALC_SDK_VERSION_VARC, CALC_SDK_VERSION_VARB, CALC_SDK_VERSION_VARA)(__VA_ARGS__)
 
 // todo The macros the header uses
 
@@ -208,7 +244,6 @@
 #ifdef NOWARNINGS
 #include "FhCfg.h"
 #endif
-#include "FwCommon.h"
 #include "GPEdit.h"
 //#include "GameInput.h" // try /clr option
 #include "IAccess.h"
@@ -258,7 +293,10 @@
 #include "PhotoAcquire.h"
 //#include "PortableDeviceConnectApi.h"
 //#include "PortableDeviceConnectImports.idl"
+// 0x0A000008
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "Presentation.h"
+#endif
 #include "PrintPreview.h"
 //#include "PrinterExtension.idl"
 #include "ProofOfPossessionCookieInfo.h"
@@ -269,7 +307,9 @@
 #include "RTSCOM.h"
 #include "SearchAPI.h"
 //#include "SearchApi.idl"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "ShellHandwriting.h"
+#endif
 //#include "SpatialAudioHrtf.h"
 #include "Sti.h"
 #include "StorageProvider.h"
@@ -316,6 +356,7 @@
 #include "alg.h"
 #include "sqloledb.h"
 #include "txfw32.h"
+
 #if VS_VER > VCPP_6
 #include "mssip.h"
 #endif
@@ -741,7 +782,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "callobj.h"
 #include "capi.h"
 #include "casetup.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "ccgplugins.h"
+#endif
 #include "cchannel.h"
 #if defined _SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING || defined _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include <ccomplex>
@@ -876,7 +919,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if cppver >= 2011
 #include <complex.h>
 #endif
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "CompPkgSup.h"
+#endif
 //#ifdef _CRT_SECURE_NO_DEPRECATE // not determined
 #if 0
 #include "ContactAggregation.h"
@@ -1001,7 +1046,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #endif
 #include "d3d11_4.h"
 #include "d3d11shadertracing.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "d3d12compatibility.h"
+#endif
 #include "d3d12video.h"
 #include "d3d9helper.h"
 #include "d3d9on12.h"
@@ -1025,7 +1072,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <d3dcaps.h>
 #include "d3dkmthk.h"
 //#include <d3dukmdt.h> // Should not be included directly
+#if NTDDI_VERSION == 0x0A000010 // 10.0.26100.0
 #include "d3dshadercacheregistration.h"
+#endif
 #include <daogetrw.h>
 //#include "databuffer.h"
 //#include "databuffertypes.h"
@@ -1086,7 +1135,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "devenum.idl"*/
 #include "Dbt.h"
 //#include "def.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "deliveryoptimization.h"
+#endif
 #include "devguid.h"
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <devfiltertypes.h>
@@ -1272,7 +1323,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "fxsutility.h"
 #include "gameux.h"
 #include "gamingdeviceinformation.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "gamingexperience.h"
+#endif
 #include "gamingtcui.h"
 #include "gb18030.h"
 //#include "GL.h"
@@ -1307,7 +1360,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 //#include "hvsocket.h"
 #include "hwebcore.h"
 #include "HttpFilt.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "hwreqchkapi.h"
+#endif
 #include "hxhelppaneproxy.h"
 #include "hypervdevicevirtualization.h"
 #include "i_cryptasn1tls.h"
@@ -1467,7 +1522,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #endif
 //#include "ioctltypes.h"
 #include "ioevent.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "ioringapi.h"
+#endif
 #include "ip2string.h"
 #include "iphlpapi.h"
 #include <ipifcons.h>
@@ -1558,12 +1615,16 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #endif
 #include "ktmw32.h"
 #include "lamp.h"
+#if (NTDDI_VERSION >= 0x0A000010 /* 10.0.26100.0 */) && (cppver >= 2017)
 #include "lamparray.h"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <libloaderapi.h> // LibLoader Apiset dependencies"
 #endif
 #include "libloaderapi2.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "LicenseProtection.h"
+#endif
 #include <limits.h>
 #include <limits>
 #include "listeneradapter.h"
@@ -1636,7 +1697,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #undef FLAGS_UNDEFINED
 #endif
 #include <math.h>           // For log10()"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "Math3DHelper.h"
+#endif
 #include "mbnapi.h"
 #pragma push_macro("_MP")
 #undef _MP
@@ -1669,14 +1732,18 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "mfapi.h"
 #include "mfcaptureengine.h"
 #include "mfcontentdecryptionmodule.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "mfd3d12.h"
+#endif
 #include "mfmediacapture.h"
 #include "mfmp2dlna.h"
 #include "mfplay.h"
 #include "mfreadwrite.h"
 #include "mfsharingengine.h"
 #include "mfspatialaudio.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "mfvirtualcamera.h"
+#endif
 #include "Mgm.h"
 #include "MgmtAPI.h"
 #include "mi.h"
@@ -1970,7 +2037,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "openservice.h"
 //#include "opmapi.h"
 //#include "opnrst.idl"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "packagevirtualizationcontext.h"
+#endif
 //#include "packet.h"
 //#include "packethash.h"
 #include "pacmanclientapi.h"
@@ -1999,7 +2068,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "playsoundapi.h"
 #include "playto.h"
 #include "PlayToManagerInterop.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "pluginauthenticator.h"
+#endif
 #include "pnrpns.h"
 //#include "poclass.h"
 #include "Polarity.h"
@@ -2035,7 +2106,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "PropIdl.h"
 #include "PropIdlBase.h"
 #include "ProvExce.h"
-#include "Provider.h"
+//#include "Provider.h"
 #include "Psapi.h"
 #if cppver >= 2017
 #include <optional>
@@ -2201,7 +2272,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "RrasCfg.h"
 #include "rtccore.h"
 #include "RTInfo.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "rtlsupportapi.h"
+#endif
 #include "RtmV2.h"
 #include "RTSCOM_i.c"
 #include <rtutils.h>
@@ -2234,9 +2307,6 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "scsiscan.h"
 #include "sddl.h"
 //#include "sdoias.h"
-#if defined(_MSC_VER) && (_MSC_VER > 1400)
-#include <sdkddkver.h>
-#endif
 #include <search.h>
 #include <secext.h>
 #include "security.h"
@@ -2260,7 +2330,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "Sfc.h"
 #include "shappmgr.h"
 #include "share.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "sharewindowcommandsourceinterop.h"
+#endif
 #include "shcore.h"
 #include "shdeprecated.h"
 #include "ShellScalingApi.h"
@@ -2286,7 +2358,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "SmtpGuid.h"
 #include <snmp.h>
 #include "socketapi.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "softintrin.h"
+#endif
 #include "SoftPub.h"
 #if cppver > 2017
 #include <source_location>
@@ -2326,11 +2400,15 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 //#include "statehelpers.h"
 //#include "status.h"
 //#include "statusdeviceservice.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "stdalign.h"
+#endif
 #include <stdarg.h>
 #include "stddef.h"
 #include "stdlib.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "stdnoreturn.h"
+#endif
 #include "StgProp.h"
 #include "stierr.h"
 #include "stireg.h"
@@ -2529,7 +2607,9 @@ typedef unsigned __int64   uintmax_t;
 #endif
 #include "syncregistration.h"
 #include "sysinfoapi.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "systemmanagementcontract.h"
+#endif
 #include "systemtopologyapi.h"
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -2918,7 +2998,10 @@ typedef unsigned __int64   uintmax_t;
 #include "winefs.h"
 #include "winevt.h"
 #include "wingdi.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
+// redefinition
 #include "winhttp.h"
+#endif
 #include "wininet.h"
 //#include "winioctl.h"
 #include "winml.h"
@@ -2948,7 +3031,9 @@ typedef unsigned __int64   uintmax_t;
 //#include "tbdefcnt.idl"
 //#include "tblcrt.idl"
 //#include "tbs.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "tbt3ioctls.h"
+#endif
 #include "TCError.h"
 #include "TCGuid.h"
 #include <tchar.h>
@@ -2961,7 +3046,9 @@ typedef unsigned __int64   uintmax_t;
 //#include "tdh.h"
 //#include "tdi.h"
 //#include "tdiinfo.h"
+#if (cppver >= 2017) || (defined NOWARNINGS)
 #include "tgmath.h"
+#endif
 #if defined(_MSC_VER) && (_MSC_VER == 1800) // v120 toolset (VS2013)
 #include <thread>
 #endif
@@ -3047,7 +3134,9 @@ typedef unsigned __int64   uintmax_t;
 #include "upnphost.h"
 #include "usb.h"
 #include "usb100.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "usb4dbgioctl.h"
+#endif
 #include "usbdi.h"
 #include "usbfnbase.h"
 #include "usbioctl.h"
@@ -3156,7 +3245,8 @@ typedef unsigned __int64   uintmax_t;
 #include "WbemAds.h"
 //#include <wbemcli.h>
 #include "wbemdisp.h"
-#include "wbemglue.h"
+//#include "FwCommon.h"
+//#include "wbemglue.h"
 #include "WbemIdl.h"
 #include "WbemProv.h"
 #include "WbemTime.h"
@@ -3188,7 +3278,7 @@ typedef unsigned __int64   uintmax_t;
 #include "webapplication.h"
 //#include "webauthn.h"
 //#include "webauthnplugin.h"
-#include "webhost.h"
+//#include "webhost.h"
 #include "websocket.h"
 #include "WebAuthenticationCoreManagerInterop.h"
 //#include "wheadef.h"
@@ -3224,12 +3314,16 @@ typedef unsigned __int64   uintmax_t;
 //#include "wincrypt.idl"
 //#include "winddi.h"
 #include "winddiui.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "windnsdef.h"
+#endif
 #include "windot11.h"
 #include "Windows.ApplicationModel.Infrastructure.h"
 #include "Windows.ApplicationModel.resources.management.h"
 #include "Windows.ApplicationModel.store.preview.installcontrol.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "Windows.Graphics.Display.DisplayEnhancementOverride.Interop.h"
+#endif
 #include "Windows.Graphics.Holographic.Interop.h"
 //#include "Windows.Graphics.Holographic.Interop.idl"
 #include "Windows.Media.Protection.PlayReadyErrors.h"
@@ -3246,8 +3340,9 @@ typedef unsigned __int64   uintmax_t;
 #include "WinNls32.h"
 #include "WinPhoneInput.h"
 #include "WinRTBase.h"
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "WinRTRTTI.h"
-
+#endif
 #include "winsmcrd.h"
 #include "WinSnmp.h"
 //#include "WinSock2.h"
