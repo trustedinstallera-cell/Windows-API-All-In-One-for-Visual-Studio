@@ -4,6 +4,11 @@
 
 // Environment definitions
 
+#ifdef NOMINMAX
+#undef NOMINMAX
+#define _NOMINMAX
+#endif
+
 // scsi.h requires _NTSCSI_USER_MODE_ only when compiling in pure user-mode.
 // Do NOT define it if any kernel/driver mode macro is active.
 #if (!defined _KERNEL_MODE) && (!defined _NTSRB_) && (!defined _NTSRB_) && (!defined _MINIPORT_) && (!defined _NTDDK_)
@@ -80,8 +85,14 @@
 #define _CRT_OBSOLETE_NO_WARNINGS   // MFC or ATL code
 #define SUPPRESS_LEGACY_ICU_HEADER_WARNINGS // The wchar_t versions of the ICU headers are no longer being updated...
 #define _CRT_SILENCE_NONCONFORMING_TGMATH_H
+#if MSVC_VER > VS_2013
 #pragma warning(push)
-#pragma warning(disable: 5040)
+#pragma warning(disable: 5040) // Cannot recognize in VS 2013
+#endif
+#if MSVC_VER == VS_2013
+#pragma warning(push)
+#pragma warning(disable: 4068) // Unknown pargma
+#endif
 #pragma warning(push)
 #pragma warning(disable: 4995)
 #pragma warning(push)
@@ -103,6 +114,7 @@
 #include <con/unexist.hppx>
 #endif
 
+#include <tchar.h>
 #if (defined _USING_V110_SDK71_ /*XP support*/) || (MSVC_VER <= 2015)
 typedef struct IUnknown IUnknown;
 #include <Windows.h>
@@ -297,7 +309,9 @@ typedef struct IUnknown IUnknown;
 #endif
 #include <iedial.h>
 #include "IEPMapi.h"
+#if (defined _UNICODE) || (defined UNICODE)
 #include "IEProcess.h" 
+#endif
 //#include "IImgCtx.h"
 //#include "IMessage.h" // none of <mapix.h>, <mapidefs.h> nor <mapitags.h> has been found
 #include "ISysmon.h"
@@ -1416,7 +1430,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "dxgidebug.h"
 //#include "dxmini.h"
 #endif
+#if (MSVC_VER != VS_2013) || (defined NOWARNINGS)
 #include "dxtmpl.h"
+#endif
 #include "dxva.h"
 #include <dxva2api.h>
 #include "dxva2swdev.h"
@@ -3000,7 +3016,6 @@ typedef unsigned __int64   uintmax_t;
 #endif
 //#include "strmif.idl"
 //#include <strmif.h>     // Generated IDL header file for streams interfaces"
-#include <strsafe.h>
 #include "structuredquery.h"
 //#include "SubAuth.h"
 #include "subscriptionservices.h"
@@ -3451,7 +3466,7 @@ typedef unsigned __int64   uintmax_t;
 #endif
 #include "TCError.h"
 #include "TCGuid.h"
-#include <tchar.h>
+#include <strsafe.h>
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <tcpestats.h>
 #include <tcpmib.h>
@@ -3542,7 +3557,9 @@ typedef unsigned __int64   uintmax_t;
 #include <type_traits>
 #endif
 //#include "ual.h"
+#if MSVC_VER > VS_2013
 #include "uchar.h"
+#endif
 #include "udpmib.h"
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <udpmib.h>
@@ -4376,9 +4393,10 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "iads.h"
 //#include "icodecapi.idl"
 #include "idlmulti.h"
-
+#if MSVC_VER > VS_2013
 using namespace Gdiplus;
 #include "GdiplusMatrix.h"
+#endif
 
 // #include <BridgeDeviceService.h> // No <Bridge.h>
 // ============================================================
@@ -4531,4 +4549,11 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib, "shlwapi.lib")
 #endif
 
+#endif
+
+#ifdef _NOMINMAX
+#undef _NOMINMAX
+#define NOMINMAX
+#undef min
+#undef max
 #endif
