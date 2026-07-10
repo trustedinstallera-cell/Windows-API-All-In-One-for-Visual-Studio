@@ -1,0 +1,1993 @@
+﻿#if !(defined (_M_X64) || defined (_M_IX86) || defined (_M_ARM64))
+#if !(defined(NTOS_KERNEL_RUNTIME) && defined(_AMD64_))
+#if !(defined(_M_ARM64) || defined(_CRT_APP) || defined(_ONECORE))
+#if !(defined(_M_IX86) || defined(_M_X64)) || defined(_CHPE_ONLY_) || defined(_M_ARM64EC)
+#if !(defined(_M_X64) || defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64) || defined(_M_ARM64EC))
+#if !(defined(__CUDACC__) && defined(__clang__))
+#if !CC_EXPLICITFRAME
+#if !STDCPP_IMPLIB || defined(_M_CEE_PURE)
+#if !WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+#if !_DEBUG_MEMORY_LEAKS
+#if !_HAS_CXX17
+#if !_HAS_CXX17 || (_HAS_CXX20 && !defined(__clang__) && !defined(__EDG__)) // TRANSITION, DevCom-10729775
+#if !_HAS_CXX20
+#if !_HAS_CXX20 // note: <format> includes this header in C++20 mode
+#if !_HAS_CXX23
+#if !_HAS_EXCEPTIONS
+#if !_HAS_STREAM_INSERTION_OPERATORS_DELETED_IN_CXX20
+#if !_POPCNT_INTRINSICS_ALWAYS_AVAILABLE
+#if !_STL_128_DIV_INTRINSICS
+#if !_USE_ATTRIBUTES_FOR_SAL // [
+#if !_USE_DECLSPECS_FOR_SAL // [
+#if !defined (_ADVSIMD_ALIGN)
+#if !defined (_INC_MSCLR_ALL)
+#if !defined (_INC_MSCLR_APPDOMAIN)
+#if !defined (_INC_MSCLR_AUTO_GCROOT)
+#if !defined (_INC_MSCLR_AUTO_HANDLE)
+#if !defined (_INC_MSCLR_COM_PTR)
+#if !defined (_INC_MSCLR_GCROOT)
+#if !defined (_INC_MSCLR_GCROOT) // This means that msclr/gcroot.h is already included
+#if !defined (_INC_MSCLR_LOCK)
+#if !defined (_INC_MSCLR_SAFEBOOL)
+#if !defined (_MANAGED_MAIN)
+#if !defined (_MANAGED_MAIN) && !defined (_WINMAIN_)
+#if !defined (_MANAGED_MAIN) && defined (_WINMAIN_)
+#if !defined (_M_ARM64) && !defined(_M_ARM64EC)
+#if !defined (_M_ARM64) && !defined(_M_HYBRID_X86_ARM64) && !defined(_M_ARM64EC)
+#if !defined (_M_CEE) && !defined (_M_CEE_PURE)
+#if !defined (_M_CEE_SAFE)
+#if !defined DECLSPEC_GUARD_SUPPRESS
+#if !defined _AFXDLL
+#if !defined _CRT_WINDOWS
+#if !defined _CRT_WINDOWS && !defined UNDOCKED_WINDOWS_UCRT
+#if !defined _CRT_WINDOWS && defined _DEBUG
+#if !defined _M_CEE
+#if !defined _M_CEE && !defined __midl
+#if !defined _M_IX86
+#if !defined _VCRT_BUILD && !defined _INC_MALLOC
+#if !defined _VCRT_BUILD && !defined _VCRT_ALLOW_INTERNALS
+#if !defined _VCRT_SAT_1
+#if !defined _W64
+#if !defined __cplusplus
+#if !defined( FAIL )
+#if !defined( FAR )
+#if !defined( INITGUID )
+#if !defined( SUCCEED )
+#if !defined( _ATL_CUSTOM_THROW )  // You can define your own AtlThrow
+#if !defined( _OLEBIND_H_ )
+#if !defined(ASSERT) && defined(_DEBUG)
+#if !defined(CRTDLL)
+#if !defined(DBTYPEDEFS) // Do not conflict with DBLIB definitions
+#if !defined(MAXNUMERICLEN) // Do not conflict with ODBC definitions
+#if !defined(MRTDLL)
+#if !defined(OLE2ANSI)
+#if !defined(RC_INVOKED)
+#if !defined(RC_INVOKED) && !defined(Q_MOC_RUN) && !defined(__midl)
+#if !defined(RENAME_EH_EXTERN)
+#if !defined(RENAME_EH_EXTERN_HYBRID)
+#if !defined(STDCPP_IMPLIB)
+#if !defined(UNALIGNED)
+#if !defined(UNREACHED)
+#if !defined(USE_ATL_THUNK2) && !defined(USE_ATL_THUNK1) && (defined(_M_IX86) || defined(_M_X64) || defined(_M_ARM64) || defined(_M_ARM64EC))
+#if !defined(VCWINRT_DLL)
+#if !defined(_AFXDLL) && defined(_AFX_NO_MFC_CONTROLS_IN_DIALOGS)
+#if !defined(_AFX_CORE_IMPL) || !defined(_AFXDLL) || defined(_DEBUG)
+#if !defined(_ALLOW_KEYWORD_MACROS) && !defined(__INTELLISENSE__)
+#if !defined(_ARM64_DISTINCT_NEON_TYPES)
+#if !defined(_ARM64_NO_EXTENDED_INTRINSICS) && !defined(_ARM64_DISTINCT_NEON_TYPES)
+#if !defined(_ATL_MODULES)
+#if !defined(_ATL_NATIVE_INITIALIZATION)
+#if !defined(_ATL_NO_COM_SUPPORT)
+#if !defined(_ATL_NO_DEBUG_CRT) && defined(_DEBUG)
+#if !defined(_ATL_USE_WINAPI_FAMILY_DESKTOP_APP)
+#if !defined(_ATL_USE_WINAPI_FAMILY_DESKTOP_APP) && !defined(_UNICODE)
+#if !defined(_ATL_USE_WINAPI_FAMILY_DESKTOP_APP) && defined(_ATL_CSTRING_NO_CRT)
+#if !defined(_CHPE_X86_ARM64_EH_)
+#if !defined(_COM_ASSERT)
+#if !defined(_COM_NO_STANDARD_GUIDS_)
+#if !defined(_COM_SMARTPTR)
+#if !defined(_CPPCLI_IMPL_DETAILS)
+#if !defined(_CRTBLD) && _PPL_TASK_CONTEXT_CONTROL_ENABLED && !defined(_PPL_TASK_FORCE_DEFAULT_CTOR)
+#if !defined(_CRTBLD) && defined(UNDOCKED_WINDOWS_UCRT) && !_PPL_TASK_ERROR_REPORT_ENABLED
+#if !defined(_CRTBLD) || defined(__FORCE_INSTANCE)
+#if !defined(_CRT_WINDOWS) && !defined(UNDOCKED_WINDOWS_UCRT)
+#if !defined(_CRT_WINDOWS) && !defined(_VCRT_ENCLAVE_BUILD)
+#if !defined(_CRT_WINDOWS) && \
+#if !defined(_CSTRING_DISABLE_NARROW_WIDE_CONVERSION)
+#if !defined(_DEBUG)
+#if !defined(_DISABLE_STL_ANNOTATION) && !defined(_ENABLE_STL_ANNOTATION_ON_UNSUPPORTED_PLATFORMS)
+#if !defined(_DLL) && !defined(_DEBUG)
+#if !defined(_DLL) || defined(_BUILDING_SATELLITE_CODECVT_IDS)
+#if !defined(_INC_COMDEF)
+#if !defined(_INC_COMDEFSP)
+#if !defined(_INC_COMIP)
+#if !defined(_INC_COMUTIL)
+#if !defined(_INC_GCROOT)
+#if !defined(_INC_INVKPRXY)
+#if !defined(_INC_VCCLR)
+#if !defined(_LP64)
+#if !defined(_MFC_BLD) && defined(_AFXDLL)
+#if !defined(_MSC_VER) || defined(__clang__)
+#if !defined(_M_ARM64) && !defined(_M_ARM64EC)
+#if !defined(_M_ARM64) && !defined(_M_HYBRID_X86_ARM64) && !defined(_M_ARM64EC)
+#if !defined(_M_ARM64EC)
+#if !defined(_M_CEE_PURE)
+#if !defined(_M_HYBRID_X86_ARM64)
+#if !defined(_M_IX86)
+#if !defined(_M_IX86) && !defined(_M_X64) && !(defined(_M_ARM64) && defined(USE_SOFT_INTRINSICS))
+#if !defined(_M_IX86) && !defined(_M_X64) && !defined(_M_ARM64)
+#if !defined(_M_IX86) || defined(_CHPE_ONLY_)
+#if !defined(_M_X64) || defined(_M_ARM64EC)
+#if !defined(_NTSUBSET_)
+#if !defined(_OMPIMP)
+#if !defined(_OMP_LOCK_T)
+#if !defined(_OMP_NEST_LOCK_T)
+#if !defined(_ONECORE)
+#if !defined(_OPENMP)
+#if !defined(_PREFIX_) && !defined(_PREFAST_)
+#if !defined(_SECURE_COMPILER_COM)
+#if !defined(_SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING)
+#if !defined(_UNICODE)
+#if !defined(_UNICODE) // Unicode required
+#if !defined(_VC_CRT_BUILD_VERSION)
+#if !defined(_VC_CRT_MAJOR_VERSION)
+#if !defined(_VC_CRT_MINOR_VERSION)
+#if !defined(_VC_CRT_RBUILD_VERSION)
+#if !defined(_WIN32_WINNT)
+#if !defined(_WINDLL) && !defined(_USRDLL)
+#if !defined(_X86_) && !defined(_AMD64_) && defined(_M_IX86)
+#if !defined(_X86_) && !defined(_AMD64_) && defined(_M_X64)
+#if !defined(__EDG__) && (defined(__clang__) || _MSC_VER >= 1951) // TRANSITION, GH-5738, VSO-2581623, toolset update
+#if !defined(__IA_SUPPORT_VECTOR128)
+#if !defined(__clang__) && !defined(__EDG__) && !defined(__CUDACC__)
+#if !defined(__clang__) && !defined(__EDG__) && _MSC_VER >= 1951 // TRANSITION, GH-6169, toolset update
+#if !defined(__clang__) && !defined(__EDG__) // TRANSITION, Clang and EDG support for modules
+#if !defined(__cplusplus) || defined(_MSC_EXTENSIONS)
+#if !defined(__cplusplus_winrt)
+#if !defined(__has_cpp_attribute) || defined(_SILENCE_LIFETIMEBOUND_WARNING)
+#if !defined(__midl) && !defined(MIDL_PASS)
+#if !defined(__midl) && defined(_PREFAST_) && !defined(_SDV_)
+#if !defined(__midl) && defined(_PREFAST_) // [
+#if (!defined(_MSVC_LANG) || _MSVC_LANG < 201703l) // [
+#if ((defined(_M_IX86) && !defined(_M_HYBRID_X86_ARM64)) || (defined(_M_X64) && !defined(_M_ARM64EC))) \
+#if (EH_MAGIC_NUMBER1 & 0xE0000000) || (EH_MAGIC_NUMBER2 & 0xE0000000) || (EH_MAGIC_NUMBER3 & 0xE0000000)
+#if (EH_MAGIC_NUMBER2 <= EH_MAGIC_NUMBER1) || (EH_MAGIC_NUMBER3 <= EH_MAGIC_NUMBER2)
+#if (EH_PURE_MAGIC_NUMBER1 >= EH_MAGIC_NUMBER1)
+#if (NTDDI_VERSION < NTDDI_VISTA) // min Windows Vista required
+#if (NTDDI_VERSION < NTDDI_VISTA) || defined(_USING_V110_SDK71_) || defined(_ATL_XP_TARGETING)
+#if (NTDDI_VERSION < NTDDI_WIN7)
+#if (NTDDI_VERSION < NTDDI_WINXP)
+#if (NTDDI_VERSION < NTDDI_WINXPSP2) || (_WIN32_WINNT < 0x0501)
+#if (NTDDI_VERSION >= NTDDI_VISTA)
+#if (NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING)
+#if (NTDDI_VERSION >= NTDDI_VISTA) && defined(UNICODE)
+#if (NTDDI_VERSION >= NTDDI_WIN7)
+#if (OLEDBVER < 0x0150)
+#if (OLEDBVER >= 0x0150)
+#if (WINVER < 0x0501)
+#if (WINVER >= 0x0600) || (_WIN32_WINNT >= 0x0600)
+#if (_ATL_NTDDI_MIN > NTDDI_WIN7)
+#if (_PPL_TASK_CONTEXT_CONTROL_ENABLED)
+#if (_WIN32_WINNT < _WIN32_WINNT_WINXP)
+#if (_WIN32_WINNT >= 0x0400 ) || defined(_WIN32_DCOM)
+#if (_WIN32_WINNT >= 0x0501)
+#if (defined (_M_IX86) || defined (_M_X64)) && !defined(_M_HYBRID) && !defined(_M_ARM64EC)
+#if (defined _OBJBASE_H_)
+#if (defined __AFXPRIV2_H__OLE__) && (defined __AFXPRIV2_H__DISP__)
+#if (defined(_M_ARM64) || defined(_M_ARM64EC)) && !defined(__INTRIN_H_)
+#if (defined(_M_IX86) && !defined(_M_HYBRID_X86_ARM64)) || (defined(_M_X64) && !defined(_M_ARM64EC))
+#if (defined(_M_IX86) || defined(_M_X64))
+#if (defined(_M_X64) || defined(_M_ARM64)) && !defined(_CHPE_X86_ARM64_EH_)
+#if 0
+#if DBG
+#if DLOAD_UNLOAD
+#if LIBFUZZER_WINDOWS
+#if MSVC_TARGET_WIN64
+#if NTDDI_VERSION >= NTDDI_VISTA
+#if PPL_TASK_SAVE_FRAME_COUNT > 1
+#if STDCPP_IMPLIB || !defined(_M_CEE_PURE)
+#if WINAPI_FAMILY == WINAPI_FAMILY_APP
+#if WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP
+#if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+#if WINVER >= 0x0501
+#if _AFX_USE_OLD_ZOOM
+#if _COLLECTION_WUXI
+#if _CRT_NTDDI_MIN >= NTDDI_VISTA
+#if _DEBUG
+#if _EH_RELATIVE_FUNCINFO
+#if _EH_RELATIVE_FUNCINFO /* { { */
+#if _EH_RELATIVE_TYPEINFO
+#if _EH_RELATIVE_TYPEINFO && !defined(BUILDING_C1XX_FORCEINCLUDE)
+#if _HAS_CHARCONV_INTRINSICS
+#if _HAS_COUNTL_ZERO_INTRINSICS
+#if _HAS_CXX17
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_IS_LITERAL_TYPE_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_NEGATORS_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_OLD_ALLOCATOR_MEMBERS_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_RAW_STORAGE_ITERATOR_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_RESULT_OF_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_SHARED_PTR_UNIQUE_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_STRSTREAM_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_TEMPORARY_BUFFER_DEPRECATION_WARNING) \
+#if _HAS_CXX17 && !defined(_SILENCE_CXX17_UNCAUGHT_EXCEPTION_DEPRECATION_WARNING) \
+#if _HAS_CXX20
+#if _HAS_CXX20 && !_HAS_CXX17
+#if _HAS_CXX20 && !defined(_SILENCE_CXX20_ATOMIC_INIT_DEPRECATION_WARNING) \
+#if _HAS_CXX20 && !defined(_SILENCE_CXX20_CISO646_REMOVED_WARNING) && !defined(_SILENCE_ALL_CXX20_DEPRECATION_WARNINGS)
+#if _HAS_CXX20 && !defined(_SILENCE_CXX20_CODECVT_FACETS_DEPRECATION_WARNING) \
+#if _HAS_CXX20 && !defined(_SILENCE_CXX20_IS_ALWAYS_EQUAL_DEPRECATION_WARNING) \
+#if _HAS_CXX20 && !defined(_SILENCE_CXX20_IS_POD_DEPRECATION_WARNING) \
+#if _HAS_CXX20 && !defined(_SILENCE_CXX20_MOVE_ITERATOR_ARROW_DEPRECATION_WARNING) \
+#if _HAS_CXX20 && !defined(_SILENCE_CXX20_OLD_SHARED_PTR_ATOMIC_SUPPORT_DEPRECATION_WARNING) \
+#if _HAS_CXX20 && !defined(_SILENCE_CXX20_REL_OPS_DEPRECATION_WARNING) \
+#if _HAS_CXX20 && !defined(_SILENCE_CXX20_STRING_RESERVE_WITHOUT_ARGUMENT_DEPRECATION_WARNING) \
+#if _HAS_CXX20 && !defined(_SILENCE_CXX20_VOLATILE_DEPRECATION_WARNING) \
+#if _HAS_CXX20 && defined(__cpp_char8_t) && !defined(_SILENCE_CXX20_CODECVT_CHAR8_T_FACETS_DEPRECATION_WARNING) \
+#if _HAS_CXX20 && defined(__cpp_char8_t) && !defined(_SILENCE_CXX20_U8PATH_DEPRECATION_WARNING) \
+#if _HAS_CXX20 && defined(__cpp_lib_byte)
+#if _HAS_CXX23
+#if _HAS_CXX23 && !_HAS_CXX20
+#if _HAS_CXX23 && !defined(_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING) \
+#if _HAS_CXX23 && !defined(_SILENCE_CXX23_ALIGNED_UNION_DEPRECATION_WARNING) \
+#if _HAS_CXX23 && !defined(_SILENCE_CXX23_DENORM_DEPRECATION_WARNING) \
+#if _HAS_CXX23 && !defined(_SILENCE_CXX23_UNIX_STREAMS_DEPRECATION_WARNING) \
+#if _HAS_CXX23 && defined(_CPPRTTI)
+#if _HAS_CXX23 // TRANSITION, ABI, should just use [[no_unique_address]] when _HAS_CXX20.
+#if _HAS_CXX26 && !_HAS_CXX23
+#if _HAS_CXX26 && !defined(_SILENCE_VECTOR_BOOL_STATIC_REFERENCE_SWAP_DEPRECATION_WARNING) \
+#if _HAS_DEPRECATED_ADAPTOR_TYPEDEFS
+#if _HAS_EXCEPTIONS
+#if _HAS_ITERATOR_DEBUGGING
+#if _HAS_ITERATOR_DEBUGGING == 1
+#if _HAS_ITERATOR_DEBUGGING > 1
+#if _HAS_MEMCPY_MEMMOVE_INTRINSICS
+#if _HAS_MSVC_ATTRIBUTE(intrinsic)
+#if _HAS_MSVC_ATTRIBUTE(known_semantics)
+#if _HAS_MSVC_ATTRIBUTE(no_specializations)
+#if _HAS_MSVC_ATTRIBUTE(no_unique_address)
+#if _HAS_MSVC_ATTRIBUTE(noop_dtor)
+#if _HAS_OLD_IOSTREAMS_MEMBERS
+#if _HAS_POPCNT_INTRINSICS
+#if _HAS_STATIC_RTTI
+#if _HAS_STD_BYTE
+#if _HAS_TZCNT_BSF_INTRINSICS
+#if _HAS_TZCNT_BSF_INTRINSICS && _HAS_CXX20
+#if _HAS_U8_INTRINSICS
+#if _HAS_UNEXPECTED && _HAS_CXX23
+#if _ITERATOR_DEBUG_LEVEL != 0
+#if _ITERATOR_DEBUG_LEVEL != _IDL_DEFAULT
+#if _ITERATOR_DEBUG_LEVEL == 0
+#if _ITERATOR_DEBUG_LEVEL == 2
+#if _ITERATOR_DEBUG_LEVEL == 2 && _HAS_ITERATOR_DEBUGGING != 1
+#if _ITERATOR_DEBUG_LEVEL > 0
+#if _ITERATOR_DEBUG_LEVEL > 0 && _SECURE_SCL != 1
+#if _ITERATOR_DEBUG_LEVEL > 2 && defined(_DEBUG)
+#if _ITERATOR_DEBUG_LEVEL >= 1
+#if _MFC_NTDDI_MIN >= NTDDI_VISTA
+#if _MFC_NTDDI_MIN >= NTDDI_WIN7
+#if _MFC_VER >= 0x0601
+#if _MSCLR_STDCALL_DISTINCT
+#if _MSC_VER < 1900
+#if _MSC_VER < 1950 // Coarse-grained, not inspecting _MSC_FULL_VER
+#if _MSC_VER > 1000
+#if _MSC_VER >= 1900 && !defined(__EDG__)
+#if _MSVC_STL_DESTRUCTOR_TOMBSTONES
+#if _MSVC_STL_HARDENING_BASIC_STRING_VIEW || _ITERATOR_DEBUG_LEVEL != 0
+#if _PPLTASK_ASYNC_LOGGING
+#if _PREPARE_CONSTRAINED_REGIONS
+#if _RTTI_RELATIVE_TYPEINFO
+#if _SECURE_COMPILER_COM && defined(__GOT_SECURE_LIB__) && __GOT_SECURE_LIB__ >= 200402L
+#if _SECURE_SCL > 1
+#if _STD_ATOMIC_USE_ARM64_LDAR_STLR == 1
+#if _STL_128_DIV_INTRINSICS
+#if _STL_128_INTRINSICS
+#if _STL_COMPILER_PREPROCESSOR
+#if _STL_WARNING_LEVEL < 3
+#if _STL_WARNING_LEVEL > 4
+#if _USE_ATTRIBUTES_FOR_SAL && ( !defined(_MSC_EXTENSIONS) || defined( MIDL_PASS ) || defined(__midl) || defined(RC_INVOKED) ) // [
+#if _USE_ATTRIBUTES_FOR_SAL // [
+#if _USE_ATTRIBUTES_FOR_SAL || _USE_DECLSPECS_FOR_SAL // [
+#if _USE_DECLSPECS_FOR_SAL && ( defined( MIDL_PASS ) || defined(__midl) || defined(RC_INVOKED) || !defined(_PREFAST_) ) // [
+#if _USE_DECLSPECS_FOR_SAL // [
+#if _USE_DECLSPECS_FOR_SAL || _USE_ATTRIBUTES_FOR_SAL
+#if _USE_EXTERN_CXX_EVERYWHERE_FOR_STL
+#if _USE_VISTA_THREAD_SAFE_STATICS
+#if _VCRT_BUILD_FH4
+#if _VCRT_COMPILER_PREPROCESSOR
+#if _VCRT_COMPILER_PREPROCESSOR && !defined(__midl)
+#if _VCRT_COMPILER_PREPROCESSOR && _HAS_EXCEPTIONS
+#if _VCRT_DIRECT_PTD
+#if _VECTORIZED_FIND
+#if _VECTORIZED_FIND_END
+#if _VECTORIZED_FIND_FIRST_OF
+#if _VECTORIZED_FIND_LAST
+#if _VECTORIZED_FIND_LAST_OF
+#if _VECTORIZED_MISMATCH
+#if _VECTORIZED_SEARCH
+#if _WIN32_WINNT < 0x0502
+#if __CUDACC_VER_MAJOR__ < 13 || (__CUDACC_VER_MAJOR__ == 13 && __CUDACC_VER_MINOR__ < 2)
+#if __STDC_VERSION__ < 201112L
+#if __STDC__
+#if __TSAN_HAS_INT128
+#if __clang_major__ < 20
+#if __cplusplus > 201703L || _MSVC_LANG > 201703L
+#if __cplusplus >= 201103L || _MSVC_LANG > 201103L
+#if __cplusplus >= 201103L || _MSVC_LANG >= 201103L
+#if __cplusplus >= 201402L || _MSVC_LANG >= 201402L
+#if __cplusplus >= 201703L || _MSVC_LANG >= 201703L
+#if __cpp_impl_coroutine
+#if __has_attribute(no_sanitize)
+#if __has_attribute(target)
+#if __has_feature(address_sanitizer)
+#if defined (CONCRT_TRACING)
+#if defined (UNICODE)
+#if defined (WPRFLAG)
+#if defined (_AFX) && defined(_UNICODE) && !defined(_CSTRING_DISABLE_NARROW_WIDE_CONVERSION)
+#if defined (_DEBUG)
+#if defined (_ENABLE_VEC_DEBUG)
+#if defined (_MANAGED_MAIN)
+#if defined (_M_ARM64) || defined(_M_HYBRID_X86_ARM64) || defined(_M_ARM64EC)
+#if defined (_M_CEE)
+#if defined (_M_CEE_MIXED)
+#if defined (_M_CEE_PURE)
+#if defined (_M_IX86)
+#if defined (_M_IX86) && defined (_CRTBLD) && defined (_DEBUG)
+#if defined (_M_X64)
+#if defined (_M_X64) || (defined(_M_ARM64) && defined(USE_SOFT_INTRINSICS))
+#if defined (_SCRT_ENCLAVE_BUILD)
+#if defined (_SILENCE_IVEC_C4799)
+#if defined (_WIN64)
+#if defined (__cplusplus)
+#if defined (__cplusplus_winrt)
+#if defined (__midl)
+#if defined MRTDLL && defined _M_CEE
+#if defined WINAPI_FAMILY_PHONE_APP && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+#if defined _CRT_APP
+#if defined _CRT_APP && !defined _DEBUG
+#if defined _CRT_SECURE_DEPRECATE_MEMORY && !defined _CRT_SECURE_WARNINGS_MEMORY
+#if defined _CRT_SECURE_NO_DEPRECATE && !defined _CRT_SECURE_NO_WARNINGS
+#if defined _M_ARM64
+#if defined _M_ARM64 || defined _CHPE_X86_ARM64_EH_
+#if defined _M_ARM64EC
+#if defined _M_CEE
+#if defined _M_CEE && defined _M_X64
+#if defined _M_CEE_MIXED
+#if defined _M_CEE_MIXED && !defined _VCRT_BUILD
+#if defined _M_CEE_PURE
+#if defined _M_CEE_PURE || (defined _M_CEE && !defined _M_ARM64)
+#if defined _M_CEE_PURE || defined MRTDLL
+#if defined _M_HYBRID_X86_ARM64 && !defined _M_CEE_PURE
+#if defined _M_IX86
+#if defined _M_IX86 || defined _M_X64
+#if defined _M_X64 || defined _M_ARM64
+#if defined _M_X64 || defined _M_ARM64 || defined _CHPE_X86_ARM64_EH_
+#if defined _M_X64 || defined _M_ARM64 || defined _M_HYBRID
+#if defined _RTC || !defined _VCRT_BUILD
+#if defined _SCRT_ENCLAVE_BUILD || defined _CRT_APP || defined _CRT_WINDOWS_USE_VISTA_TSS \
+#if defined _VCRT_ENCLAVE_BUILD
+#if defined _VCRT_SAT_1
+#if defined _VCRT_WINDOWS_BUILD && defined _CRT_GLOBAL_STATE_ISOLATION
+#if defined _X86_
+#if defined __cplusplus
+#if defined __cplusplus && !defined _CRT_NO_VA_START_VALIDATION
+#if defined( _ATL_CUSTOM_THROW )  // You can define your own AtlThrow to throw a custom exception.
+#if defined(CONCRT_TRACING)
+#if defined(CRTDLL)
+#if defined(CRTDLL2) && defined(_CRTBLD)
+#if defined(GID_PRESSANDTAP) && defined(GC_PRESSANDTAP)
+#if defined(JB_FRAME)
+#if defined(MRTDLL)
+#if defined(MRTDLL) && !defined(_CRTBLD)
+#if defined(MRTDLL) && !defined(_M_CEE_PURE)
+#if defined(MRTDLL) && defined(_CRTBLD)
+#if defined(NONAMELESSUNION)
+#if defined(NTOS_KERNEL_RUNTIME) && defined(_AMD64_)
+#if defined(NTP) || !defined(_KERNEL_OPT)
+#if defined(PPL_TASK_CONTEXT_ERROR_CONTROL)
+#if defined(PPL_TASK_CONTEXT_ERROR_CONTROL) || defined (__cplusplus_winrt)
+#if defined(RC_INVOKED) || defined(Q_MOC_RUN)
+#if defined(RC_INVOKED) || defined(Q_MOC_RUN) || defined(__midl)
+#if defined(UNDOCKED_WINDOWS_UCRT) && !_USE_ATTRIBUTES_FOR_SAL
+#if defined(UNDOCKED_WINDOWS_UCRT) || _PPL_TASK_CONTEXT_CONTROL_ENABLED
+#if defined(UNICODE)
+#if defined(VCWINRT_DLL)
+#if defined(_AFX)
+#if defined(_AFX) && defined(_UNICODE)
+#if defined(_AFX) && defined(_UNICODE) && !defined(_CSTRING_DISABLE_NARROW_WIDE_CONVERSION)
+#if defined(_AFXDLL)
+#if defined(_AFXDLL) && !defined(_DLL)
+#if defined(_AFXDLL) && defined(_MFC_DLL_BLD) || !defined(__cplusplus_cli) && defined(_MANAGED)
+#if defined(_AFXDLL) || !defined(_AFX_NO_MFC_CONTROLS_IN_DIALOGS)
+#if defined(_AFXEXT) && !defined(_AFXDLL)
+#if defined(_AFX_SECURE_NO_DEPRECATE) && !defined(_AFX_SECURE_NO_WARNINGS)
+#if defined(_ALIGN_DOUBLES) && defined(_SHADOW_DOUBLES)
+#if defined(_AMD64_)
+#if defined(_AMD64_) || defined(_ARM64_)
+#if defined(_ARM64_DISTINCT_NEON_TYPES)
+#if defined(_ARM64_DISTINCT_NEON_TYPES) && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+#if defined(_ARM64_EXTENDED_INTRINSICS)
+#if defined(_ATL_APARTMENT_THREADED) || defined(_ATL_FREE_THREADED)
+#if defined(_ATL_DEBUG_INTERFACES)
+#if defined(_ATL_DEBUG_INTERFACES) && !defined(_ATL_STATIC_LIB_IMPL)
+#if defined(_ATL_DEBUG_INTERFACES) || defined(_ATL_DEBUG_QI)
+#if defined(_ATL_FREE_THREADED)
+#if defined(_ATL_MIXED) || !defined(_M_CEE)
+#if defined(_ATL_SECURE_NO_DEPRECATE) && !defined(_ATL_SECURE_NO_WARNINGS)
+#if defined(_ATL_SINGLE_THREADED)
+#if defined(_ATL_SINGLE_THREADED) || defined(_ATL_APARTMENT_THREADED)
+#if defined(_ATL_SINGLE_THREADED) || defined(_ATL_FREE_THREADED)
+#if defined(_ATL_USE_WINAPI_FAMILY_DESKTOP_APP)
+#if defined(_CHAR_UNSIGNED) && !defined(_ATL_ALLOW_CHAR_UNSIGNED)
+#if defined(_CHPE_X86_ARM64_) || defined(_ARM64EC_)
+#if defined(_CLR_NETCORE)
+#if defined(_COM_SMARTPTR)
+#if defined(_CPPRTTI) && !_HAS_STATIC_RTTI
+#if defined(_CRTBLD) && !defined(CRTDLL2)
+#if defined(_CRTBLD) || defined(_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
+#if defined(_CRT_APP)
+#if defined(_CRT_APP) && !defined(_DEBUG)
+#if defined(_CRT_APP) || defined(UNDOCKED_WINDOWS_UCRT)
+#if defined(_CRT_ENABLE_VOLATILE_METADATA)
+#if defined(_CRT_USE_WINAPI_FAMILY_DESKTOP_APP) || defined(_XBOX_ONE)
+#if defined(_CRT_WINDOWS)
+#if defined(_CRT_WINDOWS) || defined(UNDOCKED_WINDOWS_UCRT)
+#if defined(_CRT_WINDOWS) || defined(_VCRT_ENCLAVE_BUILD)
+#if defined(_DEBUG)
+#if defined(_DEBUG) && !defined(_ATL_NO_WIN_SUPPORT)
+#if defined(_DEBUG) && defined(CONCRT_TRACING)
+#if defined(_DEBUG) || defined(_AFXDLL)
+#if defined(_DLL)
+#if defined(_DLL) && !defined(_STATIC_CPPLIB)
+#if defined(_DLL) && !defined(_STATIC_CPPLIB) && !defined(_M_CEE_PURE)
+#if defined(_DLL_CPPLIB)
+#if defined(_GUARDED_CRT)
+#if defined(_INSERT_VECTOR_ANNOTATION) || defined(_INSERT_STRING_ANNOTATION) || defined(_INSERT_OPTIONAL_ANNOTATION)
+#if defined(_MFC_BLD)
+#if defined(_MFC_DLL_BLD)
+#if defined(_MFC_DLL_BLD) && defined(_DEBUG)
+#if defined(_MSC_VER) && !defined(__clang__)
+#if defined(_MSVC_EXECUTION_CHARACTER_SET) && _MSVC_EXECUTION_CHARACTER_SET == 65001 // Unicode (UTF-8) == 65001
+#if defined(_MSVC_WARNING_LEVEL) && _MSVC_WARNING_LEVEL >= 4
+#if defined(_M_ARM64)
+#if defined(_M_ARM64) && !defined(_M_ARM64EC)
+#if defined(_M_ARM64) || defined(_CHPE_X86_ARM64_EH_)
+#if defined(_M_ARM64) || defined(_CHPE_X86_ARM64_EH_) || defined(_M_ARM64EC)
+#if defined(_M_ARM64) || defined(_M_ARM64EC)
+#if defined(_M_ARM64) || defined(_M_ARM64EC) || defined(_M_HYBRID_X86_ARM64)
+#if defined(_M_ARM64) || defined(_M_HYBRID_X86_ARM64) || defined(_M_ARM64EC)
+#if defined(_M_ARM64) || defined(_M_X64) || defined(_M_IX86)
+#if defined(_M_ARM64EC)
+#if defined(_M_ARM64EC) || defined(_M_CEE_PURE)
+#if defined(_M_CEE)
+#if defined(_M_CEE) && !defined(_ATL_MIXED)
+#if defined(_M_CEE) && !defined(_M_CEE_PURE)
+#if defined(_M_CEE) || defined(_M_ARM64EC) || defined(_M_HYBRID) \
+#if defined(_M_CEE_PURE)
+#if defined(_M_CEE_PURE) && !defined(_SILENCE_CLR_PURE_DEPRECATION_WARNING)
+#if defined(_M_CEE_PURE) || (defined(_M_IX86) && !defined(_M_HYBRID_X86_ARM64)) \
+#if defined(_M_CEE_PURE) || (defined(_M_IX86) && !defined(_M_HYBRID_X86_ARM64)) || (defined(_M_X64) && !defined(_M_ARM64EC))
+#if defined(_M_CEE_PURE) || defined(BUILDING_C1XX_FORCEINCLUDE)
+#if defined(_M_HYBRID)
+#if defined(_M_HYBRID_X86_ARM64)
+#if defined(_M_HYBRID_X86_ARM64) && !defined(_CHPE_X86_ARM64_EH_)
+#if defined(_M_IX86)
+#if defined(_M_IX86) && !defined(CRTDLL) && !defined(_M_HYBRID)
+#if defined(_M_IX86) && !defined(_CHPE_X86_ARM64_EH_)
+#if defined(_M_IX86) && !defined(_M_HYBRID)
+#if defined(_M_IX86) && !defined(_M_HYBRID_X86_ARM64)
+#if defined(_M_IX86) && defined(_CRT_LEGACY_X86_FLT_EXCEPTIONS) && !defined(_M_CEE_PURE)
+#if defined(_M_IX86) || defined(_M_X64)
+#if defined(_M_IX86) || defined(_M_X64) || defined(_M_ARM64) || defined(_M_ARM64EC)
+#if defined(_M_IX86) || defined(_X86_)
+#if defined(_M_X64)
+#if defined(_M_X64) && !defined(_M_ARM64EC)
+#if defined(_M_X64) && !defined(_M_ARM64EC) && !defined(_M_CEE_PURE)
+#if defined(_M_X64) || defined(_M_ARM64)
+#if defined(_M_X64) || defined(_M_ARM64) || defined(BUILDING_C1XX_FORCEINCLUDE)
+#if defined(_M_X64) || defined(_M_ARM64) || defined(_CHPE_X86_ARM64_EH_)
+#if defined(_M_X64) || defined(_M_ARM64) || defined(_M_ARM64EC) || defined(_M_HYBRID_X86_ARM64)
+#if defined(_M_X64) || defined(_M_ARM64) || defined(_M_HYBRID)
+#if defined(_NATIVE_WCHAR_T)
+#if defined(_ONECORE)
+#if defined(_OPENMP_LLVM_RUNTIME)
+#if defined(_PREFAST_) && (_MSC_VER < 1600)
+#if defined(_PREFAST_) || defined (_DEBUG)
+#if defined(_PREFIX_) || defined(_PREFAST_)
+#if defined(_SHADOW_DOUBLES)
+#if defined(_UNICODE)
+#if defined(_UNICODE) || !defined(_CSTRING_DISABLE_NARROW_WIDE_CONVERSION)
+#if defined(_USRDLL) && defined(_M_CEE)
+#if defined(_VCRT_BUILD) || !_HAS_CXX23 // C++98 unexpected() is incompatible with C++23 unexpected<E>.
+#if defined(_WCHAR_T_DEFINED)
+#if defined(_WIN32)
+#if defined(_WIN64)
+#if defined(_WIN64) // || or Windows 2000
+#if defined(_WIN64) || defined(_CHPE_X86_ARM64_EH_)
+#if defined(_WIN64) || defined(_RTTI) || defined(BUILDING_C1XX_FORCEINCLUDE)
+#if defined(_WINDLL) | defined(_USRDLL)
+#if defined(_WINGDI_) && !defined(NOGDI)
+#if defined(_X86_)
+#if defined(_X86_) && !defined(_M_HYBRID)
+#if defined(__ATLBASE_H__) || defined (_INC_CRTDBG)
+#if defined(__AVX__) || defined(_M_ARM64) || defined(_M_ARM64EC)
+#if defined(__AsyncIAdviseSink2_INTERFACE_DEFINED__)
+#if defined(__AsyncIAdviseSink_INTERFACE_DEFINED__)
+#if defined(__AsyncIMultiQI_INTERFACE_DEFINED__)
+#if defined(__AsyncIPipeByte_INTERFACE_DEFINED__)
+#if defined(__AsyncIPipeDouble_INTERFACE_DEFINED__)
+#if defined(__AsyncIPipeLong_INTERFACE_DEFINED__)
+#if defined(__AsyncIUnknown_INTERFACE_DEFINED__)
+#if defined(__CUDACC__) && defined(__CUDACC_VER_MAJOR__)
+#if defined(__DOMFreeThreadedDocument_FWD_DEFINED__)
+#if defined(__FolderItemVerb_INTERFACE_DEFINED__)
+#if defined(__FolderItemVerbs_INTERFACE_DEFINED__)
+#if defined(__FolderItem_INTERFACE_DEFINED__)
+#if defined(__FolderItems_INTERFACE_DEFINED__)
+#if defined(__IAccessible_INTERFACE_DEFINED__)
+#if defined(__IActiveScriptError_INTERFACE_DEFINED__)
+#if defined(__IActiveScriptParseProcedureOld_INTERFACE_DEFINED__)
+#if defined(__IActiveScriptParseProcedure_INTERFACE_DEFINED__)
+#if defined(__IActiveScriptParse_INTERFACE_DEFINED__)
+#if defined(__IActiveScriptSiteInterruptPoll_INTERFACE_DEFINED__)
+#if defined(__IActiveScriptSiteWindow_INTERFACE_DEFINED__)
+#if defined(__IActiveScriptSite_INTERFACE_DEFINED__)
+#if defined(__IActiveScriptStats_INTERFACE_DEFINED__)
+#if defined(__IActiveScript_INTERFACE_DEFINED__)
+#if defined(__IAddrExclusionControl_INTERFACE_DEFINED__)
+#if defined(__IAddrTrackingControl_INTERFACE_DEFINED__)
+#if defined(__IAdviseSink2_INTERFACE_DEFINED__)
+#if defined(__IAdviseSinkEx_INTERFACE_DEFINED__)
+#if defined(__IAdviseSink_INTERFACE_DEFINED__)
+#if defined(__IAsyncManager_INTERFACE_DEFINED__)
+#if defined(__IAsyncRpcChannelBuffer_INTERFACE_DEFINED__)
+#if defined(__IAuthenticate_INTERFACE_DEFINED__)
+#if defined(__IBindCtx_INTERFACE_DEFINED__)
+#if defined(__IBindEventHandler_INTERFACE_DEFINED__)
+#if defined(__IBindHost_INTERFACE_DEFINED__)
+#if defined(__IBindProtocol_INTERFACE_DEFINED__)
+#if defined(__IBindStatusCallback_INTERFACE_DEFINED__)
+#if defined(__IBinding_INTERFACE_DEFINED__)
+#if defined(__IBlockingLock_INTERFACE_DEFINED__)
+#if defined(__ICSSFilterSite_INTERFACE_DEFINED__)
+#if defined(__ICSSFilter_INTERFACE_DEFINED__)
+#if defined(__ICallFactory_INTERFACE_DEFINED__)
+#if defined(__ICancelMethodCalls_INTERFACE_DEFINED__)
+#if defined(__ICatInformation_INTERFACE_DEFINED__)
+#if defined(__ICatRegister_INTERFACE_DEFINED__)
+#if defined(__ICatalogFileInfo_INTERFACE_DEFINED__)
+#if defined(__IChannelHook_INTERFACE_DEFINED__)
+#if defined(__IChannelMgr_INTERFACE_DEFINED__)
+#if defined(__IClassActivator_INTERFACE_DEFINED__)
+#if defined(__IClassFactory2_INTERFACE_DEFINED__)
+#if defined(__IClassFactory_INTERFACE_DEFINED__)
+#if defined(__IClientSecurity_INTERFACE_DEFINED__)
+#if defined(__ICodeInstall_INTERFACE_DEFINED__)
+#if defined(__IConnectionPointContainer_INTERFACE_DEFINED__)
+#if defined(__IConnectionPoint_INTERFACE_DEFINED__)
+#if defined(__IContinueCallback_INTERFACE_DEFINED__)
+#if defined(__IContinue_INTERFACE_DEFINED__)
+#if defined(__ICreateErrorInfo_INTERFACE_DEFINED__)
+#if defined(__ICreateTypeInfo2_INTERFACE_DEFINED__)
+#if defined(__ICreateTypeInfo_INTERFACE_DEFINED__)
+#if defined(__ICreateTypeLib2_INTERFACE_DEFINED__)
+#if defined(__ICreateTypeLib_INTERFACE_DEFINED__)
+#if defined(__ICustomDoc_INTERFACE_DEFINED__)
+#if defined(__IDataAdviseHolder_INTERFACE_DEFINED__)
+#if defined(__IDataFilter_INTERFACE_DEFINED__)
+#if defined(__IDataObject_INTERFACE_DEFINED__)
+#if defined(__IDeskBand_INTERFACE_DEFINED__)
+#if defined(__IDirectWriterLock_INTERFACE_DEFINED__)
+#if defined(__IDispError_INTERFACE_DEFINED__)
+#if defined(__IDispatchEx_INTERFACE_DEFINED__)
+#if defined(__IDispatch_INTERFACE_DEFINED__)
+#if defined(__IDocHostShowUI_INTERFACE_DEFINED__)
+#if defined(__IDocHostUIHandler_INTERFACE_DEFINED__)
+#if defined(__IDockingWindow_INTERFACE_DEFINED__)
+#if defined(__IDropSource_INTERFACE_DEFINED__)
+#if defined(__IDropTarget_INTERFACE_DEFINED__)
+#if defined(__IDummyHICONIncluder_INTERFACE_DEFINED__)
+#if defined(__IEncodingFilterFactory_INTERFACE_DEFINED__)
+#if defined(__IEnumCATEGORYINFO_INTERFACE_DEFINED__)
+#if defined(__IEnumChannels_INTERFACE_DEFINED__)
+#if defined(__IEnumCodePage_INTERFACE_DEFINED__)
+#if defined(__IEnumConnectionPoints_INTERFACE_DEFINED__)
+#if defined(__IEnumConnections_INTERFACE_DEFINED__)
+#if defined(__IEnumFORMATETC_INTERFACE_DEFINED__)
+#if defined(__IEnumGUID_INTERFACE_DEFINED__)
+#if defined(__IEnumHLITEM_INTERFACE_DEFINED__)
+#if defined(__IEnumIDList_INTERFACE_DEFINED__)
+#if defined(__IEnumMoniker_INTERFACE_DEFINED__)
+#if defined(__IEnumOLEVERB_INTERFACE_DEFINED__)
+#if defined(__IEnumOleDocumentViews_INTERFACE_DEFINED__)
+#if defined(__IEnumOleUndoUnits_INTERFACE_DEFINED__)
+#if defined(__IEnumRfc1766_INTERFACE_DEFINED__)
+#if defined(__IEnumSTATDATA_INTERFACE_DEFINED__)
+#if defined(__IEnumSTATPROPSETSTG_INTERFACE_DEFINED__)
+#if defined(__IEnumSTATPROPSTG_INTERFACE_DEFINED__)
+#if defined(__IEnumSTATSTG_INTERFACE_DEFINED__)
+#if defined(__IEnumSTATURL_INTERFACE_DEFINED__)
+#if defined(__IEnumString_INTERFACE_DEFINED__)
+#if defined(__IEnumUnknown_INTERFACE_DEFINED__)
+#if defined(__IEnumVARIANT_INTERFACE_DEFINED__)
+#if defined(__IErrorInfo_INTERFACE_DEFINED__)
+#if defined(__IErrorLog_INTERFACE_DEFINED__)
+#if defined(__IExtensionServices_INTERFACE_DEFINED__)
+#if defined(__IExternalConnection_INTERFACE_DEFINED__)
+#if defined(__IFillLockBytes_INTERFACE_DEFINED__)
+#if defined(__IFilter_INTERFACE_DEFINED__)
+#if defined(__IFolderViewOC_INTERFACE_DEFINED__)
+#if defined(__IFontDisp_INTERFACE_DEFINED__)
+#if defined(__IFontEventsDisp_INTERFACE_DEFINED__)
+#if defined(__IFont_INTERFACE_DEFINED__)
+#if defined(__IForegroundTransfer_INTERFACE_DEFINED__)
+#if defined(__IGlobalInterfaceTable_INTERFACE_DEFINED__)
+#if defined(__IHTMLAnchorElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLAreaElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLAreasCollection_INTERFACE_DEFINED__)
+#if defined(__IHTMLBGsound_INTERFACE_DEFINED__)
+#if defined(__IHTMLBRElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLBaseElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLBaseFontElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLBlockElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLBodyElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLButtonElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLCommentElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLControlElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLControlRange_INTERFACE_DEFINED__)
+#if defined(__IHTMLDDElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLDListElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLDTElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLDatabinding_INTERFACE_DEFINED__)
+#if defined(__IHTMLDialog_INTERFACE_DEFINED__)
+#if defined(__IHTMLDivElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLDivPosition_INTERFACE_DEFINED__)
+#if defined(__IHTMLDocument2_INTERFACE_DEFINED__)
+#if defined(__IHTMLDocument_INTERFACE_DEFINED__)
+#if defined(__IHTMLElementCollection_INTERFACE_DEFINED__)
+#if defined(__IHTMLElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLEmbedElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLEventObj_INTERFACE_DEFINED__)
+#if defined(__IHTMLFieldSetElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLFiltersCollection_INTERFACE_DEFINED__)
+#if defined(__IHTMLFontElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLFontNamesCollection_INTERFACE_DEFINED__)
+#if defined(__IHTMLFontSizesCollection_INTERFACE_DEFINED__)
+#if defined(__IHTMLFormElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLFrameBase_INTERFACE_DEFINED__)
+#if defined(__IHTMLFrameElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLFrameSetElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLFramesCollection2_INTERFACE_DEFINED__)
+#if defined(__IHTMLHRElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLHeaderElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLIFrameElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLImageElementFactory_INTERFACE_DEFINED__)
+#if defined(__IHTMLImgElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLInputButtonElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLInputFileElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLInputHiddenElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLInputImage_INTERFACE_DEFINED__)
+#if defined(__IHTMLInputTextElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLIsIndexElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLLIElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLLabelElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLLegendElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLLinkElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLListElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLLocation_INTERFACE_DEFINED__)
+#if defined(__IHTMLMapElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLMarqueeElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLMetaElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLMimeTypesCollection_INTERFACE_DEFINED__)
+#if defined(__IHTMLNextIdElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLNoShowElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLOListElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLObjectElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLOpsProfile_INTERFACE_DEFINED__)
+#if defined(__IHTMLOptionButtonElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLOptionElementFactory_INTERFACE_DEFINED__)
+#if defined(__IHTMLOptionElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLOptionsHolder_INTERFACE_DEFINED__)
+#if defined(__IHTMLParaElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLPhraseElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLPluginsCollection_INTERFACE_DEFINED__)
+#if defined(__IHTMLRuleStyle_INTERFACE_DEFINED__)
+#if defined(__IHTMLScreen_INTERFACE_DEFINED__)
+#if defined(__IHTMLScriptElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLSelectElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLSelectionObject_INTERFACE_DEFINED__)
+#if defined(__IHTMLSpanElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLSpanFlow_INTERFACE_DEFINED__)
+#if defined(__IHTMLStyleElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLStyleFontFace_INTERFACE_DEFINED__)
+#if defined(__IHTMLStyleSheetRule_INTERFACE_DEFINED__)
+#if defined(__IHTMLStyleSheetRulesCollection_INTERFACE_DEFINED__)
+#if defined(__IHTMLStyleSheet_INTERFACE_DEFINED__)
+#if defined(__IHTMLStyleSheetsCollection_INTERFACE_DEFINED__)
+#if defined(__IHTMLStyle_INTERFACE_DEFINED__)
+#if defined(__IHTMLTableCaption_INTERFACE_DEFINED__)
+#if defined(__IHTMLTableCell_INTERFACE_DEFINED__)
+#if defined(__IHTMLTableCol_INTERFACE_DEFINED__)
+#if defined(__IHTMLTableRow_INTERFACE_DEFINED__)
+#if defined(__IHTMLTableSection_INTERFACE_DEFINED__)
+#if defined(__IHTMLTable_INTERFACE_DEFINED__)
+#if defined(__IHTMLTextAreaElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLTextContainer_INTERFACE_DEFINED__)
+#if defined(__IHTMLTextElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLTitleElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLTxtRange_INTERFACE_DEFINED__)
+#if defined(__IHTMLUListElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLUnknownElement_INTERFACE_DEFINED__)
+#if defined(__IHTMLWindow2_INTERFACE_DEFINED__)
+#if defined(__IHlinkBrowseContext_INTERFACE_DEFINED__)
+#if defined(__IHlinkFrame_INTERFACE_DEFINED__)
+#if defined(__IHlinkSite_INTERFACE_DEFINED__)
+#if defined(__IHlinkTarget_INTERFACE_DEFINED__)
+#if defined(__IHlink_INTERFACE_DEFINED__)
+#if defined(__IHttpNegotiate2_INTERFACE_DEFINED__)
+#if defined(__IHttpNegotiate_INTERFACE_DEFINED__)
+#if defined(__IHttpSecurity_INTERFACE_DEFINED__)
+#if defined(__IImageDecodeEventSink_INTERFACE_DEFINED__)
+#if defined(__IImageDecodeFilter_INTERFACE_DEFINED__)
+#if defined(__IInternalUnknown_INTERFACE_DEFINED__)
+#if defined(__IInternetBindInfo_INTERFACE_DEFINED__)
+#if defined(__IInternetHostSecurityManager_INTERFACE_DEFINED__)
+#if defined(__IInternetPriority_INTERFACE_DEFINED__)
+#if defined(__IInternetProtocolInfo_INTERFACE_DEFINED__)
+#if defined(__IInternetProtocolRoot_INTERFACE_DEFINED__)
+#if defined(__IInternetProtocolSinkStackable_INTERFACE_DEFINED__)
+#if defined(__IInternetProtocolSink_INTERFACE_DEFINED__)
+#if defined(__IInternetProtocol_INTERFACE_DEFINED__)
+#if defined(__IInternetSecurityManager_INTERFACE_DEFINED__)
+#if defined(__IInternetSecurityMgrSite_INTERFACE_DEFINED__)
+#if defined(__IInternetSession_INTERFACE_DEFINED__)
+#if defined(__IInternetThreadSwitch_INTERFACE_DEFINED__)
+#if defined(__IInternetZoneManager_INTERFACE_DEFINED__)
+#if defined(__IInternet_INTERFACE_DEFINED__)
+#if defined(__ILayoutStorage_INTERFACE_DEFINED__)
+#if defined(__ILockBytes_INTERFACE_DEFINED__)
+#if defined(__IMLangCodePages_INTERFACE_DEFINED__)
+#if defined(__IMLangConvertCharset_INTERFACE_DEFINED__)
+#if defined(__IMLangFontLink_INTERFACE_DEFINED__)
+#if defined(__IMLangLineBreakConsole_INTERFACE_DEFINED__)
+#if defined(__IMLangStringAStr_INTERFACE_DEFINED__)
+#if defined(__IMLangStringBufA_INTERFACE_DEFINED__)
+#if defined(__IMLangStringBufW_INTERFACE_DEFINED__)
+#if defined(__IMLangStringWStr_INTERFACE_DEFINED__)
+#if defined(__IMLangString_INTERFACE_DEFINED__)
+#if defined(__IMallocSpy_INTERFACE_DEFINED__)
+#if defined(__IMalloc_INTERFACE_DEFINED__)
+#if defined(__IMapMIMEToCLSID_INTERFACE_DEFINED__)
+#if defined(__IMarshal2_INTERFACE_DEFINED__)
+#if defined(__IMarshal_INTERFACE_DEFINED__)
+#if defined(__IMessageFilter_INTERFACE_DEFINED__)
+#if defined(__IMimeInfo_INTERFACE_DEFINED__)
+#if defined(__IMonikerProp_INTERFACE_DEFINED__)
+#if defined(__IMoniker_INTERFACE_DEFINED__)
+#if defined(__IMultiLanguage_INTERFACE_DEFINED__)
+#if defined(__IMultiQI_INTERFACE_DEFINED__)
+#if defined(__IObjectIdentity_INTERFACE_DEFINED__)
+#if defined(__IObjectSafety_INTERFACE_DEFINED__)
+#if defined(__IObjectWithSite_INTERFACE_DEFINED__)
+#if defined(__IOleAdviseHolder_INTERFACE_DEFINED__)
+#if defined(__IOleCache2_INTERFACE_DEFINED__)
+#if defined(__IOleCacheControl_INTERFACE_DEFINED__)
+#if defined(__IOleCache_INTERFACE_DEFINED__)
+#if defined(__IOleClientSite_INTERFACE_DEFINED__)
+#if defined(__IOleCommandTarget_INTERFACE_DEFINED__)
+#if defined(__IOleContainer_INTERFACE_DEFINED__)
+#if defined(__IOleControlSite_INTERFACE_DEFINED__)
+#if defined(__IOleControl_INTERFACE_DEFINED__)
+#if defined(__IOleDocumentSite_INTERFACE_DEFINED__)
+#if defined(__IOleDocumentView_INTERFACE_DEFINED__)
+#if defined(__IOleDocument_INTERFACE_DEFINED__)
+#if defined(__IOleInPlaceActiveObject_INTERFACE_DEFINED__)
+#if defined(__IOleInPlaceFrame_INTERFACE_DEFINED__)
+#if defined(__IOleInPlaceObjectWindowless_INTERFACE_DEFINED__)
+#if defined(__IOleInPlaceObject_INTERFACE_DEFINED__)
+#if defined(__IOleInPlaceSiteEx_INTERFACE_DEFINED__)
+#if defined(__IOleInPlaceSiteWindowless_INTERFACE_DEFINED__)
+#if defined(__IOleInPlaceSite_INTERFACE_DEFINED__)
+#if defined(__IOleInPlaceUIWindow_INTERFACE_DEFINED__)
+#if defined(__IOleItemContainer_INTERFACE_DEFINED__)
+#if defined(__IOleLink_INTERFACE_DEFINED__)
+#if defined(__IOleObject_INTERFACE_DEFINED__)
+#if defined(__IOleParentUndoUnit_INTERFACE_DEFINED__)
+#if defined(__IOleUndoManager_INTERFACE_DEFINED__)
+#if defined(__IOleUndoUnit_INTERFACE_DEFINED__)
+#if defined(__IOleWindow_INTERFACE_DEFINED__)
+#if defined(__IOmHistory_INTERFACE_DEFINED__)
+#if defined(__IOmNavigator_INTERFACE_DEFINED__)
+#if defined(__IOplockStorage_INTERFACE_DEFINED__)
+#if defined(__IPSFactoryBuffer_INTERFACE_DEFINED__)
+#if defined(__IParseDisplayName_INTERFACE_DEFINED__)
+#if defined(__IPerPropertyBrowsing_INTERFACE_DEFINED__)
+#if defined(__IPersistFile_INTERFACE_DEFINED__)
+#if defined(__IPersistFolder2_INTERFACE_DEFINED__)
+#if defined(__IPersistFolder_INTERFACE_DEFINED__)
+#if defined(__IPersistHistory_INTERFACE_DEFINED__)
+#if defined(__IPersistMemory_INTERFACE_DEFINED__)
+#if defined(__IPersistMoniker_INTERFACE_DEFINED__)
+#if defined(__IPersistPropertyBag2_INTERFACE_DEFINED__)
+#if defined(__IPersistPropertyBag_INTERFACE_DEFINED__)
+#if defined(__IPersistStorage_INTERFACE_DEFINED__)
+#if defined(__IPersistStreamInit_INTERFACE_DEFINED__)
+#if defined(__IPersistStream_INTERFACE_DEFINED__)
+#if defined(__IPersist_INTERFACE_DEFINED__)
+#if defined(__IPictureDisp_INTERFACE_DEFINED__)
+#if defined(__IPicture_INTERFACE_DEFINED__)
+#if defined(__IPipeByte_INTERFACE_DEFINED__)
+#if defined(__IPipeDouble_INTERFACE_DEFINED__)
+#if defined(__IPipeLong_INTERFACE_DEFINED__)
+#if defined(__IPointerInactive_INTERFACE_DEFINED__)
+#if defined(__IPrint_INTERFACE_DEFINED__)
+#if defined(__IProgressNotify_INTERFACE_DEFINED__)
+#if defined(__IPropertyBag2_INTERFACE_DEFINED__)
+#if defined(__IPropertyBag_INTERFACE_DEFINED__)
+#if defined(__IPropertyNotifySink_INTERFACE_DEFINED__)
+#if defined(__IPropertyPage2_INTERFACE_DEFINED__)
+#if defined(__IPropertyPageSite_INTERFACE_DEFINED__)
+#if defined(__IPropertyPage_INTERFACE_DEFINED__)
+#if defined(__IPropertySetStorage_INTERFACE_DEFINED__)
+#if defined(__IPropertyStorage_INTERFACE_DEFINED__)
+#if defined(__IProvideClassInfo2_INTERFACE_DEFINED__)
+#if defined(__IProvideClassInfo_INTERFACE_DEFINED__)
+#if defined(__IProvideMultipleClassInfo_INTERFACE_DEFINED__)
+#if defined(__IQuickActivate_INTERFACE_DEFINED__)
+#if defined(__IROTData_INTERFACE_DEFINED__)
+#if defined(__IRecordInfo_INTERFACE_DEFINED__)
+#if defined(__IReleaseMarshalBuffers_INTERFACE_DEFINED__)
+#if defined(__IRootStorage_INTERFACE_DEFINED__)
+#if defined(__IRpcChannelBuffer2_INTERFACE_DEFINED__)
+#if defined(__IRpcChannelBuffer3_INTERFACE_DEFINED__)
+#if defined(__IRpcChannelBuffer_INTERFACE_DEFINED__)
+#if defined(__IRpcHelper_INTERFACE_DEFINED__)
+#if defined(__IRpcOptions_INTERFACE_DEFINED__)
+#if defined(__IRpcProxyBuffer_INTERFACE_DEFINED__)
+#if defined(__IRpcStubBuffer_INTERFACE_DEFINED__)
+#if defined(__IRpcSyntaxNegotiate_INTERFACE_DEFINED__)
+#if defined(__IRunnableObject_INTERFACE_DEFINED__)
+#if defined(__IRunningObjectTable_INTERFACE_DEFINED__)
+#if defined(__ISequentialStream_INTERFACE_DEFINED__)
+#if defined(__IServerSecurity_INTERFACE_DEFINED__)
+#if defined(__IServiceProvider_INTERFACE_DEFINED__)
+#if defined(__IShellBrowser_INTERFACE_DEFINED__)
+#if defined(__IShellDispatch_INTERFACE_DEFINED__)
+#if defined(__IShellExtInit_INTERFACE_DEFINED__)
+#if defined(__IShellFolderViewDual_INTERFACE_DEFINED__)
+#if defined(__IShellFolder_INTERFACE_DEFINED__)
+#if defined(__IShellLinkA_INTERFACE_DEFINED__)
+#if defined(__IShellLinkDual_INTERFACE_DEFINED__)
+#if defined(__IShellLinkW_INTERFACE_DEFINED__)
+#if defined(__IShellPropSheetExt_INTERFACE_DEFINED__)
+#if defined(__IShellUIHelper_INTERFACE_DEFINED__)
+#if defined(__IShellView2_INTERFACE_DEFINED__)
+#if defined(__IShellView_INTERFACE_DEFINED__)
+#if defined(__IShellWindows_INTERFACE_DEFINED__)
+#if defined(__ISimpleFrameSite_INTERFACE_DEFINED__)
+#if defined(__ISoftDistExt_INTERFACE_DEFINED__)
+#if defined(__ISpecifyPropertyPages_INTERFACE_DEFINED__)
+#if defined(__IStdMarshalInfo_INTERFACE_DEFINED__)
+#if defined(__IStorage_INTERFACE_DEFINED__)
+#if defined(__IStream_INTERFACE_DEFINED__)
+#if defined(__ISubscriptionMgr_INTERFACE_DEFINED__)
+#if defined(__ISupportErrorInfo_INTERFACE_DEFINED__)
+#if defined(__ISurrogate_INTERFACE_DEFINED__)
+#if defined(__ISynchronizeContainer_INTERFACE_DEFINED__)
+#if defined(__ISynchronizeEvent_INTERFACE_DEFINED__)
+#if defined(__ISynchronizeHandle_INTERFACE_DEFINED__)
+#if defined(__ISynchronizeMutex_INTERFACE_DEFINED__)
+#if defined(__ISynchronize_INTERFACE_DEFINED__)
+#if defined(__IThumbnailExtractor_INTERFACE_DEFINED__)
+#if defined(__ITimeAndNoticeControl_INTERFACE_DEFINED__)
+#if defined(__ITimerService_INTERFACE_DEFINED__)
+#if defined(__ITimerSink_INTERFACE_DEFINED__)
+#if defined(__ITimer_INTERFACE_DEFINED__)
+#if defined(__ITypeChangeEvents_INTERFACE_DEFINED__)
+#if defined(__ITypeComp_INTERFACE_DEFINED__)
+#if defined(__ITypeFactory_INTERFACE_DEFINED__)
+#if defined(__ITypeInfo2_INTERFACE_DEFINED__)
+#if defined(__ITypeInfo_INTERFACE_DEFINED__)
+#if defined(__ITypeLib2_INTERFACE_DEFINED__)
+#if defined(__ITypeLib_INTERFACE_DEFINED__)
+#if defined(__ITypeMarshal_INTERFACE_DEFINED__)
+#if defined(__IUnknown_INTERFACE_DEFINED__)
+#if defined(__IUrlHistoryNotify_INTERFACE_DEFINED__)
+#if defined(__IUrlHistoryStg2_INTERFACE_DEFINED__)
+#if defined(__IUrlHistoryStg_INTERFACE_DEFINED__)
+#if defined(__IUrlMon_INTERFACE_DEFINED__)
+#if defined(__IVariantChangeType_INTERFACE_DEFINED__)
+#if defined(__IViewObject2_INTERFACE_DEFINED__)
+#if defined(__IViewObjectEx_INTERFACE_DEFINED__)
+#if defined(__IViewObject_INTERFACE_DEFINED__)
+#if defined(__IWaitMultiple_INTERFACE_DEFINED__)
+#if defined(__IWebBrowser2_INTERFACE_DEFINED__)
+#if defined(__IWebBrowserApp_INTERFACE_DEFINED__)
+#if defined(__IWebBrowser_INTERFACE_DEFINED__)
+#if defined(__IWinInetHttpInfo_INTERFACE_DEFINED__)
+#if defined(__IWinInetInfo_INTERFACE_DEFINED__)
+#if defined(__IWindowForBindingUI_INTERFACE_DEFINED__)
+#if defined(__IWrappedProtocol_INTERFACE_DEFINED__)
+#if defined(__IXMLAttribute_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMAttribute_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMCDATASection_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMCharacterData_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMComment_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMDocumentFragment_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMDocumentType_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMDocument_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMElement_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMEntityReference_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMEntity_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMImplementation_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMNamedNodeMap_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMNodeList_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMNode_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMNotation_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMParseError_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMProcessingInstruction_INTERFACE_DEFINED__)
+#if defined(__IXMLDOMText_INTERFACE_DEFINED__)
+#if defined(__IXMLDSOControl_INTERFACE_DEFINED__)
+#if defined(__IXMLDocument2_INTERFACE_DEFINED__)
+#if defined(__IXMLDocument_INTERFACE_DEFINED__)
+#if defined(__IXMLElement2_INTERFACE_DEFINED__)
+#if defined(__IXMLElementCollection_INTERFACE_DEFINED__)
+#if defined(__IXMLElement_INTERFACE_DEFINED__)
+#if defined(__IXMLError_INTERFACE_DEFINED__)
+#if defined(__IXMLHttpRequest_INTERFACE_DEFINED__)
+#if defined(__IXTLRuntime_INTERFACE_DEFINED__)
+#if defined(__OLEDBSimpleProviderListener_INTERFACE_DEFINED__)
+#if defined(__OLEDBSimpleProvider_INTERFACE_DEFINED__)
+#if defined(__SIZEOF_INT128__) ||                                              \
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+#if defined(__VCCORLIB_H_ENABLE_ALL_WARNINGS)
+#if defined(__XMLDOMDocumentEvents_INTERFACE_DEFINED__)
+#if defined(__XMLDSOControl_FWD_DEFINED__)
+#if defined(__XMLDocument_FWD_DEFINED__)
+#if defined(__XMLHTTPRequest_FWD_DEFINED__)
+#if defined(__clang__) || defined(__CUDACC__) // TRANSITION, LLVM-81774, DevCom-10863472 (still needed by CUDA 13.2)
+#if defined(__clang__) || defined(__EDG__) || _MSC_VER >= 1951 // TRANSITION, GH-5755, toolset update
+#if defined(__cplusplus)
+#if defined(__cplusplus) && !defined(CINTERFACE)
+#if defined(__cplusplus_cli)
+#if defined(__cplusplus_winrt)
+#if defined(__cplusplus_winrt) && !defined(_DEBUG)
+#if defined(__cplusplus_winrt) && (defined(__cpp_impl_coroutine) || defined(_RESUMABLE_FUNCTIONS_SUPPORTED)) \
+#if defined(__cplusplus_winrt) || defined(PPL_TASK_CONTEXT_ERROR_CONTROL)
+#if defined(__cpp_char8_t) && !defined(__clang__) && !defined(__EDG__)
+#if defined(__cpp_impl_coroutine) || defined(_RESUMABLE_FUNCTIONS_SUPPORTED)
+#if defined(__has_feature)
+#if defined(alignas)
+#if defined(alignof)
+#if defined(asm)
+#if defined(auto)
+#if defined(bool)
+#if defined(break)
+#if defined(carries_dependency)
+#if defined(case)
+#if defined(catch)
+#if defined(char)
+#if defined(char16_t)
+#if defined(char32_t)
+#if defined(char8_t) && _HAS_CXX20
+#if defined(class)
+#if defined(co_await) && _HAS_CXX20
+#if defined(co_return) && _HAS_CXX20
+#if defined(co_yield) && _HAS_CXX20
+#if defined(concept) && _HAS_CXX20
+#if defined(const)
+#if defined(const_cast)
+#if defined(consteval) && _HAS_CXX20
+#if defined(constexpr)
+#if defined(constinit) && _HAS_CXX20
+#if defined(continue)
+#if defined(decltype)
+#if defined(default)
+#if defined(delete)
+#if defined(deprecated)
+#if defined(do)
+#if defined(double)
+#if defined(dynamic_cast)
+#if defined(else)
+#if defined(enum)
+#if defined(explicit)
+#if defined(export)
+#if defined(extern)
+#if defined(fallthrough) && _HAS_CXX17
+#if defined(false)
+#if defined(final)
+#if defined(float)
+#if defined(for)
+#if defined(friend)
+#if defined(goto)
+#if defined(if)
+#if defined(import) && _HAS_CXX20
+#if defined(inline)
+#if defined(int)
+#if defined(long)
+#if defined(maybe_unused) && _HAS_CXX17
+#if defined(module) && _HAS_CXX20
+#if defined(mutable)
+#if defined(namespace)
+#if defined(new) && defined(_ENFORCE_BAN_OF_MACRO_NEW)
+#if defined(no_unique_address) && _HAS_CXX20
+#if defined(nodiscard) // C++17 attribute-token, also enforced in C++14 mode
+#if defined(noexcept)
+#if defined(noreturn)
+#if defined(nullptr)
+#if defined(operator)
+#if defined(override)
+#if defined(private)
+#if defined(protected)
+#if defined(public)
+#if defined(register)
+#if defined(reinterpret_cast)
+#if defined(requires) && _HAS_CXX20
+#if defined(return)
+#if defined(short)
+#if defined(signed)
+#if defined(sizeof)
+#if defined(static)
+#if defined(static_assert)
+#if defined(static_cast)
+#if defined(struct)
+#if defined(switch)
+#if defined(template)
+#if defined(this)
+#if defined(thread_local)
+#if defined(throw)
+#if defined(true)
+#if defined(try)
+#if defined(typedef)
+#if defined(typeid)
+#if defined(typename)
+#if defined(union)
+#if defined(unsigned)
+#if defined(using)
+#if defined(virtual)
+#if defined(void)
+#if defined(volatile)
+#if defined(wchar_t)
+#if defined(while)
+#if( OLEDBVER >= 0x0200 )
+#if(_WIN32_WINNT >= 0x0500)
+#ifdef  UNICODE
+#ifdef  _M_IX86
+#ifdef  _WIN64
+#ifdef  __cplusplus
+#ifdef  __cplusplus // [
+#ifdef AFX_CORE3_SEG
+#ifdef AFX_INIT_SEG
+#ifdef AFX_PREVIEW_STANDALONE
+#ifdef APSTUDIO_INVOKED
+#ifdef ASAN_DEFINE_REGION_MACROS
+#ifdef ATL_AUTOPTR_ASSIGNMENT_ASSERT
+#ifdef AfxDebugBreak
+#ifdef AfxGetFileName
+#ifdef BUILDING_C1XX_FORCEINCLUDE
+#ifdef BUILD_MFCM
+#ifdef BUILD_PREBUILT
+#ifdef CB_SETCUEBANNER
+#ifdef COBJMACROS
+#ifdef CODE_ANALYSIS
+#ifdef CRTDLL
+#ifdef CRTDLL2
+#ifdef CoRegisterClassObject
+#ifdef DBG
+#ifdef DBINITCONSTANTS
+#ifdef DrawState
+#ifdef EXTERN_GUID
+#ifdef GetFileTitle
+#ifdef GetNextWindow
+#ifdef GetWindowLongPtrA
+#ifdef GetWindowLongPtrW
+#ifdef GetWindowTask
+#ifdef IDC_STATIC
+#ifdef M128
+#ifdef MACOCX
+#ifdef MRTDLL
+#ifdef NDEBUG
+#ifdef NOSERVICE
+#ifdef OLD_DEFS
+#ifdef PM128
+#ifdef RC_INVOKED
+#ifdef SIZE_T_MAX
+#ifdef STRICT
+#ifdef SetWindowLongPtrA
+#ifdef SetWindowLongPtrW
+#ifdef UNDER_CE
+#ifdef UNICODE
+#ifdef USE_ATL_THUNK2
+#ifdef VC_EXTRALEAN
+#ifdef WIN32
+#ifdef WIN64
+#ifdef WINAPI_FAMILY
+#ifdef WINAPI_FAMILY_APP
+#ifdef WINAPI_FAMILY_PHONE_APP
+#ifdef WINVER
+#ifdef WPRFLAG
+#ifdef _ACTIVATE_OPTIONAL_ANNOTATION
+#ifdef _ACTIVATE_STRING_ANNOTATION
+#ifdef _ACTIVATE_VECTOR_ANNOTATION
+#ifdef _AFX
+#ifdef _AFXDLL
+#ifdef _AFX_ALL_WARNINGS
+#ifdef _AFX_BYTESWAP
+#ifdef _AFX_CORE_IMPL
+#ifdef _AFX_DB_IMPL
+#ifdef _AFX_DEVBUILD
+#ifdef _AFX_DISABLE_DEPRECATED
+#ifdef _AFX_ENABLE_INLINES
+#ifdef _AFX_MFCS  // Building the static component of the DLL version.  Import stuff from MFC*.dll
+#ifdef _AFX_MINREBUILD
+#ifdef _AFX_NET_IMPL
+#ifdef _AFX_NO_DAO_SUPPORT
+#ifdef _AFX_OLD_EXCEPTIONS
+#ifdef _AFX_OLE_IMPL
+#ifdef _AFX_PACKING
+#ifdef _AFX_SECURE_NO_WARNINGS
+#ifdef _ALIGN_DOUBLES
+#ifdef _ALIGN_STACK
+#ifdef _AMD64_
+#ifdef _ANNOTATE_OPTIONAL
+#ifdef _ANNOTATE_STL
+#ifdef _ANNOTATE_STRING
+#ifdef _ANNOTATE_VECTOR
+#ifdef _ARM64_
+#ifdef _ATL_ALL_USER_WARNINGS
+#ifdef _ATL_ALL_WARNINGS
+#ifdef _ATL_ATTRIBUTES
+#ifdef _ATL_BYTESWAP
+#ifdef _ATL_CCOMBSTR_EXPLICIT_CONSTRUCTORS
+#ifdef _ATL_CSTRING_EXPLICIT_CONSTRUCTORS
+#ifdef _ATL_DEBUG
+#ifdef _ATL_DEBUG_INTERFACES
+#ifdef _ATL_DEBUG_PROVIDER_PROPS
+#ifdef _ATL_DEBUG_QI
+#ifdef _ATL_DEBUG_REFCOUNT
+#ifdef _ATL_DISABLE_DEPRECATED
+#ifdef _ATL_DISABLE_FORCEINLINE
+#ifdef _ATL_DISABLE_NOINLINE
+#ifdef _ATL_DISABLE_NOTHROW
+#ifdef _ATL_DISABLE_NO_VTABLE
+#ifdef _ATL_ENABLE_PTM_WARNING
+#ifdef _ATL_MIN_CRT
+#ifdef _ATL_MIXED
+#ifdef _ATL_MODULES
+#ifdef _ATL_NO_DEBUG_CRT
+#ifdef _ATL_NO_EXCEPTIONS
+#ifdef _ATL_NO_HOSTING
+#ifdef _ATL_NO_SERVICE
+#ifdef _ATL_NO_VARIANT_THROW
+#ifdef _ATL_NO_WIN_SUPPORT
+#ifdef _ATL_SAFE_ALLOCA_ALWAYS_ALLOCATE_THRESHOLD_SIZE
+#ifdef _ATL_SECURE_NO_WARNINGS
+#ifdef _ATL_STATIC_LIB_IMPL
+#ifdef _ATL_USE_WINAPI_FAMILY_DESKTOP_APP
+#ifdef _ATL_USE_WINAPI_FAMILY_PHONE_APP
+#ifdef _BUILDING_SATELLITE_CODECVT_IDS
+#ifdef _BUILD_STD_MODULE
+#ifdef _CHAR_UNSIGNED
+#ifdef _COMDEF_NOT_WINAPI_FAMILY_DESKTOP_APP
+#ifdef _COM_OPERATOR_NEW_THROWS
+#ifdef _CONTAINER_DEBUG_LEVEL
+#ifdef _CONVERSION_DONT_USE_THREAD_LOCALE
+#ifdef _CPPUNWIND
+#ifdef _CPP_MSTARTUP
+#ifdef _CRTBLD
+#ifdef _CRTBLD_WAS_DEFINED
+#ifdef _CRT_APP
+#ifdef _CRT_USE_WINAPI_FAMILY_DESKTOP_APP
+#ifdef _CRT_WINDOWS
+#ifdef _CSTRING_DISABLE_NARROW_WIDE_CONVERSION
+#ifdef _DEBUG
+#ifdef _DEBUG       // entire file for debugging
+#ifdef _DEBUG       // most of this file is for debugging
+#ifdef _DEBUG   // entire file
+#ifdef _DEBUG   // out-of-line version for memory tracking
+#ifdef _DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR
+#ifdef _DISABLE_OPTIONAL_ANNOTATION
+#ifdef _DISABLE_STL_ANNOTATION
+#ifdef _DISABLE_STRING_ANNOTATION
+#ifdef _DISABLE_VECTOR_ANNOTATION
+#ifdef _DLL
+#ifdef _ENABLE_STL_ANNOTATION_ON_UNSUPPORTED_PLATFORMS
+#ifdef _ENABLE_STL_INTERNAL_CHECK
+#ifdef _ENFORCE_ONLY_CORE_HEADERS
+#ifdef _HAS_ITERATOR_DEBUGGING // A2i. _HAS_ITERATOR_DEBUGGING is already defined, validate it.
+#ifdef _HAS_ITERATOR_DEBUGGING // B1i. _HAS_ITERATOR_DEBUGGING is already defined, validate it.
+#ifdef _INC_SHELLAPI
+#ifdef _INC_WINDOWSX
+#ifdef _INSERT_OPTIONAL_ANNOTATION
+#ifdef _INSERT_STRING_ANNOTATION
+#ifdef _INSERT_VECTOR_ANNOTATION
+#ifdef _ITERATOR_DEBUG_LEVEL // A. _ITERATOR_DEBUG_LEVEL is already defined.
+#ifdef _LP64
+#ifdef _MALLOC_ZEROINIT
+#ifdef _MANAGED
+#ifdef _MBCS
+#ifdef _MBCS    // entire file is only for DBCS enabling
+#ifdef _MFC_VER
+#ifdef _MM2_FUNCTIONALITY
+#ifdef _MM_FUNCTIONALITY
+#ifdef _MSC_VER
+#ifdef _MSVCRT_WINDOWS
+#ifdef _MSVC_STL_USE_ABORT_AS_DOOM_FUNCTION
+#ifdef _MSVC_STL_USE_ABORT_AS_DOOM_FUNCTION // The user wants to use abort():
+#ifdef _MT
+#ifdef _M_ARM
+#ifdef _M_ARM64
+#ifdef _M_ARM64EC
+#ifdef _M_CEE
+#ifdef _M_CEE_MIXED
+#ifdef _M_CEE_PURE
+#ifdef _M_FP_EXCEPT
+#ifdef _M_HYBRID_X86_ARM64
+#ifdef _M_IX86
+#ifdef _M_X64
+#ifdef _NATIVE_WCHAR_T_DEFINED
+#ifdef _NATIVE_WCHAR_T_DEFINED  // Only treat unsigned short* as VT_UI2|VT_BYREF if BSTR isn't the same as unsigned short*
+#ifdef _OBJBASE_H_
+#ifdef _OLEAUTO_H_
+#ifdef _ONECORE
+#ifdef _PREFAST_ // [
+#ifdef _RESUMABLE_FUNCTIONS_SUPPORTED
+#ifdef _RETVAL_FIRST
+#ifdef _RTC
+#ifdef _RTC_CONVERSION_CHECKS_ENABLED
+#ifdef _SCRT_ENCLAVE_BUILD
+#ifdef _SECURE_SCL // A3i. _SECURE_SCL is already defined, validate it.
+#ifdef _SECURE_SCL // B2i. _SECURE_SCL is already defined, validate it.
+#ifdef _SHADOW_DOUBLES
+#ifdef _SILENCE_NODISCARD_LOCK_WARNINGS
+#ifdef _STATIC_CPPLIB
+#ifdef _STL_CALL_ABORT_INSTEAD_OF_INVALID_PARAMETER
+#ifdef _STL_CRT_SECURE_INVALID_PARAMETER
+#ifdef _ThrowImageBase
+#ifdef _UNICODE
+#ifdef _USE_32BIT_TIME_T
+#ifdef _USING_V110_SDK71_ // [
+#ifdef _USRDLL
+#ifdef _VCCORLIB_APP
+#ifdef _VCRT_BUILD
+#ifdef _WIN32
+#ifdef _WIN64
+#ifdef _WINMAIN_
+#ifdef _WINRT_DLL
+#ifdef _WINSOCKAPI_
+#ifdef _X86_
+#ifdef __AFXDISP_H__
+#ifdef __AFXOLE_H__  // only include richole if OLE support is included
+#ifdef __AFX_H__
+#ifdef __ATLBASE_H__
+#ifdef __ATLCOMCLI_H__
+#ifdef __ATLDBGMEM_H__
+#ifdef __BOUNDS_FIX__
+#ifdef __CUDACC__ // TRANSITION, CUDA rejects MSVC __restrict (GH-5061); CUDA __restrict__ is unusable in C++ (GH-5097)
+#ifdef __FORCE_INSTANCE
+#ifdef __ICL
+#ifdef __SANITIZER_DISABLE_CONTAINER_OVERFLOW__
+#ifdef __SANITIZE_ADDRESS__
+#ifdef __STDC_NO_ATOMICS__
+#ifdef __USE_CONTEXT
+#ifdef __clang__
+#ifdef __clang__ // TRANSITION, LLVM-23106
+#ifdef __clang__ // TRANSITION, LLVM-38217
+#ifdef __clang__ // avoid gcc warning.
+#ifdef __clang__ // clang doesn't have _udiv128 / _div128
+#ifdef __cplusplus
+#ifdef __cplusplus // TRANSITION, [[_Noreturn]]
+#ifdef __cplusplus // [
+#ifdef __cplusplus_cli
+#ifdef __cplusplus_winrt
+#ifdef __cpp_aligned_new
+#ifdef __cpp_char8_t
+#ifdef __cpp_char8_t // These deleted overloads are specified in P1423.
+#ifdef __cpp_impl_coroutine
+#ifdef __cpp_lib_char8_t
+#ifdef __cpp_lib_three_way_comparison
+#ifdef __cpp_noexcept_function_type
+#ifdef __has_feature
+#ifdef __linux__
+#ifdef __midl
+#ifdef __oledb_h__
+#ifdef __x86_64
+#ifdef prepifdef
+#ifndef  _ATL_NO_COMMODULE
+#ifndef  __cplusplus
+#ifndef AFXAPI
+#ifndef AFXOLEAPI
+#ifndef AFX_ALWAYS_VTABLE
+#ifndef AFX_ANSI_DEPRECATED
+#ifndef AFX_API_EXPORT
+#ifndef AFX_API_IMPORT
+#ifndef AFX_CDECL
+#ifndef AFX_CLASS_EXPORT
+#ifndef AFX_CLASS_IMPORT
+#ifndef AFX_COMDAT
+#ifndef AFX_CORE_DATA
+#ifndef AFX_DATA_EXPORT
+#ifndef AFX_DATA_IMPORT
+#ifndef AFX_DB_DATA
+#ifndef AFX_DEPRECATED
+#ifndef AFX_EXPORT
+#ifndef AFX_EXT_DATA
+#ifndef AFX_INLINE
+#ifndef AFX_MSG_CALL
+#ifndef AFX_NET_DATA
+#ifndef AFX_NOVTABLE
+#ifndef AFX_NO_CLR_COINIT_STA
+#ifndef AFX_OLE_DATA
+#ifndef AFX_STATIC
+#ifndef AFX_WM_MOUSELAST
+#ifndef ALL_CPPCORECHECK_WARNINGS
+#ifndef ALL_WARNINGS
+#ifndef APSTUDIO_INVOKED
+#ifndef ASSERT
+#ifndef ATLA2WHELPER
+#ifndef ATLASSERT
+#ifndef ATLASSUME
+#ifndef ATLDEVMODEA2W
+#ifndef ATLENSURE
+#ifndef ATLENSURE_RETURN
+#ifndef ATLENSURE_RETURN_HR
+#ifndef ATLENSURE_RETURN_VAL
+#ifndef ATLENSURE_SUCCEEDED
+#ifndef ATLENSURE_THROW
+#ifndef ATLS_DEFAULT_THREADPOOLSHUTDOWNTIMEOUT
+#ifndef ATLS_DEFAULT_THREADSPERPROC
+#ifndef ATLTRACE
+#ifndef ATLTRY
+#ifndef ATLTRYALLOC
+#ifndef ATLVERIFY
+#ifndef ATL_CCOMBSTR_ADDRESS_OF_ASSERT
+#ifndef ATL_CRT_ERRORCHECK
+#ifndef ATL_CRT_ERRORCHECK_SPRINTF
+#ifndef ATL_ISAPI_BUFFER_SIZE
+#ifndef ATL_IUNKNOWN_NOEXCEPT
+#ifndef ATL_MAX_ENC_CHARSET_LENGTH
+#ifndef ATL_NO_ASSERT_ON_DESTROY_NONEXISTENT_WINDOW
+#ifndef ATL_NO_CCOMBSTR_ADDRESS_OF_ASSERT
+#ifndef ATL_NO_LEAN_AND_MEAN
+#ifndef ATL_POOL_NUM_THREADS
+#ifndef ATL_POOL_STACK_SIZE
+#ifndef ATL_UUENCODE_END
+#ifndef ATL_WORKER_THREAD_WAIT
+#ifndef AfxDebugBreak
+#ifndef AtlThrow
+#ifndef BASED_CODE
+#ifndef BASED_DEBUG
+#ifndef BASED_STACK
+#ifndef BDR_INNER
+#ifndef BDR_OUTER
+#ifndef BEGIN_PRAGMA_OPTIMIZE_DISABLE
+#ifndef BS_TYPEMASK
+#ifndef CDECL
+#ifndef COMPILE_FOR_CLR
+#ifndef COM_NO_WINDOWS_H
+#ifndef CONCURRENCYSAL_H
+#ifndef CONTAINING_RECORD
+#ifndef CRTDLL
+#ifndef DEBUG
+#ifndef DELAYIMP_INSECURE_WRITABLE_HOOKS
+#ifndef DELAYIMP_WRITABLE_DLOAD_SECTION_PROTECTION_POLICY
+#ifndef DFSAN_INTERFACE_H
+#ifndef DISABLE_NLG
+#ifndef DUMMYNEONSTRUCT
+#ifndef EXPORT
+#ifndef FAILED
+#ifndef FASTCALL
+#ifndef FAST_FAIL_CAST_GUARD
+#ifndef GET_X_LPARAM
+#ifndef GET_Y_LPARAM
+#ifndef HDSIL_NORMAL
+#ifndef IMAGE_BITMAP
+#ifndef INITGUID
+#ifndef INTSAFE_E_ARITHMETIC_OVERFLOW
+#ifndef INTSAFE_UINT_MAX
+#ifndef IPV6STRICT
+#ifndef LAYOUT_LTR
+#ifndef LLVM_FUZZER_DEFS_H
+#ifndef LLVM_FUZZER_FUZZED_DATA_PROVIDER_H_
+#ifndef LLVM_FUZZER_INTERFACE_H
+#ifndef LLVM_FUZZER_PLATFORM_H
+#ifndef LSTATUS
+#ifndef MRTDLL
+#ifndef MSAN_INTERFACE_H
+#ifndef M_PI
+#ifndef NOMCX
+#ifndef NOSERVICE
+#ifndef NO_ANSIUNI_ONLY
+#ifndef NO_TAB_WND_INFO
+#ifndef NTDDI_LONGHORN
+#ifndef NULL
+#ifndef OBJECT_ENTRY_PRAGMA
+#ifndef ODBCVER
+#ifndef PASCAL
+#ifndef PPL_TASK_SAVE_FRAME_COUNT
+#ifndef PRINT_E_CANCELLED
+#ifndef PRINT_E_NOSUCHPAGE
+#ifndef RC_INVOKED
+#ifndef RC_INVOKED      // code only
+#ifndef RC_INVOKED  // code only
+#ifndef REFPROPERTYKEY
+#ifndef RSIZE_MAX
+#ifndef RT_RIBBON
+#ifndef SAL_NO_ATTRIBUTE_DECLARATIONS
+#ifndef SANITIZER_ALLOCATOR_INTERFACE_H
+#ifndef SANITIZER_ASAN_INTERFACE_H
+#ifndef SANITIZER_COMMON_INTERFACE_DEFS_H
+#ifndef SANITIZER_COVERAG_INTERFACE_H
+#ifndef SANITIZER_HWASAN_INTERFACE_H
+#ifndef SANITIZER_LINUX_SYSCALL_HOOKS_H
+#ifndef SANITIZER_LSAN_INTERFACE_H
+#ifndef SANITIZER_NETBSD_SYSCALL_HOOKS_H
+#ifndef SANITIZER_SCUDO_INTERFACE_H_
+#ifndef SANITIZER_TSAN_INTERFACE_H
+#ifndef SIZEOF_ARRAY
+#ifndef SIZE_MAX
+#ifndef SIZE_T_MAX
+#ifndef SM_MOUSEWHEELPRESENT
+#ifndef SPI_GETWHEELSCROLLLINES
+#ifndef STATE_SYSTEM_NORMAL
+#ifndef STRICT
+#ifndef S_OK
+#ifndef TSAN_INTERFACE_ATOMIC_H
+#ifndef TTM_SETTITLE
+#ifndef TTS_BALLOON
+#ifndef UNDOCKED_WINDOWS_UCRT
+#ifndef UNICODE
+#ifndef USES_ATL_SAFE_ALLOCA
+#ifndef VC_EXTRALEAN
+#ifndef VISTA_FILE_DIALOG_FLAG_DIRECT_MAPPING
+#ifndef VISTA_FILE_DIALOG_FLAG_MAPPING
+#ifndef VK_KANA
+#ifndef WIN32
+#ifndef WIN32_LEAN_AND_MEAN
+#ifndef WINAPI
+#ifndef WINBASEAPI
+#ifndef WM_DWMCOLORIZATIONCOLORCHANGED
+#ifndef WM_DWMCOMPOSITIONCHANGED
+#ifndef WM_DWMNCRENDERINGCHANGED
+#ifndef WM_DWMWINDOWMAXIMIZEDCHANGE
+#ifndef WPRFLAG
+#ifndef _AFX
+#ifndef _AFXDLL
+#ifndef _AFX_DISABLE_DEPRECATED
+#ifndef _AFX_DISABLE_INLINES
+#ifndef _AFX_DLLMODULE_HELPER
+#ifndef _AFX_ENABLE_INLINES
+#ifndef _AFX_INSECURE_DEPRECATE
+#ifndef _AFX_JUMPBUF
+#ifndef _AFX_MFCS
+#ifndef _AFX_NOFORCE_LIBS
+#ifndef _AFX_NO_DAO_SUPPORT
+#ifndef _AFX_USE_OLD_ZOOM
+#ifndef _ALLOW_COMPILER_AND_STL_VERSION_MISMATCH
+#ifndef _ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH
+#ifndef _ALLOW_MSC_VER_MISMATCH
+#ifndef _ALLOW_RUNTIME_LIBRARY_MISMATCH
+#ifndef _ANNOTATE_OPTIONAL
+#ifndef _ANNOTATE_STRING
+#ifndef _ANNOTATE_VECTOR
+#ifndef _ATLMFC_DISABLED_WARNINGS
+#ifndef _ATLMFC_EXTRA_DISABLED_WARNINGS
+#ifndef _ATLTRY
+#ifndef _ATL_APARTMENT_THREADED
+#ifndef _ATL_APPEND
+#ifndef _ATL_AXHOST
+#ifndef _ATL_CCOMBSTR_READFROMSTREAM_INSECURE
+#ifndef _ATL_COM_BEGIN
+#ifndef _ATL_COM_END
+#ifndef _ATL_CSTRING_NO_CRT
+#ifndef _ATL_CUSTOM_THROW
+#ifndef _ATL_DEBUG
+#ifndef _ATL_DEBUG_INTERFACES
+#ifndef _ATL_DISABLE_NOTHROW_NEW
+#ifndef _ATL_EX_CONVERSION_MACROS_ONLY
+#ifndef _ATL_FILENAME_VER
+#ifndef _ATL_FILENAME_VER_NUM
+#ifndef _ATL_FREE_THREADED
+#ifndef _ATL_HEAPFLAGS
+#ifndef _ATL_IGNORE_NAMED_ARGS
+#ifndef _ATL_INSECURE_DEPRECATE
+#ifndef _ATL_MAX_STACK_FRAMES
+#ifndef _ATL_MAX_VARTYPES
+#ifndef _ATL_NATIVE_INITIALIZATION
+#ifndef _ATL_NO_AUTOMATIC_NAMESPACE
+#ifndef _ATL_NO_COMMODULE
+#ifndef _ATL_NO_COM_SUPPORT
+#ifndef _ATL_NO_CONNECTION_POINTS
+#ifndef _ATL_NO_DEBUG_CRT
+#ifndef _ATL_NO_DEFAULT_LIBS
+#ifndef _ATL_NO_DOCHOSTUIHANDLER
+#ifndef _ATL_NO_EXCEPTIONS
+#ifndef _ATL_NO_HOSTING
+#ifndef _ATL_NO_PERF_SUPPORT
+#ifndef _ATL_NO_PRAGMA_WARNINGS
+#ifndef _ATL_NO_SERVICE
+#ifndef _ATL_NO_TRACK_HEAP
+#ifndef _ATL_NO_UUIDOF
+#ifndef _ATL_NO_VARIANT_THROW
+#ifndef _ATL_NO_WIN_SUPPORT
+#ifndef _ATL_OLEDB_CONFORMANCE_TESTS
+#ifndef _ATL_PROP_ENTRY_NO_WARNING
+#ifndef _ATL_SAFE_ALLOCA_DEF_THRESHOLD
+#ifndef _ATL_SINGLE_THREADED
+#ifndef _ATL_STACK_MARGIN
+#ifndef _ATL_STATIC_LIB_IMPL
+#ifndef _ATL_STREAM_MAX_SIZE
+#ifndef _ATL_STRINGIZE
+#ifndef _ATL_USE_WINAPI_FAMILY_DESKTOP_APP
+#ifndef _ATL_USE_WINAPI_FAMILY_PHONE_APP
+#ifndef _ATL_VER_RBLD
+#ifndef _ATOMIC_INVALID_PARAMETER
+#ifndef _Analysis_assume_ // [
+#ifndef _CFGUARD_H
+#ifndef _CHAR_UNSIGNED
+#ifndef _CLR_NETCORE
+#ifndef _COLLECTION_H_
+#ifndef _COLLECTION_WUXI
+#ifndef _COMDEF_WINAPI_FAMILY_PHONE_APP
+#ifndef _COM_DISABLE_EXPLICIT_OPERATOR_BOOL
+#ifndef _COM_SMARTPTR_TYPEDEF
+#ifndef _CONCRTIMP
+#ifndef _CONST_RETURN
+#ifndef _CONVERSION_DONT_USE_THREAD_LOCALE
+#ifndef _CORE_HEADERS_ONLY
+#ifndef _CPPUNWIND
+#ifndef _CRTDATA2_IMPORT
+#ifndef _CRTDBG_MAP_ALLOC
+#ifndef _CRTIMP
+#ifndef _CRTIMP2
+#ifndef _CRTIMP2_IMPORT
+#ifndef _CRTIMP2_PURE
+#ifndef _CRTIMP2_PURE_IMPORT
+#ifndef _CRTIMP2_PURE_IMPORT_UNLESS_CODECVT_ID_SATELLITE
+#ifndef _CRT_ENABLE_RTC_INTERNALS
+#ifndef _CRT_INSECURE_DEPRECATE
+#ifndef _CRT_INSECURE_DEPRECATE_MEMORY
+#ifndef _CRT_MSVCP_CURRENT
+#ifndef _CRT_NOPRAGMA_LIBS
+#ifndef _CRT_NO_TIME_T
+#ifndef _CRT_SATELLITE_1
+#ifndef _CRT_SATELLITE_2
+#ifndef _CRT_SATELLITE_CODECVT_IDS
+#ifndef _CRT_USE_WINAPI_FAMILY_DESKTOP_APP
+#ifndef _CRT_WINDOWS
+#ifndef _CSTRING_BUFFER_SIZE
+#ifndef _CSTRING_DISABLE_NARROW_WIDE_CONVERSION
+#ifndef _DAOGETRW_H_
+#ifndef _DBCOLUMNID_DEFINED
+#ifndef _DBDAOERR_H_
+#ifndef _DBDAOID_H_
+#ifndef _DBDAOINT_H_
+#ifndef _DBVARENUM_DEFINED
+#ifndef _DEBUG
+#ifndef _DEFAULT_VECTORLENGTH
+#ifndef _DISABLE_DEPRECATE_STATIC_CPPLIB
+#ifndef _DISABLE_OPTIONAL_ANNOTATION
+#ifndef _DISABLE_STRING_ANNOTATION
+#ifndef _DISABLE_VECTOR_ANNOTATION
+#ifndef _DLL
+#ifndef _DLOAD_DLOADSUP_H
+#ifndef _DVEC_H_INCLUDED
+#ifndef _ENFORCE_FACET_SPECIALIZATIONS
+#ifndef _ENFORCE_MATCHING_ALLOCATORS
+#ifndef _FVEC_H_INCLUDED
+#ifndef _FormatMessage_format_string_
+#ifndef _GLIBCXX_NO_ASSERT
+#ifndef _HAS_AUTO_PTR_ETC
+#ifndef _HAS_CXX17
+#ifndef _HAS_CXX20
+#ifndef _HAS_CXX23
+#ifndef _HAS_CXX26
+#ifndef _HAS_DEPRECATED_ADAPTOR_TYPEDEFS
+#ifndef _HAS_DEPRECATED_ALLOCATOR_MEMBERS
+#ifndef _HAS_DEPRECATED_ALLOCATOR_VOID
+#ifndef _HAS_DEPRECATED_IS_LITERAL_TYPE
+#ifndef _HAS_DEPRECATED_NEGATORS
+#ifndef _HAS_DEPRECATED_RAW_STORAGE_ITERATOR
+#ifndef _HAS_DEPRECATED_RESULT_OF
+#ifndef _HAS_DEPRECATED_SHARED_PTR_UNIQUE
+#ifndef _HAS_DEPRECATED_TEMPORARY_BUFFER
+#ifndef _HAS_DEPRECATED_UNCAUGHT_EXCEPTION
+#ifndef _HAS_EXCEPTIONS // Predefine as 0 to disable exceptions
+#ifndef _HAS_FEATURES_REMOVED_IN_CXX20
+#ifndef _HAS_FEATURES_REMOVED_IN_CXX23
+#ifndef _HAS_FUNCTION_ALLOCATOR_SUPPORT
+#ifndef _HAS_GARBAGE_COLLECTION_SUPPORT_DELETED_IN_CXX23
+#ifndef _HAS_OLD_IOSTREAMS_MEMBERS
+#ifndef _HAS_STATIC_RTTI
+#ifndef _HAS_STD_BYTE
+#ifndef _HAS_STREAM_INSERTION_OPERATORS_DELETED_IN_CXX20
+#ifndef _HAS_UNEXPECTED
+#ifndef _HRESULT_DEFINED
+#ifndef _IDL_AFFIX
+#ifndef _INCLUDED_AMM
+#ifndef _INCLUDED_EMM
+#ifndef _INCLUDED_IMM
+#ifndef _INCLUDED_MM2
+#ifndef _INCLUDED_NMM
+#ifndef _INCLUDED_PMM
+#ifndef _INCLUDED_SMM
+#ifndef _INCLUDED_TMM
+#ifndef _INCLUDED_WMM
+#ifndef _INC_COMMCTRL
+#ifndef _INC_COMMDLG
+#ifndef _INC_CRTDBG
+#ifndef _INC_EHDATA
+#ifndef _INC_EHDATA_FORCEINCLUDE
+#ifndef _INC_EHDATA_VALUES
+#ifndef _INC_ERRNO
+#ifndef _INC_LIMITS
+#ifndef _INC_MALLOC
+#ifndef _INC_MBCTYPE
+#ifndef _INC_MBSTRING
+#ifndef _INC_MSCLR_MARSHAL
+#ifndef _INC_MSCLR_MARSHAL_ATL
+#ifndef _INC_MSCLR_MARSHAL_CPPSTD
+#ifndef _INC_MSCLR_MARSHAL_WINDOWS
+#ifndef _INC_NEW
+#ifndef _INC_RTCAPI
+#ifndef _INC_RTTIDATA
+#ifndef _INC_SETJMPEX
+#ifndef _INC_SHELLAPI
+#ifndef _INC_STDARG
+#ifndef _INC_STDDEF
+#ifndef _INC_STDIO
+#ifndef _INC_STDLIB
+#ifndef _INC_STRING
+#ifndef _INC_TCHAR
+#ifndef _INC_TIME
+#ifndef _INC_WINDOWS
+#ifndef _INSERT_OPTIONAL_ANNOTATION
+#ifndef _INSERT_STRING_ANNOTATION
+#ifndef _INSERT_VECTOR_ANNOTATION
+#ifndef _INTPTR_T_DEFINED
+#ifndef _INVALID_MEMORY_ORDER
+#ifndef _ISO646
+#ifndef _IVEC_H_INCLUDED
+#ifndef _Interlocked_operand_
+#ifndef _JMP_BUF_DEFINED
+#ifndef _LIBS_RBLD
+#ifndef _MFC_FILENAME_VER
+#ifndef _MFC_FILENAME_VER_DOT
+#ifndef _MFC_OVERRIDES_NEW
+#ifndef _MFC_VER
+#ifndef _MM3DNOW_H_INCLUDED
+#ifndef _MMINTRIN_H_INCLUDED
+#ifndef _MM_FUNCTIONALITY
+#ifndef _MRTIMP
+#ifndef _MRTIMP2
+#ifndef _MRTIMP2_PURE
+#ifndef _MSVC_CONSTEXPR
+#ifndef _MSVC_STL_DESTRUCTOR_TOMBSTONES
+#ifndef _MSVC_STL_DOOM_FUNCTION
+#ifndef _MSVC_STL_HARDENING
+#ifndef _MSVC_STL_HARDENING_ARRAY
+#ifndef _MSVC_STL_HARDENING_BASIC_STACKTRACE
+#ifndef _MSVC_STL_HARDENING_BASIC_STRING
+#ifndef _MSVC_STL_HARDENING_BASIC_STRING_VIEW
+#ifndef _MSVC_STL_HARDENING_BITSET
+#ifndef _MSVC_STL_HARDENING_COMMON_ITERATOR
+#ifndef _MSVC_STL_HARDENING_COUNTED_ITERATOR
+#ifndef _MSVC_STL_HARDENING_DEQUE
+#ifndef _MSVC_STL_HARDENING_EXPECTED
+#ifndef _MSVC_STL_HARDENING_FORWARD_LIST
+#ifndef _MSVC_STL_HARDENING_LIST
+#ifndef _MSVC_STL_HARDENING_MDSPAN
+#ifndef _MSVC_STL_HARDENING_OPTIONAL
+#ifndef _MSVC_STL_HARDENING_RANGES_VIEW_INTERFACE
+#ifndef _MSVC_STL_HARDENING_SHARED_PTR_ARRAY
+#ifndef _MSVC_STL_HARDENING_SPAN
+#ifndef _MSVC_STL_HARDENING_VALARRAY
+#ifndef _MSVC_STL_HARDENING_VECTOR
+#ifndef _MSVC_STL_UINTPTR_TOMBSTONE_VALUE
+#ifndef _MSVC_TESTING_NVCC
+#ifndef _MT
+#ifndef _M_ARM64
+#ifndef _M_ARM64 // CRT_REFACTOR TODO
+#ifndef _M_ARM64EC
+#ifndef _M_CEE
+#ifndef _M_CEE_PURE
+#ifndef _M_CEE_SAFE
+#ifndef _M_IX86
+#ifndef _M_IX86 // [
+#ifndef _NATIVE_WCHAR_T_DEFINED
+#ifndef _NO_DEFAULT_CONCRT_LIB
+#ifndef _NTSUBSET_
+#ifndef _OBJBASE_H_
+#ifndef _ODS_SRV_H_
+#ifndef _OLE2_H_
+#ifndef _OLEAUTO_H_
+#ifndef _OLECTL_H_
+#ifndef _OLEDLG_H_
+#ifndef _ONECORE
+#ifndef _PARTIAL_TRUST_OBJ
+#ifndef _PLATFORM_AGILE_H_
+#ifndef _PNH_DEFINED
+#ifndef _PPLAWAIT_H
+#ifndef _PPLCANCELLATION_TOKEN_H
+#ifndef _PPLINTERFACE_H
+#ifndef _PPLTASKSCHEDULER_H
+#ifndef _PPLTASKS_H
+#ifndef _PPLTASKS_NO_STDFUNC
+#ifndef _PPLTASK_ASYNC_LOGGING
+#ifndef _PPLWIN_H
+#ifndef _PREFAST_ // [
+#ifndef _PREPARE_CONSTRAINED_REGIONS
+#ifndef _PTRDIFF_T_DEFINED
+#ifndef _REFCLSID_DEFINED
+#ifndef _REPORT_PPLTASK_UNOBSERVED_EXCEPTION
+#ifndef _RESUMABLE_ENABLE_LEGACY_AWAIT_ADAPTERS
+#ifndef _RETVAL_FIRST
+#ifndef _RICHEDIT_
+#ifndef _RICHEDIT_VER
+#ifndef _RICHOLE_
+#ifndef _SAL_L_Source_
+#ifndef _SAL_VERSION
+#ifndef _SHLOBJ_H_
+#ifndef _SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING
+#ifndef _SIZE_T_DEFINED
+#ifndef _STDBOOL
+#ifndef _STD_VECTORIZE_WITH_FLOAT_CONTROL
+#ifndef _STL_COMPILER_PREPROCESSOR
+#ifndef _STL_DISABLED_WARNINGS
+#ifndef _STL_DISABLE_CLANG_WARNINGS
+#ifndef _STL_DISABLE_CLANG_WARNING_NAN_INF_DISABLED
+#ifndef _STL_DISABLE_DEPRECATED_WARNING
+#ifndef _STL_EXTRA_DISABLED_WARNINGS
+#ifndef _STL_OPTIMIZE_SYSTEM_ERROR_OPERATORS
+#ifndef _STL_RESTORE_CLANG_WARNINGS
+#ifndef _STL_RESTORE_CLANG_WARNING_NAN_INF_DISABLED
+#ifndef _STL_RESTORE_DEPRECATED_WARNING
+#ifndef _STL_WARNING_LEVEL
+#ifndef _THR_XTHREADS_H
+#ifndef _THR_XTIMEC_H
+#ifndef _UCRT
+#ifndef _UINTPTR_T_DEFINED
+#ifndef _UNICODE
+#ifndef _USE_ANSI_CPP
+#ifndef _USE_ATTRIBUTES_FOR_SAL // [
+#ifndef _USE_DECLSPECS_FOR_SAL // [
+#ifndef _USE_EXTERN_CXX_EVERYWHERE_FOR_STL
+#ifndef _USE_RAW
+#ifndef _USING_V110_SDK71_
+#ifndef _UXTHEME_H_
+#ifndef _VA_LIST_DEFINED
+#ifndef _VCCORLIB_APP
+#ifndef _VCCORLIB_H_
+#ifndef _VCRTIMP
+#ifndef _VCRT_ALLOW_INTERNALS
+#ifndef _VCRT_BUILD
+#ifndef _VCRT_BUILD_FH4
+#ifndef _VCRT_COMPILER_PREPROCESSOR
+#ifndef _VCRT_DIRECT_PTD
+#ifndef _VCRUNTIME_DISABLED_WARNINGS
+#ifndef _VCRUNTIME_DISABLED_WARNING_4339
+#ifndef _VCRUNTIME_DISABLED_WARNING_4412
+#ifndef _VCRUNTIME_EXTRA_DISABLED_WARNINGS
+#ifndef _VCRUNTIME_H
+#ifndef _VEC_ASSERT
+#ifndef _WCHAR_T_DEFINED
+#ifndef _WIN32_IE
+#ifndef _WIN32_WINNT
+#ifndef _WIN32_WINNT            // Specifies that the minimum required platform is Windows Vista.
+#ifndef _WIN64
+#ifndef _WIN64  // Big strings aren't supported on Win32 clients
+#ifndef _WINDNS_INCLUDED_
+#ifndef _WININET_
+#ifndef _WINSOCK2API_
+#ifndef _WINSOCKAPI_
+#ifndef _WS2IPDEF_
+#ifndef _XATOMIC_H
+#ifndef _XATOMIC_WAIT_H
+#ifndef _XBIT_OPS_H
+#ifndef _XCALL_ONCE_H
+#ifndef _XCHARCONV_H
+#ifndef _XCHARCONV_RYU_H
+#ifndef _XCHARCONV_RYU_TABLES_H
+#ifndef _XCHARCONV_TABLES_H
+#ifndef _XERRC_H
+#ifndef _XFILESYSTEM_ABI_H
+#ifndef _XKEYCHECK_H
+#ifndef _XNODE_HANDLE_H
+#ifndef _XPOLYMORPHIC_ALLOCATOR_H
+#ifndef _XSMF_CONTROL_H
+#ifndef _YMATH
+#ifndef _YVALS
+#ifndef _YVALS_CORE_H_
+#ifndef _ZMMINTRIN_H_INCLUDED
+#ifndef __AFXADV_H__
+#ifndef __AFXCMN_H__
+#ifndef __AFXCOLL_H__
+#ifndef __AFXCOM_H__
+#ifndef __AFXCONV_H__
+#ifndef __AFXCTL_H__
+#ifndef __AFXCVIEW_H__
+#ifndef __AFXDAO_H
+#ifndef __AFXDB_H__
+#ifndef __AFXDB__H__
+#ifndef __AFXDHTML_H__
+#ifndef __AFXDISP_H__
+#ifndef __AFXDLGS_H__
+#ifndef __AFXDOCOB_H__
+#ifndef __AFXDTCTL_H__
+#ifndef __AFXEXT_H__
+#ifndef __AFXHTML_H__
+#ifndef __AFXINET_H_
+#ifndef __AFXMT_H__
+#ifndef __AFXOCC_H__
+#ifndef __AFXODLGS_H__
+#ifndef __AFXOLEDB_H__
+#ifndef __AFXOLE_H__
+#ifndef __AFXPLEX_H__
+#ifndef __AFXPRIV2_H__
+#ifndef __AFXPRIV2_H__DISP__
+#ifndef __AFXPRIV2_H__OLE__
+#ifndef __AFXPRIV_H__
+#ifndef __AFXRES_H__
+#ifndef __AFXRIBBONRES_H__
+#ifndef __AFXRICH_H__
+#ifndef __AFXSOCK_H__
+#ifndef __AFXSTATE_H__
+#ifndef __AFXSTR_H__
+#ifndef __AFXTEMPL_H__
+#ifndef __AFXTLS_H__
+#ifndef __AFXWINVERAPI_H__
+#ifndef __AFXWIN_H__
+#ifndef __AFX_HH_H__
+#ifndef __AFX_H__
+#ifndef __AFX_WINFORMS_COMMAND_TARGET_INTERFACES_H__
+#ifndef __AFX_WINFORMS_H__
+#ifndef __ATLACC_H__
+#ifndef __ATLALLOC_H__
+#ifndef __ATLBASE_H__
+#ifndef __ATLCHECKED_H__
+#ifndef __ATLCOLL_H__
+#ifndef __ATLCOMCLI_H__
+#ifndef __ATLCOMMEM_H__
+#ifndef __ATLCOMTIME_H__
+#ifndef __ATLCOM_H__
+#ifndef __ATLCONV_H__
+#ifndef __ATLCORE_H__
+#ifndef __ATLCTL_H__
+#ifndef __ATLCUR_H__
+#ifndef __ATLDBCLI_H__
+#ifndef __ATLDBGMEM_H__
+#ifndef __ATLDBSCH_H__
+#ifndef __ATLDB_H__
+#ifndef __ATLDEF_H__
+#ifndef __ATLENC_H__
+#ifndef __ATLEVENT_H__
+#ifndef __ATLEXCEPT_H__
+#ifndef __ATLFILE_H__
+#ifndef __ATLHOST_H__
+#ifndef __ATLIMAGE_H__
+#ifndef __ATLMEM_H__
+#ifndef __ATLMFC_CORE_H__
+#ifndef __ATLPATH_H__
+#ifndef __ATLPLUS_H__
+#ifndef __ATLRC_H__
+#ifndef __ATLSAFE_H__
+#ifndef __ATLSECURITY_H__
+#ifndef __ATLSECURITY_INL__
+#ifndef __ATLSIMPCOLL_H__
+#ifndef __ATLSIMPSTR_H__
+#ifndef __ATLSNAP_H__
+#ifndef __ATLSTDTHUNK_H__
+#ifndef __ATLSTR_H__
+#ifndef __ATLSYNC_H__
+#ifndef __ATLTIME_H__
+#ifndef __ATLTRACE_H__
+#ifndef __ATLTRANSACTIONMANAGER_H__
+#ifndef __ATLTYPES_H__
+#ifndef __ATLUTIL_H__
+#ifndef __ATLWINVERAPI_H__
+#ifndef __ATLWIN_H__
+#ifndef __ATLXML_H__
+#ifndef __ATL_HANDLER_IMPL__
+#ifndef __ATL_HANDLER__
+#ifndef __ATL_SOCKET__
+#ifndef __AVX2__
+#ifndef __CSTRINGT_H__
+#ifndef __CTLIMPL_H__
+#ifndef __DEFINE_GCROOT_IN_GLOBAL_NAMESPACE
+#ifndef __EDG__
+#ifndef __FIXALLOC_H__
+#ifndef __IAccessibleProxy_FWD_DEFINED__
+#ifndef __IAccessibleProxy_INTERFACE_DEFINED__
+#ifndef __IAccessibleServer_FWD_DEFINED__
+#ifndef __IAccessibleServer_INTERFACE_DEFINED__
+#ifndef __IAxWinAmbientDispatchEx_FWD_DEFINED__
+#ifndef __IAxWinAmbientDispatchEx_INTERFACE_DEFINED__
+#ifndef __IAxWinAmbientDispatch_FWD_DEFINED__
+#ifndef __IAxWinAmbientDispatch_INTERFACE_DEFINED__
+#ifndef __IAxWinHostWindowLic_FWD_DEFINED__
+#ifndef __IAxWinHostWindowLic_INTERFACE_DEFINED__
+#ifndef __IAxWinHostWindow_FWD_DEFINED__
+#ifndef __IAxWinHostWindow_INTERFACE_DEFINED__
+#ifndef __IDocHostUIHandlerDispatch_FWD_DEFINED__
+#ifndef __IDocHostUIHandlerDispatch_INTERFACE_DEFINED__
+#ifndef __IInternalConnection_FWD_DEFINED__
+#ifndef __IInternalConnection_INTERFACE_DEFINED__
+#ifndef __INTRIN_H_
+#ifndef __IPHLPAPI_H__
+#ifndef __IRegistrarBase_FWD_DEFINED__
+#ifndef __IRegistrarBase_INTERFACE_DEFINED__
+#ifndef __IRegistrar_FWD_DEFINED__
+#ifndef __IRegistrar_INTERFACE_DEFINED__
+#ifndef __ISA_AVAILABILITY__H__
+#ifndef __IThumbnailProvider_INTERFACE_DEFINED__
+#ifndef __MSHTMDID_H__
+#ifndef __MSVC_ALL_PUBLIC_HEADERS_HPP
+#ifndef __MSVC_BIT_UTILS_HPP
+#ifndef __MSVC_CHRONO_HPP
+#ifndef __MSVC_CXX_STDATOMIC_HPP
+#ifndef __MSVC_DOOM_CORE_HPP
+#ifndef __MSVC_FILEBUF_HPP
+#ifndef __MSVC_FORMATTER_HPP
+#ifndef __MSVC_FORMAT_UCD_TABLES_HPP
+#ifndef __MSVC_HEAP_ALGORITHMS_HPP
+#ifndef __MSVC_INT128_HPP
+#ifndef __MSVC_ITER_CORE_HPP
+#ifndef __MSVC_MINMAX_HPP
+#ifndef __MSVC_OSTREAM_HPP
+#ifndef __MSVC_PRINT_HPP
+#ifndef __MSVC_RANGES_TO_HPP
+#ifndef __MSVC_RANGES_TUPLE_FORMATTER_HPP
+#ifndef __MSVC_SANITIZER_ANNOTATE_CONTAINER_HPP
+#ifndef __MSVC_STRING_VIEW_HPP
+#ifndef __MSVC_SYSTEM_ERROR_ABI_HPP
+#ifndef __MSVC_THREADS_CORE_HPP
+#ifndef __MSVC_TZDB_HPP
+#ifndef __MSVC_XLOCINFO_TYPES_HPP
+#ifndef __NOTHROW_T_DEFINED
+#ifndef __OCDB_H_
+#ifndef __OMP_H
+#ifndef __PLACEMENT_NEW_INLINE
+#ifndef __PLACEMENT_VEC_NEW_INLINE
+#ifndef __REQUIRED_RPCNDR_H_VERSION__
+#ifndef __RPCNDR_H_VERSION__
+#ifndef __SAL_H_VERSION
+#ifndef __SQL
+#ifndef __SQLEXT
+#ifndef __STATREG_H__
+#ifndef __UIAnimationHelper_h__
+#ifndef __UIAnimation_h__
+#ifndef __analysis_assume // [
+#ifndef __atliface_h__
+#ifndef __clang__
+#ifndef __clang__ // TRANSITION, LLVM-48860
+#ifndef __cplusplus
+#ifndef __cplusplus_cli
+#ifndef __cplusplus_winrt
+#ifndef __cpp_impl_coroutine
+#ifndef __cpp_impl_three_way_comparison
+#ifndef __docobj_h__
+#ifndef __exdisp_h__
+#ifndef __fallthrough // [
+#ifndef __has_attribute
+#ifndef __has_cpp_attribute
+#ifndef __midl
+#ifndef __mshtmcid_h__
+#ifndef __mshtmhst_h__
+#ifndef __mshtml_h__
+#ifndef __nothrow // [
+#ifndef __objectarray_h__
+#ifndef __ocidl_h__
+#ifndef __oledb_h__
+#ifndef __shobjidl_h__
+#ifndef __tpcshrd_h__
+#ifndef __urlmon_h__
+#ifndef __wtypes_h__
+#ifndef _countof
+#ifndef _delayimp_h
+#ifndef _tagBLOB_DEFINED
+#ifndef afx_msg
+#ifndef iHashMax
+#ifndef va_arg

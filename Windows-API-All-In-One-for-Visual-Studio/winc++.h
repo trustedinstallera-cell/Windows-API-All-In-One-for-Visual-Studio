@@ -9,6 +9,18 @@
 #define _NOMINMAX
 #endif
 
+#ifdef NOEXCLUSIONMACROS
+#undef NOGDI
+#undef NONAMELESSUNION
+#undef NOSERVICE
+#endif
+
+#if (defined NOGDI) || (defined NONAMELESSUNION) || (defined NOSERVICE)\
+|| (defined WIN32_LEAN_AND_MEAN)
+#error Fatal error: NOGDI, NONAMELESSUNION, NOSERVICE and WIN32_LEAN_AND_MEAN are not compatible with this header.
+#error use NOEXCLUSIONMACROS to undef these macros.
+#endif
+
 // scsi.h requires _NTSCSI_USER_MODE_ only when compiling in pure user-mode.
 // Do NOT define it if any kernel/driver mode macro is active.
 #if (!defined _KERNEL_MODE) && (!defined _NTSRB_) && (!defined _NTSRB_) && (!defined _MINIPORT_) && (!defined _NTDDK_)
@@ -71,9 +83,10 @@
 #ifdef NOWARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+#define _SILENCE_ALL_CXX20_DEPRECATION_WARNINGS
+#define _SILENCE_ALL_CXX23_DEPRECATION_WARNINGS
 #define _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING
 #define _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING // VS 2022
-#define _SILENCE_ALL_CXX20_DEPRECATION_WARNINGS 
 #define _SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING
 #define _CRT_NONSTDC_NO_WARNINGS		  // POSIX function names
 #define _CRT_NONSTDC_NO_DEPRECATE
@@ -85,6 +98,17 @@
 #define _CRT_OBSOLETE_NO_WARNINGS   // MFC or ATL code
 #define SUPPRESS_LEGACY_ICU_HEADER_WARNINGS // The wchar_t versions of the ICU headers are no longer being updated...
 #define _CRT_SILENCE_NONCONFORMING_TGMATH_H
+#define _SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS
+#define _SILENCE_IO_PFX_SFX_DEPRECATION_WARNING
+#define _SILENCE_LOCALE_EMPTY_DEPRECATION_WARNING
+#define _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING
+#define _SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING
+#define _SILENCE_TR1_RANDOM_DEPRECATION_WARNING
+#define _SILENCE_AMP_DEPRECATION_WARNINGS
+#define _SILENCE_CLR_PURE_DEPRECATION_WARNING
+#define _SILENCE_LIFETIMEBOUND_WARNING
+#define _SILENCE_NODISCARD_LOCK_WARNINGS
+#define _ALLOW_KEYWORD_MACROS
 #if MSVC_VER > VS_2013
 #pragma warning(push)
 #pragma warning(disable: 5040) // Cannot recognize in VS 2013
@@ -117,9 +141,11 @@
 #include <tchar.h>
 #if (defined _USING_V110_SDK71_ /*XP support*/) || (MSVC_VER <= 2015)
 typedef struct IUnknown IUnknown;
-#include <Windows.h>
-#else
+#endif
+#if (defined SE_WIN_ENCLAVE)
 #include "winenclave.h"
+#else
+#include <Windows.h>
 #endif
 #include <Wininet.h>
 #include <shlwapi.h>

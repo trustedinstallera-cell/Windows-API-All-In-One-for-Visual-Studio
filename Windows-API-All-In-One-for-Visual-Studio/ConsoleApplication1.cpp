@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#define NOWARNINGS
 #include "winc++.h"
 int main() {
 	std::cout << "The code works if you could see this message.\n";
