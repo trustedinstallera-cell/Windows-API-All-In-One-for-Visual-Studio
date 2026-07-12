@@ -113,21 +113,14 @@
 #pragma warning(push)
 #pragma warning(disable: 5040) // Cannot recognize in VS 2013
 #endif
-#if MSVC_VER == VS_2013
-#pragma warning(push)
+#if (MSVC_VER == VS_2013) || (MSVC_VER == VS_2012)
 #pragma warning(disable: 4068) // Unknown pargma
 #endif
-#pragma warning(push)
 #pragma warning(disable: 4995)
-#pragma warning(push)
 #pragma warning(disable: 4477)
-#pragma warning(push)
 #pragma warning(disable: 4091)
-#pragma warning(push)
 #pragma warning(disable: 4290)
-#pragma warning(push)
 #pragma warning(disable: 4005)
-#pragma warning(push)
 #pragma warning(disable: 4038)
 #endif
 #endif
@@ -296,7 +289,9 @@ typedef struct IUnknown IUnknown;
 #if MSVC_VER > 2015
 #include "CastingInterop.h"
 #endif
+#if MSVC_VER > 2012
 #include "DefaultBrowserSyncSettings.h"
+#endif
 #endif
 #include "DeleteBrowsingHistory.h"
 //#include "DeleteBrowsingHistory.idl"
@@ -313,7 +308,7 @@ typedef struct IUnknown IUnknown;
 #endif
 #include "EmptyVC.h"
 #include "EventSys.h"
-#ifndef _USING_V110_SDK71_
+#if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "ExtensionValidation.h"
 #endif
 #ifdef NOWARNINGS
@@ -327,7 +322,7 @@ typedef struct IUnknown IUnknown;
 #include "IChannelCredentials.h"
 #include "IContact.h"
 #include "IContactProperties.h"
-#ifndef _USING_V110_SDK71_
+#if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "IContentPrefetcherTaskTrigger.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "IE12Plugin.h"
@@ -392,7 +387,9 @@ typedef struct IUnknown IUnknown;
 #ifndef _USING_V110_SDK71_
 #include "PrintPreview.h"
 //#include "PrinterExtension.idl"
+#if MSVC_VER > 2012
 #include "ProofOfPossessionCookieInfo.h"
+#endif
 //#include "Query.h"
 #include "RadioMgr.h"
 #endif
@@ -815,7 +812,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "amxmlgraphbuilder.h"
 //#include "anchorsyncdeviceservice.h"
 #ifndef _USING_V110_SDK71_
+#if MSVC_VER > 2012
 #include "animationcoordinator.h"
+#endif
 #include "apdevpkey.h"
 #endif
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
@@ -826,8 +825,10 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <apisetcconv.h>
 #include <appmodel.h>
 #endif
+#if MSVC_VER > 2012
 #include "appcompatapi.h"
-#ifndef _USING_V110_SDK71_
+#endif
+#if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "appnotify.h"
 #if VS_VER > VS_2015
 #include "appserviceinterop.h"
@@ -908,7 +909,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "bitscfg.h"
 #include "bitsmsg.h"
 #include "bluetoothapis.h"
-#ifndef _USING_V110_SDK71_
+#if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "bluetoothleapis.h"
 #endif
 #include "bthdef.h"
@@ -923,7 +924,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "ccgplugins.h"
 #endif
+#if MSVC_VER > 2012
 #include "cchannel.h"
+#endif
 #if defined _SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING || defined _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include <ccomplex>
 #endif
@@ -1184,8 +1187,10 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #include <cstring>
 //#include "ctffunc.h"
+#if MSVC_VER > 2012
 #if defined _SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING || defined _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include <ctgmath>
+#endif
 #endif
 #include "ctfspui.h"
 #include "ctxtcall.h"
@@ -1198,8 +1203,10 @@ typedef enum _SECURITY_LOGON_TYPE {
 #ifndef _USING_V110_SDK71_
 #include <d2d1effectauthor.h>
 #include <d2d1effects.h>
+#if MSVC_VER > 2012
 #include <d2d1effects_1.h>
-#if VS_VER > VS_2015
+#endif
+#if MSVC_VER > VS_2015
 #include <d2d1effects_2.h>
 #endif
 #endif
@@ -1470,7 +1477,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "eapmethodauthenticatorapis.h"
 #include "eapmethodpeerapis.h"
 #include "eappapis.h"
-#ifndef _USING_V110_SDK71_
+#if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "easencryptprov.h"
 #include "easregprov.h"
 #endif
@@ -1540,7 +1547,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "fdi_fci_types.h"
 #include "featurestagingapi.h"
 #endif
+#if MSVC_VER > 2012
 #include "fenv.h"
+#endif
 #ifndef _USING_V110_SDK71_
 #include "FhStatus.h"
 #include "FhSvcCtl.h"
@@ -1623,7 +1632,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VS_2015
 #include "HolographicSpaceInterop.h"
 #endif
+#if MSVC_VER > 2012
 #include "homepagesetting.h"
+#endif
 #include <xapo.h>
 #if VS_VER > VS_2015
 #include "hrtfapoapi.h"
@@ -1796,8 +1807,10 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <interlockedapi.h>
 #endif
 #include "intsafe.h"
+#if MSVC_VER > 2012
 //#include "internal.h"
 #include "inttypes.h"
+#endif
 #if VS_VER > VS_2003
 #include <intrin.h>
 #endif
@@ -1860,13 +1873,15 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <jobapi2.h>
 #endif
-#ifndef _USING_V110_SDK71_
+#if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "jscript9diag.h"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <joystickapi.h>
 #endif
+#if MSVC_VER > 2012
 #include "jscript9diag.h"
 #include "jsrt.h"
+#endif
 #if VS_VER > VS_2015
 #include "jsrt9.h"
 #endif
@@ -2126,7 +2141,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "Mpeg2Error.h"
 //#include "Mpeg2Structs.idl"
 #include "mpconfig.h"
-#ifndef _USING_V110_SDK71_
+#if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "mprapidef.h"
 #endif
 #include <mprapi.h>
@@ -2145,7 +2160,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "msado15.h"
 #ifndef _USING_V110_SDK71_
 #include "msado15_Backcompat.h"
+#if MSVC_VER > 2012
 #include "msapofxproxy.h"
+#endif
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <mscat.h>
@@ -2167,7 +2184,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "msfeeds.h"
 //#include "msfeeds.idl"
 #include "MsHTML.h"
-#ifndef _USING_V110_SDK71_
+#if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "mshtmldiagnostics.h"
 #endif
 #include "msiehost.h"
@@ -2410,7 +2427,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <oleidl.h>
 #include "OleDlg.h"
 //#include "OleDlg.Dlg"
-#ifndef _USING_V110_SDK71_
+#if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "ondemandconnroutehelper.h"
 #include "oobenotification.h"
 #endif
@@ -2497,7 +2514,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "processenv.h"
 #include "processthreadsapi.h"
 #include "processtopologyapi.h"
+#if MSVC_VER > 2012
 #include "ProcessSnapshot.h"
+#endif
 #include "profileapi.h"
 #endif
 #include "ProfInfo.h"
@@ -2812,10 +2831,12 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 //#include "SpOrder.h"
 #ifndef _USING_V110_SDK71_
-#if VS_VER > VS_2015
+#if VS_VER > 2015
 #include "SpatialInteractionManagerInterop.h"
 #endif
+#if MSVC_VER > 2012
 #include "spb.h"
+#endif
 #endif
 //#include "spddkhlp.h"
 #include "spcollec.h"
@@ -3557,7 +3578,9 @@ typedef unsigned __int64   uintmax_t;
 #include "trnobj.idl"
 #include "truadmin.idl"
 #include "trugpadm.idl"*/
+#if MSVC_VER > 2012
 #include "tspubplugin2com.h"
+#endif
 #endif
 #include "tssbx.h"
 #include "tssbx_i.c"
@@ -3681,7 +3704,7 @@ typedef unsigned __int64   uintmax_t;
 //#include "vdssys.idl"
 #include "vdserr.h"
 //#include "veinterop.h"
-#ifndef _USING_V110_SDK71_
+#if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "VersionHelpers.h"
 #endif
 //#include "Vfw.h"
@@ -3842,7 +3865,9 @@ typedef unsigned __int64   uintmax_t;
 //#include "Windows.Graphics.Holographic.Interop.idl"
 #include "Windows.Media.Protection.PlayReadyErrors.h"
 #endif
+#if MSVC_VER > 2012
 #include "Windows.Media.Streaming.Devices.h"
+#endif
 #if VS_VER > VS_2015
 #include "Windows.Media.Streaming.Internal.h"
 #include "Windows.Services.TargetedContent.h"
@@ -4116,7 +4141,7 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "xoleHlp.h"
 #include "xprtdefs.h"
 #include "xpsdigitalsignature.h"
-#ifndef _USING_V110_SDK71_
+#if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "xpsobjectmodel_2.h"
 #endif
 #include "xpsprint.h"
