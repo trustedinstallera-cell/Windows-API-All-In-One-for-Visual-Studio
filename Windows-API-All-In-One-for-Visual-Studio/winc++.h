@@ -82,13 +82,42 @@
 #define MSVC_VER VS_VERSION
 #define MSVC_VERSION VS_VERSION
 
-#if _MSC_VER == 1500
-#define TOOLSET 90   // Visual Studio 2008 compiler, v90 toolset
-#elif _MSC_VER == 1600
-#define TOOLSET 100 
+#if _MSC_VER >= 1950
+#define TOOLSET 145  // VS 2026 and later
+#elif _MSC_VER >= 1930
+#define TOOLSET 143  // VS 2022
+#elif _MSC_VER >= 1920
+#define TOOLSET 142  // VS 2019
+#elif _MSC_VER >= 1910
+#define TOOLSET 141  // VS 2017
+#elif _MSC_VER >= 1900
+#define TOOLSET 140  // VS 2015
+#elif _MSC_VER >= 1800
+#define TOOLSET 120  // VS 2013
+#elif _MSC_VER >= 1700
+#define TOOLSET 110  // VS 2012
+#elif _MSC_VER >= 1600
+#define TOOLSET 100  // VS 2010
+#elif _MSC_VER >= 1500
+#define TOOLSET 90   // VS 2008
+#elif _MSC_VER >= 1400
+#define TOOLSET 80   // VS 2005
+#elif _MSC_VER >= 1310
+#define TOOLSET 71   // VS 2003
+#elif _MSC_VER >= 1300
+#define TOOLSET 70   // VS 2002
+#elif _MSC_VER >= 1200
+#define TOOLSET 60   // VC++ 6.0
+#elif _MSC_VER >= 1100
+#define TOOLSET 50   // VC++ 5.0
+#elif _MSC_VER >= 1000
+#define TOOLSET 40   // VC++ 4.0
+#elif _MSC_VER >= 900
+#define TOOLSET 20   // VC++ 2.0
+#elif _MSC_VER >= 800
+#define TOOLSET 10   // VC++ 1.0
 #else
-// todo fix TOOLSET definitions
-#define TOOLSET 140 // this is obviously incorrect, but could fix issues for wsdbase.h
+#define TOOLSET 10   // Fallback for unknown/older
 #endif
 
 #ifdef NOWARNINGS
