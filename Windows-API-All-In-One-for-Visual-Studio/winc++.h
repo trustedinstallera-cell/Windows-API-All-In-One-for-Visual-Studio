@@ -83,9 +83,12 @@
 #define MSVC_VERSION VS_VERSION
 
 #if _MSC_VER == 1500
-#define TOOLSET 90   // Visual Studio 2008 编译器 (v90 工具集)
+#define TOOLSET 90   // Visual Studio 2008 compiler, v90 toolset
 #elif _MSC_VER == 1600
 #define TOOLSET 100 
+#else
+// todo fix TOOLSET definitions
+#define TOOLSET 140 // this is obviously incorrect, but could fix issues for wsdbase.h
 #endif
 
 #ifdef NOWARNINGS
