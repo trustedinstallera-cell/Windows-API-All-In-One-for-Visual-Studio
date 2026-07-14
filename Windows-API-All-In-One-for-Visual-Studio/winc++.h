@@ -4,7 +4,6 @@
 
 #ifndef HAS_INCLUDED_WIN_CPP
 #define HAS_INCLUDED_WIN_CPP
-#endif
 
 // Environment definitions
 
@@ -89,8 +88,11 @@
 #define TOOLSET 100 
 #endif
 
-#if MSVC_VER >= VS_2005
 #ifdef NOWARNINGS
+#if MSVC_VER == VS_2005
+#pragma warning(disable: 4819)
+#endif
+#if MSVC_VER >= VS_2005
 #define _CRT_SECURE_NO_WARNINGS
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define _SILENCE_ALL_CXX20_DEPRECATION_WARNINGS
@@ -162,7 +164,9 @@ typedef struct IUnknown IUnknown;
 #include <dcomptypes.h>     // for CompositionSurfaceType"
 #endif
 #endif
+#if TOOLSET > 90
 #include <wincodec.h>
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include <wrl.h>
 #include <wrl\client.h>
@@ -192,6 +196,7 @@ typedef struct IUnknown IUnknown;
 //#include <wiamindr_xp.h>
 //#include <initguid.h>
 #include <wincrypt.h>
+#if TOOLSET > 90
 #include <wsdattachment.h>
 #include <wsdbase.h>
 #include <wsdxml.h>
@@ -203,6 +208,7 @@ typedef struct IUnknown IUnknown;
 #include <wsdutil.h>
 //#include "AudioClient.h"
 #include "BdaTypes.h"
+#endif
 #if VS_VER >= VS_2015
 #pragma warning(push)
 #pragma warning(disable : 4596)
@@ -256,7 +262,9 @@ typedef struct IUnknown IUnknown;
 #include "msxml6.h"
 #endif
 #include "msxmldid.h"
+#if TOOLSET > 90
 #include "nserror.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "ntverp.ver"
 #endif
@@ -266,19 +274,27 @@ typedef struct IUnknown IUnknown;
 //#include "opcobjectmodel.idl"
 //#include "opcparturi.idl"
 //#include <pix_xbox.h>
+#if TOOLSET > 90
 #include "portabledeviceapi.h"
+#endif
 #include "propidl.h"
 //#include "propidlbase.idl"
+#if TOOLSET > 90
 #include "propkeydef.h"
+#endif
 #include "shobjidl.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "shobjidl_core.h"
 #endif
 //#include "srchntfyinlinesite.idl"
 //#include "srchprth.idl"
-#include "tapi3ds.h"
+#if VS_VER > VS_2005
+#include "tapi3ds.h"	 // included ddraw, but No such file or directory
 #include "tapi3if.h"
+#endif
+#if VS_VER > VS_2005 // no such header at all
 #include "textstor.h"
+#endif
 #include "transact.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "transportsettingcommon.h"
@@ -291,8 +307,10 @@ typedef struct IUnknown IUnknown;
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "AppxPackaging.h"
 #endif
+#if VS_VER > VS_2005
 #include "AtscPsipParser.h"
 #include "AudioEngineEndpoint.h"
+#endif
 #include "BiDiSpl.h"
 #include "CDOSys.h"
 //#include "CDOSys_I.c"
@@ -305,6 +323,7 @@ typedef struct IUnknown IUnknown;
 #include "DefaultBrowserSyncSettings.h"
 #endif
 #endif
+
 #if (TOOLSET > 90)
 #include "DeleteBrowsingHistory.h"
 //#include "DeleteBrowsingHistory.idl"
@@ -318,7 +337,9 @@ typedef struct IUnknown IUnknown;
 #include "DownloadMgr.h"
 #endif
 #include "DskQuota.h"
+#if VS_VER > VS_2005
 #include "DvbSiParser.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "EditionUpgradeHelper.h"
 #endif
@@ -335,9 +356,11 @@ typedef struct IUnknown IUnknown;
 #include "GPEdit.h"
 //#include "GameInput.h" // try /clr option
 #include "IAccess.h"
+#if VS_VER > VS_2005
 #include "IChannelCredentials.h"
 #include "IContact.h"
 #include "IContactProperties.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "IContentPrefetcherTaskTrigger.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -345,13 +368,17 @@ typedef struct IUnknown IUnknown;
 #endif
 #endif
 #include <iedial.h>
+#if VS_VER > VS_2005
 #include "IEPMapi.h"
+#endif
 #if (TOOLSET > 90) && ((defined _UNICODE) || (defined UNICODE))
 #include "IEProcess.h" 
 #endif
 //#include "IImgCtx.h"
 //#include "IMessage.h" // none of <mapix.h>, <mapidefs.h> nor <mapitags.h> has been found
+#if VS_VER > VS_2005
 #include "ISysmon.h"
+#endif
 #include "Iadmext.h"
 #include "Iadmw.h"
 #include "Iads.h"
@@ -361,7 +388,9 @@ typedef struct IUnknown IUnknown;
 #endif
 #include "Ilogobj.Hxx"
 //#include "ImageHlp.h"
+#if VS_VER > VS_2005
 #include "ImageTranscode.h"
+#endif
 #include "Ime.h"
 #include "InetReg.h"
 #include "InetSDK.h"
@@ -380,19 +409,27 @@ typedef struct IUnknown IUnknown;
 #include "IsolatedAppLauncher.h"
 #endif
 #include "Iwamreg.h"
+#if VS_VER > VS_2005
 #include "MDhcp.h"
+#endif
 #include "MLang.h"
+#if VS_VER > VS_2005
 #include "MSAAText.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "MemoryBuffer.h"
 #endif
 #include "MimeInfo.h"
 #include "Mobsync.h"
+#if TOOLSET > 90
 #include "MpegType.h"
+#endif
 #include "Mprapi.h"
 #include "Mq.h"
 #include "MsHtmHst.h"
+#if VS_VER > VS_2005
 #include "Msp.h"
+#endif
 #include "ObjSel.h"
 #if TOOLSET > 90
 #include "PNPXAssoc.h"
@@ -400,7 +437,9 @@ typedef struct IUnknown IUnknown;
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "PerceptionDevice.h"
 #endif
+#if VS_VER > VS_2005
 #include "PhotoAcquire.h"
+#endif
 //#include "PortableDeviceConnectApi.h"
 //#include "PortableDeviceConnectImports.idl"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
@@ -417,8 +456,10 @@ typedef struct IUnknown IUnknown;
 #endif
 #include "Reconcil.h"
 #include "RrasCfg.h"
+#if VS_VER > VS_2005
 #include "RTSCOM.h"
 #include "SearchAPI.h"
+#endif
 //#include "SearchApi.idl"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "ShellHandwriting.h"
@@ -429,15 +470,21 @@ typedef struct IUnknown IUnknown;
 #include "StorageProvider.h"
 #endif
 #include "SubsMgr.h"
+#if VS_VER > VS_2005
 #include "SyncMgr.h"
+#endif
 #include "TOM.h"
 #if TOOLSET > 90
 #include "TSGAuthenticationEngine.h"
 #include "TSGPolicyEngine.h"
 #endif
+#if VS_VER > VS_2005
 #include "Tapi3cc.h"
+#endif
 //#include "TextServ.h"
+#if VS_VER > VS_2005
 #include "TipAutoComplete.h"
+#endif
 #if TOOLSET > 90
 #include "UIAnimation.h"
 //#include "UIAnimation.idl"
@@ -445,8 +492,10 @@ typedef struct IUnknown IUnknown;
 //#include "UIRibbon.idl"
 #include "UIRibbonPropertyHelpers.h"
 #endif
+#if VS_VER > VS_2005
 //#include "UPnP.Idl"
 #include "UPnP.h"
+#endif
 #include "UrlHist.h"
 #include "UserEnv.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
@@ -455,12 +504,16 @@ typedef struct IUnknown IUnknown;
 #include "WaaSApi.h"
 #endif
 #endif
+#if VS_VER > VS_2005
 #include "WdsClientApi.h"
+#endif
 #if TOOLSET > 90
 #include "WebEvnts.h"
 #include "WebServices.h"
 #endif
+#if VS_VER > VS_2005
 #include "WerApi.h"
+#endif
 #include "WiaDevD.h"
 #include "WiaVideo.h"
 #if TOOLSET > 90
@@ -472,13 +525,17 @@ typedef struct IUnknown IUnknown;
 #include "Windows.Graphics.Capture.Interop.h"
 #include "Windows.Devices.Display.Core.Interop.h"
 #endif
+#if VS_VER > VS_2005
 #include "WindowsSideShowAPI.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "WindowsStorageCOM.h"
 #endif
 #include "Winineti.h"
+#endif
 #include "Winldap.h"
+#if VS_VER > VS_2005
 #include "Wscapi.h"
+#endif
 #include "WtsApi32.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "XblIdpAuthManager.h"
@@ -489,8 +546,10 @@ typedef struct IUnknown IUnknown;
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "activdbg100.h"
 #endif
+#if VS_VER > VS_2005
 #include "adhoc.h"
 #include "alg.h"
+#endif
 #include "sqloledb.h"
 #if TOOLSET > 90
 #include "txfw32.h"
@@ -599,7 +658,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 */ // comment for too large to compile
 //#include "MqOaI.h"
 #include "NetCon.h"
+#if VS_VER > VS_2005
 #include "NetSh.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "NotificationActivationCallback.h"
 #endif
@@ -670,7 +731,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "MFMediaEngine.h"
 #include "MFSharingEngine.h"
 #endif
+#if VS_VER > VS_2005
 #include "MFTransform.h"
+#endif
 #if (!(defined(_MSVC_TRADITIONAL) && _MSVC_TRADITIONAL == 0))
 #include "Mshtml.h"
 #endif
@@ -700,8 +763,10 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VCPP_6
 #include <ProvExce.h>
 #endif
+#if VS_VER > VS_2005
 #include "RecDefs.h"
 #include "RecTypes.h"
+#endif
 #include "SCardErr.h"
 #ifdef __midl // MIDL compiler, Microsoft Interface Definition Language, generate C/C++ code for COM/DCOM components
 // todo: move all *.idl files and begin test
@@ -715,17 +780,21 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if TOOLSET > 90
 #include "SessdirPublicTypes.h"
 #endif
+#if VS_VER > VS_2005
 #include "StructuredQuery.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "TpmVscAttestation.h"
 //#include "VMRender.idl"
 #endif
 #include "VSStyle.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "VmSavedStateDumpDefs.h"
 #include "WaaSAPITypes.h"
 #endif
+#if VS_VER > VS_2005
 #include "Wincodec.h"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <SCSISCAN.H>
 #endif
@@ -745,6 +814,8 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <Shellapi.h>
 #if VS_VER > VS_2003
 #include <SpecStrings.h>
+#endif
+#if VS_VER > VS_2005
 #include <TPCError.h>
 #endif
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
@@ -815,13 +886,17 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "adsiid.h"
 #include "adsnms.h"
 #include "adssts.h"
+#if VS_VER > VS_2005
 #include "asferr.h"
+#endif
 #if TOOLSET > 90
 #include "audioapotypes.h"
 #endif
 // #include "axcore.idl"
 #include "DSAdmin.h"
+#if VS_VER > VS_2005
 #include "DSAttrib.h"
+#endif
 #include "DSClient.h"
 #include "DSQuery.h"
 #include "DSRole.h"
@@ -837,12 +912,14 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #ifdef DXSDK_DIR // Microsoft DirectX SDK required
 #include <amaudio.h>
 #endif
+#if VS_VER > VS_2005
 #include "amparse.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "amsi.h"
 #endif
 #include "amstream.h"
 #include "amva.h"
+#endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <amvideo.h> 
 #endif
@@ -877,7 +954,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "assert.h"
 //#include "asynot.idl"
 //#include "asysta.idl"
+#if VS_VER > VS_2005
 #include "atacct.h"
+#endif
 #include <ks.h>
 /*
 #include <ksmedia.h>
@@ -911,15 +990,19 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 //#include "audiopolicy.h"
 #include "audiostatemonitorapi.h"
 #endif
+#if VS_VER > VS_2005
 #include "austream.h"
+#endif
 #if TOOLSET > 90
 #include "aux_ulib.h"
 #endif
 #if VS_VER > VCPP_6
 #include <authz.h>
 #endif
+#if VS_VER > VS_2005
 #include "aviriff.h"
 #include "avrfsdk.h"
+#endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <avrt.h>
 //#include <axextendenums.h>
@@ -941,19 +1024,27 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VCPP_6
 #include <ksmedia.h>
 #endif
+#if VS_VER > VS_2005
 #include "bdamedia.h"
 #include "bdatif.h"
 #include "bdatypes.h"
+#endif
 //#include "binres.idl"
 #include "bits.h"
+#if VS_VER > VS_2005
 #include "bits3_0.h"
+#endif
 #include "bitscfg.h"
 #include "bitsmsg.h"
+#if VS_VER > VS_2005
 #include "bluetoothapis.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "bluetoothleapis.h"
 #endif
+#if VS_VER > VS_2005
 #include "bthdef.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "bthioctl.h"
 #include "bthledef.h"
@@ -963,15 +1054,19 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if TOOLSET > 90
 #include "capi.h"
 #endif
+#if VS_VER > VS_2005
 #include "casetup.h"
+#endif
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "ccgplugins.h"
 #endif
 #if MSVC_VER > 2012
 #include "cchannel.h"
 #endif
+#if cppver >= 2011
 #if defined _SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING || defined _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include <ccomplex>
+#endif
 #endif
 #include <cderr.h>
 #include "cdosysstr.h"
@@ -1046,11 +1141,13 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 //#include "checksum.h"
 //#include "chprst.idl"
+#if VS_VER > VS_2005
 #include "clfs.h"
 //#include "clfslsn.h"
 #include "clfsmgmt.h"
 #include "clfsmgmtw32.h"
 #include "clfsw32.h"
+#endif
 //#include "client.h"
 //#include "clinf2.idl"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
@@ -1070,7 +1167,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "cmdval.idl"
 #include "cmdwpr.idl"*/
 #include "CmnQuery.h"
+#if VS_VER > VS_2005
 #include "codecapi.h"
+#endif
 //#include "coguid.h"
 //#include "Color.Dlg" // This is a dialog file
 // #include "colinf.idl"
@@ -1083,7 +1182,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "coml2api.h"
 #endif
 #endif
+#if VS_VER > VS_2005
 #include "comlite.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "commapi.h"
 #endif
@@ -1170,7 +1271,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <consoleapi3.h>
 #endif
 //#include "contactdeviceservice.h"
+#if VS_VER > VS_2005
 #include "contentpartner.h"
+#endif
 #include <control.h>
 #if NTDDI_VERSION > 0x0A000C00 // v143
 #include <cor.h>
@@ -1217,10 +1320,14 @@ typedef enum _SECURITY_LOGON_TYPE {
 //#include "cperguid.h"
 #include "Cpl.h"
 #include <crtdbg.h>
+#if VS_VER > VS_2005
 #include "credentialprovider.h"
 #include "credssp.h"
+#endif
 //#include "crtrow.idl"
+#if VS_VER > VS_2005
 #include "cryptdlg.h"
+#endif
 #if VS_VER > VS_2003
 #include <crtdefs.h>
 #endif
@@ -1243,7 +1350,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <ctgmath>
 #endif
 #endif
+#if VS_VER > VS_2005
 #include "ctfspui.h"
+#endif
 #include "ctxtcall.h"
 #include <ctype.h>
 #include "CustCntl.h"
@@ -1310,7 +1419,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "d3d12video.h"
 #endif
+#if VS_VER > VS_2005
 #include "d3d9helper.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "d3d9on12.h"
 #endif
@@ -1364,7 +1475,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 /*#include "dbdsad.idl"
 #include "dbinfo.idl"
 #include "dbinit.idl"*/
+#if VS_VER > VS_2005
 #include "dbnetlib.h"
+#endif
 /*#include "dbprop.idl"
 #include "dbrtpr.idl"
 #include "dbscmd.idl"
@@ -1439,7 +1552,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "dhcpsapi.h"
 #include "DhcpSSdk.h"
 #include "dimm.h"
+#if VS_VER > VS_2005
 #include "Dhcpv6cSdk.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "DiagnosticDataQuery.h"
 #include "DiagnosticDataQueryTypes.h"
@@ -1471,9 +1586,11 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 //#include "dpa_dsa.inl"
 //#include "dmksctrl.h"
+#if VS_VER > VS_2005
 #include "dmo.h"
 #include "dmodshow.h"
 #include "dmoimpl.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "dmprocessxmlfiltered.h"
 #endif
@@ -1493,8 +1610,10 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <dpapi.h>
 #endif
+#if VS_VER > VS_2005
 #include "dpx.h"
 #include <dpx1.h>
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "dragdropinterop.h"
 #endif
@@ -1508,16 +1627,22 @@ typedef enum _SECURITY_LOGON_TYPE {
 //#include "drt.h"
 #include "DsGetDC.h"
 //#include "dshow.h"
+#if VS_VER > VS_2005
 #include "dshowasf.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "dsparse.h"
 #endif
+#if VS_VER > VS_2005
 #include "dssec.h"
+#endif
 #include "DtcHelp.h"
+#if VS_VER > VS_2005
 #include "dv.h"
 #include "dvdevcod.h"
 #include "dvdmedia.h"
 #include "dwmapi.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "dxcapi.h"
 #include "dxcore.h"
@@ -1529,6 +1654,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if (MSVC_VER != VS_2013) || (defined NOWARNINGS)
 #include "dxtmpl.h"
 #endif
+#if VS_VER > VS_2005
 #include "dxva.h"
 #include <dxva2api.h>
 #include "dxva2swdev.h"
@@ -1540,16 +1666,21 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "eapmethodauthenticatorapis.h"
 #include "eapmethodpeerapis.h"
 #include "eappapis.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "easencryptprov.h"
 #include "easregprov.h"
 #endif
+#if VS_VER > VS_2005
 #include "edevdefs.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "edpwin32.h"
 #endif
+#if VS_VER > VS_2005
 #include "eaptypes.h"
 #include "effects.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "efswrtinterop.h"
 #endif
@@ -1575,22 +1706,26 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 //#include "errlup.idl"
 #include "errno.h"
+#if VS_VER > VS_2005
 #include "errors.h"
 //#include "errrec.idl"
 #include "esent.h"
 #include "evalcom2.h"
 #include "evcode.h"
 #include "EvColl.h"
+#endif
 #include "ExDisp.h"
 #include "ExDispid.h"
 //#include "ExDisp.Idl"
 //#include "event.h"
 //#include "evntcons.h"
+#if VS_VER > VS_2005
 #include "evntprov.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "evntrace.h"
 #endif
 #include "evr9.h"
+#endif
 //#include "exemptionaction.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "expandedresources.h"
@@ -1600,11 +1735,15 @@ typedef enum _SECURITY_LOGON_TYPE {
 //#include "FaxComEx_i.c"
 //#include "FaxDev.h"
 #else
+#if VS_VER > VS_2005
 #include "FaxCom.h"
+#endif
 //#include "FaxCom_i.c"
 #endif
+#if VS_VER > VS_2005
 #include "FaxMmc.h"
 #include "FaxRoute.h"
+#endif
 #include "fci.h"
 #include "fcntl.h"
 #include "fdi.h"
@@ -1636,7 +1775,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "fltUser.h"
 #include "fltUserStructures.h"
 #endif
+#if VS_VER > VS_2005
 #include "fontsub.h"
+#endif
 #include "fpieee.h"
 #include "FrQuery.h"
 #if TOOLSET > 90
@@ -1666,8 +1807,10 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "fwpmu.h"
 //#include "fwpsu.h"
 #endif
+#if VS_VER > VS_2005
 #include "fxsutility.h"
 #include "gameux.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "gamingdeviceinformation.h"
 #endif
@@ -1692,7 +1835,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 //#include "hbaapi.h"
 #include "hidsdi.h"
 #endif
+#if VS_VER > VS_2005
 #include "highlevelmonitorconfigurationapi.h"
+#endif
 //#include "hintsdeviceservice.h"
 #include "HLink.h"
 #include "HlGuids.h"
@@ -1720,14 +1865,18 @@ typedef enum _SECURITY_LOGON_TYPE {
 //#include "httprequest.idl"
 #include "HttpExt.h"
 //#include "httpserv.h"
+#if VS_VER > VS_2005
 #include "httptrace.h"
 //#include "hvsocket.h"
 #include "hwebcore.h"
+#endif
 #include "HttpFilt.h"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "hwreqchkapi.h"
 #endif
+#if VS_VER > VS_2005
 #include "hxhelppaneproxy.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "hypervdevicevirtualization.h"
 #endif
@@ -1738,14 +1887,18 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "icu.h"
 #include "icui18n.h"
 #endif
+#if VS_VER > VS_2005
 #include "icwcfg.h"
+#endif
 #include "IDLMULTI.H"
 #include "IDispIds.h"
 //#include "ieautomation.h"
 //#include "ieautomation.idl"
 //#include "ieee8021q.h"
 //#include "iewebdriver.h"
+#if VS_VER > VS_2005
 #include "iextag.h"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <dsparse.h>
 #endif
@@ -1829,14 +1982,18 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #include "iiisext.h"
 //#include "iketypes.idl"
+#if VS_VER > VS_2005
 #include "il21dec.h"
+#endif
 //#include "iisext_i.c"
 #include "iisrsta.h"
 #include "IIScnfg.h"
+#if VS_VER > VS_2005
 #include "imapi.h"
 //#include "imapi2.idl"
 #include "imapi2fs.h"
 #include "imapierror.h"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <ime_cmodes.h>
 #endif
@@ -1861,7 +2018,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "infstr.h"
 #endif
 #include <initguid.h>
+#if VS_VER > VS_2005
 #include "inked.h"
+#endif
 //#include "inked_i.c"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #if VS_VER > VS_2015
@@ -1877,7 +2036,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <interlockedapi.h>
 #endif
+#if VS_VER > VS_2005
 #include "intsafe.h"
+#endif
 #if MSVC_VER > 2012
 //#include "internal.h"
 #include "inttypes.h"
@@ -1937,7 +2098,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 //#include "ivectorchangedeventargs.idl"
 #include "iwscapi.h"
 #endif
+#if VS_VER > VS_2005
 #include "iwstdec.h"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <jobapi.h>
 #endif
@@ -2004,7 +2167,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <ktmtypes.h>
 #include <l2cmn.h>
 #endif
+#if VS_VER > VS_2005
 #include "ktmw32.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "lamp.h"
 #if (NTDDI_VERSION >= 0x0A000010 /* 10.0.26100.0 */) && (cppver >= 2017)
@@ -2022,7 +2187,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #include <limits.h>
 #include <limits>
+#if VS_VER > VS_2005
 #include "listeneradapter.h"
+#endif
 #include "LM.h"
 #include <lmaccess.h>   // Access, Domain, Group and User classes"
 #include <lmalert.h>    // Alerter"
@@ -2057,7 +2224,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 //#include "locking.h"
 //#include "logicaladdress.h"
+#if VS_VER > VS_2005
 #include "lowlevelmonitorconfigurationapi.h"
+#endif
 #include "LpmApi.h"
 #include "Ipinfoid.h"
 #if TOOLSET > 90
@@ -2074,8 +2243,22 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <lsalookup.h>
 #endif
 #include <lzexpand.h>
+#if VS_VER == VS_2005
+// this definition is copied from https://learn.microsoft.com/en-us/windows/win32/api/ntdef/ns-ntdef-_unicode_string directly.
+// struct _MCAST_SCOPE_ENTRY used this definition as UNICODE_STRING  ScopeDesc; , which is not recognized.
+// and ntdef.h is not included in Visual Studio 2005
+typedef struct _UNICODE_STRING {
+	USHORT Length;
+	USHORT MaximumLength;
+	PWSTR  Buffer;
+} UNICODE_STRING, * PUNICODE_STRING;
 #include "madcapcl.h"
+#else
+#include "madcapcl.h"
+#endif
+#if VS_VER > VS_2005
 #include "magnification.h"
+#endif
 #include "MailMsgProps.h"
 #if TOOLSET > 90
 //#include "manipulations_i.c"
@@ -2127,7 +2310,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "mdmlocalmanagement.h"
 #include "MDMRegistration.h"
 #endif
+#if VS_VER > VS_2005
 #include "medparam.h"
+#endif
 #include <memory.h>
 #include <memory>
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -2140,7 +2325,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "MessageDispatcherApi.h"
 #endif
 //#include "metadatadeviceservice.h"
+#if VS_VER > VS_2005
 #include "mfapi.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "mfcaptureengine.h"
 #if VS_VER > VS_2015
@@ -2207,7 +2394,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "minwindef.h"
 #endif
+#if VS_VER > VS_2005
 #include "mixerocx.h"
+#endif
 //#include "mmddk.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "mmeapi.h"
@@ -2223,9 +2412,11 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #include <mmsystem.h>
 //#include "module.h"
+#if VS_VER > VS_2005
 #include "Mpeg2Error.h"
 //#include "Mpeg2Structs.idl"
 #include "mpconfig.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "mprapidef.h"
 #endif
@@ -2236,7 +2427,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "MrmResourceIndexer.h"
 #endif
+#if VS_VER > VS_2005
 #include "MsCtfMonitorApi.h"
+#endif
 #include <msacm.h>
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "msacmdrv.h"
@@ -2252,7 +2445,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <mscat.h>
 #endif
-#if TOOLSET == 90
+#if TOOLSET <= 90  // VS2005 also has this issue
 #define CYPHER_BLOCK_LENGTH 8
 typedef struct _CYPHER_BLOCK {
 	CHAR data[CYPHER_BLOCK_LENGTH];
@@ -2286,12 +2479,16 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "msdaosp.h"
 #include "msdasc.h"
 #include "msdasql.h"
+#if VS_VER > VS_2005
 #include "msdelta.h"
 #include "msdrmerror.h"
 #include "msdrmgetinfo.h"
+#endif
 //#include "MsHTML.Idl"
 #include "msdshape.h"
+#if VS_VER > VS_2005
 #include "msfeeds.h"
+#endif
 //#include "msfeeds.idl"
 #include "MsHTML.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
@@ -2300,12 +2497,16 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if TOOLSET > 90
 #include "msiehost.h"
 #endif
+#if VS_VER > VS_2005
 #include "msiltcfg.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "msime.h"
 #include "msimeapi.h"
 #endif
+#if VS_VER > VS_2005
 #include "msinkaut15.h"
+#endif
 //#include "msinkaut15_i.c"
 //#include "msinkaut_i.c"
 //#include "msoav.h"
@@ -2313,7 +2514,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "msports.h"
 #endif
+#if VS_VER > VS_2005
 #include "msrdc.h"
+#endif
 //#include "msrdc.idl"
 #include "MSPST.h"
 #include "MSTErr.h"
@@ -2326,7 +2529,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "mstcpip.h"
 //#include "msvidctl.h"
 //#include "msvidctl.idl"
+#if VS_VER > VS_2005
 #include "mswsockdef.h"
+#endif
 //#include "MsXml.Idl"
 //#include "MsXml2.Idl"
 #include "MsXml2.h"
@@ -2339,7 +2544,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include <mswsockdef.h>
 #endif
 //#include "MsXml6.Idl"
+#if VS_VER > VS_2005
 #include "MsXml6.h"
+#endif
 #include "MsXmlDId.h"
 #include "Mshtmlc.h"
 #include "Msi.h"
@@ -2351,7 +2558,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 //#include "MspEnum.h"
 //#include "MspStrm.h"
 //#include "Mspcoll.h"
+#if VS_VER > VS_2005
 #include "mtpext.h"
+#endif
 #include "Msplog.h"
 //#include "Mspterm.h"
 //#include "Mspthrd.h"
@@ -2370,6 +2579,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "NTMSAPI.h"
 #include "NTMSMli.h"
 #include "NTQuery.h"
+#if VS_VER > VS_2005
 #include "muiload.h"
 //#include "mulres.idl"
 #include "mxdc.h"
@@ -2384,6 +2594,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include <naptypes.h>
 #endif
 #include "natupnp.h"
+#endif
 #include <nb30.h>
 //#include "nbluro.h"
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -2395,8 +2606,10 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <ndattrib.h>
 #endif
+#if VS_VER > VS_2005
 #include "ndfapi.h"
 #include "ndhelper.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "ndisguid.h"
 #endif
@@ -2421,9 +2634,13 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "netcfgn.h"
 #endif
+#if VS_VER > VS_2005
 #include "netfw.h"
+#endif
 //#include "netiodef.h"
+#if VS_VER > VS_2005
 #include "netlistmgr.h"
+#endif
 #include "netprov.h"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <nettypes.h>
@@ -2565,6 +2782,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "pbdaerrors.h"
 #endif
 #include "pchannel.h"
+#if VS_VER > VS_2005
 #include "pciprop.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "pdrvver.h"
@@ -2572,6 +2790,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "peninputpanel.h"
 //#include "peninputpanel_i.c"
 #include "perflib.h"
+#endif
 #if TOOLSET == 90
 //-----------------------------------------------------------------------------
 //
@@ -2644,12 +2863,14 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "PeerDist.h"
 #endif
 #include "PerHist.h"
+#if VS_VER > VS_2005
 #include "PhotoAcquireProperties.h"
 #include "physicalmonitorenumerationapi.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "pix.h"
 #endif
 #include "pla.h"
+#endif
 #if TOOLSET > 90
 #include "playlist.h"
 #endif
@@ -2661,11 +2882,15 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "pluginauthenticator.h"
 #endif
+#if VS_VER > VS_2005
 #include "pnrpns.h"
+#endif
 //#include "poclass.h"
 #include "Polarity.h"
+#if VS_VER > VS_2005
 #include "PortableDevice.h"
 #include "PortableDeviceApi.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "powerbase.h"
 #include "powersetting.h"
@@ -2683,12 +2908,16 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #endif
 #include "PrintManagerInterop.h"
 #endif
+#if VS_VER > VS_2005
 #include "prnasnot.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "prnasntp.h"
 #endif
 //#include "prntfont.h"
+#if VS_VER > VS_2005
 #include "prntvpt.h"
+#endif
 //#include "PrnSetup.Dlg"
 #include "process.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
@@ -2704,9 +2933,11 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "projectedfslib.h"
 #endif
+#if VS_VER > VS_2005
 #include "propapi.h"
 #include "propkey.h"
 #include "propvarutil.h"
+#endif
 //#include "prvmon.idl"
 //#include "PropIdl.Idl"
 #include "PropIdl.h"
@@ -2774,7 +3005,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "pwm.h"
 #endif
 #include "qmgr.h"
+#if VS_VER > VS_2005
 #include "qnetwork.h"
+#endif
 #include <qos.h>
 //#include "qos2.h"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -2796,7 +3029,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "rdpappcontainerclient.h"
 #endif
 //#include "rdpappcontainerclient.idl"
+#if VS_VER > VS_2005
 #include "rdpencomapi.h"
+#endif
 //#include "rdpencomapi.idl"
 //#include "rdpencomapi_i.c"
 //#include "readdt.idl"
@@ -2807,8 +3042,10 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include <reason.h>             // get the public reasons"
 #endif
 //#include "recapis.h"
+#if VS_VER > VS_2005
 #include "recdefs.h"
 #include "rectypes.h"
+#endif
 //#include "regprv.idl"
 #include "RegStr.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
@@ -2817,7 +3054,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "RemoteSystemsInterop.h"
 #endif
 #endif
+#if VS_VER > VS_2005
 #include "rendezvoussession.h"
+#endif
 //#include "rendezvoussession_i.c"
 //#include "Resapi.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
@@ -2826,7 +3065,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "ResourceIndexer.h"
 #endif
 #endif
+#if VS_VER > VS_2005
 #include "RestartManager.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include <restrictedErrorInfo.h>
 #endif
@@ -2912,13 +3153,17 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "stiusd.h"
 #endif
+#if VS_VER > VS_2005
 #include <sapi.h>
 //#include "sapi.idl"
 #include <sapiddk.h>
+#endif
 #if TOOLSET > 90
 #include "sas.h"
 #endif
+#if VS_VER > VS_2005
 #include "sbe.h"
+#endif
 #if TOOLSET > 90
 #include "sberrors.h"
 #include "sbtsv.h"
@@ -2927,10 +3172,13 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include <schannel.h>
 #include <schedule.h>
 #include <schnlsp.h> // exists on VC++ 6 but found syntax errors
+//todo recheck this error
 #endif
 #include "Schemadef.h"
+#if VS_VER > VS_2005
 #include <mswmdm.h>
 #include "scclient.h"
+#endif
 #include "scesvc.h"
 //#include "scpops.idl"
 #include "ScrnSave.h"
@@ -2983,14 +3231,18 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "shcore.h"
 #endif
+#if VS_VER > VS_2005
 #include "shdeprecated.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "ShellScalingApi.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <sherrors.h>
 #endif
+#if VS_VER > VS_2005
 #include "shidfact.h"
+#endif
 //#include "shimgdata.h"
 //#include "shldisp.idl"
 #include "signal.h"
@@ -3000,8 +3252,10 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include <shtypes.h>
 #include <sipbase.h> // included mssip.h
 #endif
+#if VS_VER > VS_2005
 #include "sliddefs.h"
 #include "slpublic.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "smbclnt.h"
 #endif
@@ -3036,7 +3290,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #endif
 #endif
 //#include "spddkhlp.h"
+#if VS_VER > VS_2005
 #include "spcollec.h"
+#endif
 //#include "specstrings_strict.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "spellcheck.h"
@@ -3044,7 +3300,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "spellcheckprovider.h"
 //#include "spellcheckprovider_i.c"
 #endif
+#if VS_VER > VS_2005
 #include "sperror.h"
+#endif
 //#include "sphelper.h"
 //#include "speventq.h"
 //#include "spuihelp.h"
@@ -3080,7 +3338,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "stdnoreturn.h"
 #endif
+#if VS_VER > VS_2005
 #include "StgProp.h"
+#endif
 #include "stierr.h"
 #include "stireg.h"
 #include "StlLock.h"
@@ -3264,9 +3524,13 @@ typedef unsigned __int64   uintmax_t;
 #endif
 //#include "strmif.idl"
 //#include <strmif.h>     // Generated IDL header file for streams interfaces"
+#if VS_VER > VS_2005
 #include "structuredquery.h"
+#endif
 //#include "SubAuth.h"
+#if VS_VER > VS_2005
 #include "subscriptionservices.h"
+#endif
 #include "SvcGuid.h"
 //#include "swdevice.h"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -3674,7 +3938,9 @@ typedef unsigned __int64   uintmax_t;
 #endif
 #include "windowsx.h"
 #include "winefs.h"
+#if VS_VER > VS_2005
 #include "winevt.h"
+#endif
 #include "wingdi.h"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 // redefinition
@@ -3705,11 +3971,15 @@ typedef unsigned __int64   uintmax_t;
 #if VS_VER > VCPP_6
 #include <tapi3err.h>
 #endif
+#if VS_VER > VS_2005
 //#include "tabdef.idl"
 #include "tabflicks.h"
+#endif
 //#include "tabren.idl"
 //#include "taskdeviceservice.h"
+#if VS_VER > VS_2005
 #include "taskschd.h"
+#endif
 //#include "tbdefcnt.idl"
 //#include "tblcrt.idl"
 //#include "tbs.h"
@@ -3740,7 +4010,9 @@ typedef unsigned __int64   uintmax_t;
 #include <threadpoolapiset.h>
 #include <threadpoollegacyapiset.h>
 #endif
+#if VS_VER > VS_2005
 #include "thumbcache.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "thumbnailstreamcache.h"
 #endif
@@ -3751,7 +4023,9 @@ typedef unsigned __int64   uintmax_t;
 #endif
 //#include "tnef.h"
 //#include "tokenbinding.h"
+#if VS_VER > VS_2005
 #include "tpcerror.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #if VS_VER > VS_2015
 #include "tpmvscattestation.h"
@@ -3766,10 +4040,14 @@ typedef unsigned __int64   uintmax_t;
 #include "TSPI.h"
 #include "Tapi.h"
 //#include "Tapi3.h"
+#if VS_VER > VS_2005 // not found ddraw.h
 #include "Tapi3ds.h"
 #include "Tapi3if.h"
 #include "TimeProv.h"
+#endif
+#if VS_VER > VS_2005 // no such header
 #include "TextStor.h"
+#endif
 //#include "TipAutoComplete_i.c"
 #include "TlHelp32.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -3802,7 +4080,9 @@ typedef unsigned __int64   uintmax_t;
 #if cppver >= 2011
 #include <tuple>
 #endif
+#if VS_VER > VS_2005
 #include "txlogpub.h"
+#endif
 #if NTDDI_VERSION > 0x0A000C00 // v143
 #include "typeresolution.h"
 #endif
@@ -3820,18 +4100,21 @@ typedef unsigned __int64   uintmax_t;
 #if MSVC_VER > VS_2013
 #include "uchar.h"
 #endif
-#include "udpmib.h"
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <udpmib.h>
 #include <unexposeenums2managed.h>
 #endif
-#if TOOLSET > 90
+#if TOOLSET > 90	  
 #include "UIAutomation.h"
 #include "UIAutomationClient.h"
 #else
+#if VS_VER > VS_2005
 #include <UIAutomationCore.h>
 #endif
+#endif
+#if VS_VER > VS_2005
 #include "UIAutomationCoreApi.h"
+#endif
 #if TOOLSET > 90
 #include "UIRibbonKeydef.h"
 #endif
@@ -3843,7 +4126,9 @@ typedef unsigned __int64   uintmax_t;
 //#include "unknwnbase.idl"
 //#include "urlacc.idl"
 //#include "urlaccsdk.idl"
+#if VS_VER > VS_2005
 #include "upnphost.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "usb.h"
 #include "usb100.h"
@@ -3897,11 +4182,15 @@ typedef unsigned __int64   uintmax_t;
 #if VS_VER > VCPP_6
 #include <uxtheme.h>
 #endif
+#if VS_VER > VS_2005
 #include "vbinterf.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "vdmctxt.h"
 #endif
+#if VS_VER > VS_2005
 #include "vds.h"
+#endif
 //#include "vds.idl"
 //#include "vdshwprv.h"
 //#include "vdshwprv.idl"
@@ -3919,7 +4208,9 @@ typedef unsigned __int64   uintmax_t;
 #include <vdmctxt.h>
 #endif
 //#include "vdssys.idl"
+#if VS_VER > VS_2005
 #include "vdserr.h"
+#endif
 //#include "veinterop.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "VersionHelpers.h"
@@ -3928,9 +4219,13 @@ typedef unsigned __int64   uintmax_t;
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "vfwext.h"
 #endif
+#if VS_VER > VS_2005
 #include "vidcap.h"
+#endif
 //#include "virtualaddress.h"
+#if VS_VER > VS_2005
 #include "vsserror.h"
+#endif
 //#include "vdshp.idl"
 //#include "vdshpcm.idl"
 //#include "vdsprvcm.idl"
@@ -3942,19 +4237,25 @@ typedef unsigned __int64   uintmax_t;
 #if cppver > 2017
 #include <version>
 #endif
+#if VS_VER > VS_2005
 #include "vmr9.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "vmsavedstatedump.h"
 #include "vmsavedstatedumpdefs.h"
 #endif
+#if VS_VER > VS_2005
 #include "vptype.h"
 #include "vpconfig.h"
 #include "vpnotify.h"
 #include "vsadmin.h"
+#endif
 //#include "vsbackup.h"
+#if VS_VER > VS_2005
 #include "vsmgmt.h"
 #include "vsprov.h"
 #include "vssym32.h"
+#endif
 //#include "vswriter.h"
 /*#include "vwchp.idl"
 #include "vwflt.idl"
@@ -3971,7 +4272,514 @@ typedef unsigned __int64   uintmax_t;
 //#include <wabnot.h>
 
 // Mismatch	 #if/#endif in VS2003/2005 because solved */ as ?/
-#if defined(_MSC_VER) && (_MSC_VER < 1400)
+#if VS_VER <= VS_2005
+/*
+ *  WABTAGS.H
+ *
+ *  Property tag definitions for standard properties of WAB
+ *  objects.
+ *
+ *  The following ranges should be used for all property IDs. Note that
+ *  property IDs for objects other than messages and recipients should
+ *  all fall in the range 0x3000 to 0x3FFF:
+ *
+ *  From    To      Kind of property
+ *  --------------------------------
+ *  0001    0BFF    MAPI_defined envelope property
+ *  0C00    0DFF    MAPI_defined per-recipient property
+ *  0E00    0FFF    MAPI_defined non-transmittable property
+ *  1000    2FFF    MAPI_defined message content property
+ *
+ *  3000    3FFF    MAPI_defined property (usually not message or recipient)
+ *
+ *  4000    57FF    Transport-defined envelope property
+ *  5800    5FFF    Transport-defined per-recipient property
+ *  6000    65FF    User-defined non-transmittable property
+ *  6600    67FF    Provider-defined internal non-transmittable property
+ *  6800    7BFF    Message class-defined content property
+ *  7C00    7FFF    Message class-defined non-transmittable
+ *                  property
+ *
+ *  8000    FFFE    User-defined Name-to-id mapped property
+ *
+ *  The 3000-3FFF range is further subdivided as follows:
+ *
+ *  From    To      Kind of property
+ *  --------------------------------
+ *  3000    33FF    Common property such as display name, entry ID
+ *  3400    35FF    Message store object
+ *  3600    36FF    Folder or AB container
+ *  3700    38FF    Attachment
+ *  3900    39FF    Address book object
+ *  3A00    3BFF    Mail user
+ *  3C00    3CFF    Distribution list
+ *  3D00    3DFF    Profile section
+ *  3E00    3FFF    Status object
+ *
+ *  Copyright 1993-1998 Microsoft Corporation. All Rights Reserved.
+ */
+
+#if !defined(MAPITAGS_H) && !defined(WABTAGS_H)
+#define WABTAGS_H
+
+ /* Determine if a property is transmittable. */
+
+#define FIsTransmittable(ulPropTag) \
+    ((PROP_ID (ulPropTag) <  (ULONG)0x0E00) || \
+    (PROP_ID (ulPropTag)  >= (ULONG)0x8000) || \
+    ((PROP_ID (ulPropTag) >= (ULONG)0x1000) && (PROP_ID (ulPropTag) < (ULONG)0x6000)) || \
+    ((PROP_ID (ulPropTag) >= (ULONG)0x6800) && (PROP_ID (ulPropTag) < (ULONG)0x7C00)))
+
+
+/*
+ * The range of non-message and non-recipient property IDs (0x3000 - 0x3FFF) is
+ * further broken down into ranges to make assigning new property IDs easier.
+ *
+ *  From    To      Kind of property
+ *  --------------------------------
+ *  3000    32FF    MAPI_defined common property
+ *  3200    33FF    MAPI_defined form property
+ *  3400    35FF    MAPI_defined message store property
+ *  3600    36FF    MAPI_defined Folder or AB Container property
+ *  3700    38FF    MAPI_defined attachment property
+ *  3900    39FF    MAPI_defined address book property
+ *  3A00    3BFF    MAPI_defined mailuser property
+ *  3C00    3CFF    MAPI_defined DistList property
+ *  3D00    3DFF    MAPI_defined Profile Section property
+ *  3E00    3EFF    MAPI_defined Status property
+ *  3F00    3FFF    MAPI_defined display table property
+ */
+
+ /*
+  *  Properties common to numerous MAPI objects.
+  *
+  *  Those properties that can appear on messages are in the
+  *  non-transmittable range for messages. They start at the high
+  *  end of that range and work down.
+  *
+  *  Properties that never appear on messages are defined in the common
+  *  property range (see above).
+  */
+
+  /*
+   * properties that are common to multiple objects (including message objects)
+   * -- these ids are in the non-transmittable range
+   */
+
+#define PR_ENTRYID                                  PROP_TAG( PT_BINARY,    0x0FFF)
+#define PR_OBJECT_TYPE                              PROP_TAG( PT_LONG,      0x0FFE)
+#define PR_ICON                                     PROP_TAG( PT_BINARY,    0x0FFD)
+#define PR_MINI_ICON                                PROP_TAG( PT_BINARY,    0x0FFC)
+#define PR_STORE_ENTRYID                            PROP_TAG( PT_BINARY,    0x0FFB)
+#define PR_STORE_RECORD_KEY                         PROP_TAG( PT_BINARY,    0x0FFA)
+#define PR_RECORD_KEY                               PROP_TAG( PT_BINARY,    0x0FF9)
+#define PR_MAPPING_SIGNATURE                        PROP_TAG( PT_BINARY,    0x0FF8)
+#define PR_ACCESS_LEVEL                             PROP_TAG( PT_LONG,      0x0FF7)
+#define PR_INSTANCE_KEY                             PROP_TAG( PT_BINARY,    0x0FF6)
+#define PR_ROW_TYPE                                 PROP_TAG( PT_LONG,      0x0FF5)
+#define PR_ACCESS                                   PROP_TAG( PT_LONG,      0x0FF4)
+
+   /*
+	* properties that are common to multiple objects (usually not including message objects)
+	* -- these ids are in the transmittable range
+	*/
+
+#define PR_ROWID                                    PROP_TAG( PT_LONG,      0x3000)
+#define PR_DISPLAY_NAME                             PROP_TAG( PT_TSTRING,   0x3001)
+#define PR_DISPLAY_NAME_W                           PROP_TAG( PT_UNICODE,   0x3001)
+#define PR_DISPLAY_NAME_A                           PROP_TAG( PT_STRING8,   0x3001)
+#define PR_ADDRTYPE                                 PROP_TAG( PT_TSTRING,   0x3002)
+#define PR_ADDRTYPE_W                               PROP_TAG( PT_UNICODE,   0x3002)
+#define PR_ADDRTYPE_A                               PROP_TAG( PT_STRING8,   0x3002)
+#define PR_EMAIL_ADDRESS                            PROP_TAG( PT_TSTRING,   0x3003)
+#define PR_EMAIL_ADDRESS_W                          PROP_TAG( PT_UNICODE,   0x3003)
+#define PR_EMAIL_ADDRESS_A                          PROP_TAG( PT_STRING8,   0x3003)
+#define PR_COMMENT                                  PROP_TAG( PT_TSTRING,   0x3004)
+#define PR_COMMENT_W                                PROP_TAG( PT_UNICODE,   0x3004)
+#define PR_COMMENT_A                                PROP_TAG( PT_STRING8,   0x3004)
+#define PR_DEPTH                                    PROP_TAG( PT_LONG,      0x3005)
+#define PR_PROVIDER_DISPLAY                         PROP_TAG( PT_TSTRING,   0x3006)
+#define PR_PROVIDER_DISPLAY_W                       PROP_TAG( PT_UNICODE,   0x3006)
+#define PR_PROVIDER_DISPLAY_A                       PROP_TAG( PT_STRING8,   0x3006)
+#define PR_CREATION_TIME                            PROP_TAG( PT_SYSTIME,   0x3007)
+#define PR_LAST_MODIFICATION_TIME                   PROP_TAG( PT_SYSTIME,   0x3008)
+#define PR_RESOURCE_FLAGS                           PROP_TAG( PT_LONG,      0x3009)
+#define PR_PROVIDER_DLL_NAME                        PROP_TAG( PT_TSTRING,   0x300A)
+#define PR_PROVIDER_DLL_NAME_W                      PROP_TAG( PT_UNICODE,   0x300A)
+#define PR_PROVIDER_DLL_NAME_A                      PROP_TAG( PT_STRING8,   0x300A)
+#define PR_SEARCH_KEY                               PROP_TAG( PT_BINARY,    0x300B)
+#define PR_PROVIDER_UID                             PROP_TAG( PT_BINARY,    0x300C)
+#define PR_PROVIDER_ORDINAL                         PROP_TAG( PT_LONG,      0x300D)
+
+
+	/* Proptags 35E8-35FF reserved for folders "guaranteed" by PR_VALID_FOLDER_MASK */
+
+
+	/*
+	 *  Folder and AB Container properties
+	 */
+
+#define PR_CONTAINER_FLAGS                          PROP_TAG( PT_LONG,      0x3600)
+#define PR_FOLDER_TYPE                              PROP_TAG( PT_LONG,      0x3601)
+#define PR_CONTENT_COUNT                            PROP_TAG( PT_LONG,      0x3602)
+#define PR_CONTENT_UNREAD                           PROP_TAG( PT_LONG,      0x3603)
+#define PR_CREATE_TEMPLATES                         PROP_TAG( PT_OBJECT,    0x3604)
+#define PR_DETAILS_TABLE                            PROP_TAG( PT_OBJECT,    0x3605)
+#define PR_SEARCH                                   PROP_TAG( PT_OBJECT,    0x3607)
+#define PR_SELECTABLE                               PROP_TAG( PT_BOOLEAN,   0x3609)
+#define PR_SUBFOLDERS                               PROP_TAG( PT_BOOLEAN,   0x360a)
+#define PR_STATUS                                   PROP_TAG( PT_LONG,      0x360b)
+#define PR_ANR                                      PROP_TAG( PT_TSTRING,   0x360c)
+#define PR_ANR_W                                    PROP_TAG( PT_UNICODE,   0x360c)
+#define PR_ANR_A                                    PROP_TAG( PT_STRING8,   0x360c)
+#define PR_CONTENTS_SORT_ORDER                      PROP_TAG( PT_MV_LONG,   0x360d)
+#define PR_CONTAINER_HIERARCHY                      PROP_TAG( PT_OBJECT,    0x360e)
+#define PR_CONTAINER_CONTENTS                       PROP_TAG( PT_OBJECT,    0x360f)
+#define PR_FOLDER_ASSOCIATED_CONTENTS               PROP_TAG( PT_OBJECT,    0x3610)
+#define PR_DEF_CREATE_DL                            PROP_TAG( PT_BINARY,    0x3611)
+#define PR_DEF_CREATE_MAILUSER                      PROP_TAG( PT_BINARY,    0x3612)
+#define PR_CONTAINER_CLASS                          PROP_TAG( PT_TSTRING,   0x3613)
+#define PR_CONTAINER_CLASS_W                        PROP_TAG( PT_UNICODE,   0x3613)
+#define PR_CONTAINER_CLASS_A                        PROP_TAG( PT_STRING8,   0x3613)
+#define PR_CONTAINER_MODIFY_VERSION                 PROP_TAG( PT_I8,        0x3614)
+#define PR_AB_PROVIDER_ID                           PROP_TAG( PT_BINARY,    0x3615)
+#define PR_DEFAULT_VIEW_ENTRYID                     PROP_TAG( PT_BINARY,    0x3616)
+#define PR_ASSOC_CONTENT_COUNT                      PROP_TAG( PT_LONG,      0x3617)
+	 /* Don't use 36FE and 36FF */
+
+
+	 /*
+	  *  AB Object properties
+	  */
+
+#define PR_DISPLAY_TYPE                             PROP_TAG( PT_LONG,      0x3900)
+#define PR_TEMPLATEID                               PROP_TAG( PT_BINARY,    0x3902)
+#define PR_PRIMARY_CAPABILITY                       PROP_TAG( PT_BINARY,    0x3904)
+#define PR_7BIT_DISPLAY_NAME                        PROP_TAG( PT_STRING8,   0x39FF)
+
+	  /*
+	   *  Mail user properties
+	   */
+
+#define PR_ACCOUNT                                  PROP_TAG( PT_TSTRING,   0x3A00)
+#define PR_ACCOUNT_W                                PROP_TAG( PT_UNICODE,   0x3A00)
+#define PR_ACCOUNT_A                                PROP_TAG( PT_STRING8,   0x3A00)
+#define PR_ALTERNATE_RECIPIENT                      PROP_TAG( PT_BINARY,    0x3A01)
+#define PR_CALLBACK_TELEPHONE_NUMBER                PROP_TAG( PT_TSTRING,   0x3A02)
+#define PR_CALLBACK_TELEPHONE_NUMBER_W              PROP_TAG( PT_UNICODE,   0x3A02)
+#define PR_CALLBACK_TELEPHONE_NUMBER_A              PROP_TAG( PT_STRING8,   0x3A02)
+#define PR_CONVERSION_PROHIBITED                    PROP_TAG( PT_BOOLEAN,   0x3A03)
+#define PR_DISCLOSE_RECIPIENTS                      PROP_TAG( PT_BOOLEAN,   0x3A04)
+#define PR_GENERATION                               PROP_TAG( PT_TSTRING,   0x3A05)
+#define PR_GENERATION_W                             PROP_TAG( PT_UNICODE,   0x3A05)
+#define PR_GENERATION_A                             PROP_TAG( PT_STRING8,   0x3A05)
+#define PR_GIVEN_NAME                               PROP_TAG( PT_TSTRING,   0x3A06)
+#define PR_GIVEN_NAME_W                             PROP_TAG( PT_UNICODE,   0x3A06)
+#define PR_GIVEN_NAME_A                             PROP_TAG( PT_STRING8,   0x3A06)
+#define PR_GOVERNMENT_ID_NUMBER                     PROP_TAG( PT_TSTRING,   0x3A07)
+#define PR_GOVERNMENT_ID_NUMBER_W                   PROP_TAG( PT_UNICODE,   0x3A07)
+#define PR_GOVERNMENT_ID_NUMBER_A                   PROP_TAG( PT_STRING8,   0x3A07)
+#define PR_BUSINESS_TELEPHONE_NUMBER                PROP_TAG( PT_TSTRING,   0x3A08)
+#define PR_BUSINESS_TELEPHONE_NUMBER_W              PROP_TAG( PT_UNICODE,   0x3A08)
+#define PR_BUSINESS_TELEPHONE_NUMBER_A              PROP_TAG( PT_STRING8,   0x3A08)
+#define PR_OFFICE_TELEPHONE_NUMBER                  PR_BUSINESS_TELEPHONE_NUMBER
+#define PR_OFFICE_TELEPHONE_NUMBER_W                PR_BUSINESS_TELEPHONE_NUMBER_W
+#define PR_OFFICE_TELEPHONE_NUMBER_A                PR_BUSINESS_TELEPHONE_NUMBER_A
+#define PR_HOME_TELEPHONE_NUMBER                    PROP_TAG( PT_TSTRING,   0x3A09)
+#define PR_HOME_TELEPHONE_NUMBER_W                  PROP_TAG( PT_UNICODE,   0x3A09)
+#define PR_HOME_TELEPHONE_NUMBER_A                  PROP_TAG( PT_STRING8,   0x3A09)
+#define PR_INITIALS                                 PROP_TAG( PT_TSTRING,   0x3A0A)
+#define PR_INITIALS_W                               PROP_TAG( PT_UNICODE,   0x3A0A)
+#define PR_INITIALS_A                               PROP_TAG( PT_STRING8,   0x3A0A)
+#define PR_KEYWORD                                  PROP_TAG( PT_TSTRING,   0x3A0B)
+#define PR_KEYWORD_W                                PROP_TAG( PT_UNICODE,   0x3A0B)
+#define PR_KEYWORD_A                                PROP_TAG( PT_STRING8,   0x3A0B)
+#define PR_LANGUAGE                                 PROP_TAG( PT_TSTRING,   0x3A0C)
+#define PR_LANGUAGE_W                               PROP_TAG( PT_UNICODE,   0x3A0C)
+#define PR_LANGUAGE_A                               PROP_TAG( PT_STRING8,   0x3A0C)
+#define PR_LOCATION                                 PROP_TAG( PT_TSTRING,   0x3A0D)
+#define PR_LOCATION_W                               PROP_TAG( PT_UNICODE,   0x3A0D)
+#define PR_LOCATION_A                               PROP_TAG( PT_STRING8,   0x3A0D)
+#define PR_MAIL_PERMISSION                          PROP_TAG( PT_BOOLEAN,   0x3A0E)
+#define PR_MHS_COMMON_NAME                          PROP_TAG( PT_TSTRING,   0x3A0F)
+#define PR_MHS_COMMON_NAME_W                        PROP_TAG( PT_UNICODE,   0x3A0F)
+#define PR_MHS_COMMON_NAME_A                        PROP_TAG( PT_STRING8,   0x3A0F)
+#define PR_ORGANIZATIONAL_ID_NUMBER                 PROP_TAG( PT_TSTRING,   0x3A10)
+#define PR_ORGANIZATIONAL_ID_NUMBER_W               PROP_TAG( PT_UNICODE,   0x3A10)
+#define PR_ORGANIZATIONAL_ID_NUMBER_A               PROP_TAG( PT_STRING8,   0x3A10)
+#define PR_SURNAME                                  PROP_TAG( PT_TSTRING,   0x3A11)
+#define PR_SURNAME_W                                PROP_TAG( PT_UNICODE,   0x3A11)
+#define PR_SURNAME_A                                PROP_TAG( PT_STRING8,   0x3A11)
+#define PR_ORIGINAL_ENTRYID                         PROP_TAG( PT_BINARY,    0x3A12)
+#define PR_ORIGINAL_DISPLAY_NAME                    PROP_TAG( PT_TSTRING,   0x3A13)
+#define PR_ORIGINAL_DISPLAY_NAME_W                  PROP_TAG( PT_UNICODE,   0x3A13)
+#define PR_ORIGINAL_DISPLAY_NAME_A                  PROP_TAG( PT_STRING8,   0x3A13)
+#define PR_ORIGINAL_SEARCH_KEY                      PROP_TAG( PT_BINARY,    0x3A14)
+#define PR_POSTAL_ADDRESS                           PROP_TAG( PT_TSTRING,   0x3A15)
+#define PR_POSTAL_ADDRESS_W                         PROP_TAG( PT_UNICODE,   0x3A15)
+#define PR_POSTAL_ADDRESS_A                         PROP_TAG( PT_STRING8,   0x3A15)
+#define PR_COMPANY_NAME                             PROP_TAG( PT_TSTRING,   0x3A16)
+#define PR_COMPANY_NAME_W                           PROP_TAG( PT_UNICODE,   0x3A16)
+#define PR_COMPANY_NAME_A                           PROP_TAG( PT_STRING8,   0x3A16)
+#define PR_TITLE                                    PROP_TAG( PT_TSTRING,   0x3A17)
+#define PR_TITLE_W                                  PROP_TAG( PT_UNICODE,   0x3A17)
+#define PR_TITLE_A                                  PROP_TAG( PT_STRING8,   0x3A17)
+#define PR_DEPARTMENT_NAME                          PROP_TAG( PT_TSTRING,   0x3A18)
+#define PR_DEPARTMENT_NAME_W                        PROP_TAG( PT_UNICODE,   0x3A18)
+#define PR_DEPARTMENT_NAME_A                        PROP_TAG( PT_STRING8,   0x3A18)
+#define PR_OFFICE_LOCATION                          PROP_TAG( PT_TSTRING,   0x3A19)
+#define PR_OFFICE_LOCATION_W                        PROP_TAG( PT_UNICODE,   0x3A19)
+#define PR_OFFICE_LOCATION_A                        PROP_TAG( PT_STRING8,   0x3A19)
+#define PR_PRIMARY_TELEPHONE_NUMBER                 PROP_TAG( PT_TSTRING,   0x3A1A)
+#define PR_PRIMARY_TELEPHONE_NUMBER_W               PROP_TAG( PT_UNICODE,   0x3A1A)
+#define PR_PRIMARY_TELEPHONE_NUMBER_A               PROP_TAG( PT_STRING8,   0x3A1A)
+#define PR_BUSINESS2_TELEPHONE_NUMBER               PROP_TAG( PT_TSTRING,   0x3A1B)
+#define PR_BUSINESS2_TELEPHONE_NUMBER_W             PROP_TAG( PT_UNICODE,   0x3A1B)
+#define PR_BUSINESS2_TELEPHONE_NUMBER_A             PROP_TAG( PT_STRING8,   0x3A1B)
+#define PR_OFFICE2_TELEPHONE_NUMBER                 PR_BUSINESS2_TELEPHONE_NUMBER
+#define PR_OFFICE2_TELEPHONE_NUMBER_W               PR_BUSINESS2_TELEPHONE_NUMBER_W
+#define PR_OFFICE2_TELEPHONE_NUMBER_A               PR_BUSINESS2_TELEPHONE_NUMBER_A
+#define PR_MOBILE_TELEPHONE_NUMBER                  PROP_TAG( PT_TSTRING,   0x3A1C)
+#define PR_MOBILE_TELEPHONE_NUMBER_W                PROP_TAG( PT_UNICODE,   0x3A1C)
+#define PR_MOBILE_TELEPHONE_NUMBER_A                PROP_TAG( PT_STRING8,   0x3A1C)
+#define PR_CELLULAR_TELEPHONE_NUMBER                PR_MOBILE_TELEPHONE_NUMBER
+#define PR_CELLULAR_TELEPHONE_NUMBER_W              PR_MOBILE_TELEPHONE_NUMBER_W
+#define PR_CELLULAR_TELEPHONE_NUMBER_A              PR_MOBILE_TELEPHONE_NUMBER_A
+#define PR_RADIO_TELEPHONE_NUMBER                   PROP_TAG( PT_TSTRING,   0x3A1D)
+#define PR_RADIO_TELEPHONE_NUMBER_W                 PROP_TAG( PT_UNICODE,   0x3A1D)
+#define PR_RADIO_TELEPHONE_NUMBER_A                 PROP_TAG( PT_STRING8,   0x3A1D)
+#define PR_CAR_TELEPHONE_NUMBER                     PROP_TAG( PT_TSTRING,   0x3A1E)
+#define PR_CAR_TELEPHONE_NUMBER_W                   PROP_TAG( PT_UNICODE,   0x3A1E)
+#define PR_CAR_TELEPHONE_NUMBER_A                   PROP_TAG( PT_STRING8,   0x3A1E)
+#define PR_OTHER_TELEPHONE_NUMBER                   PROP_TAG( PT_TSTRING,   0x3A1F)
+#define PR_OTHER_TELEPHONE_NUMBER_W                 PROP_TAG( PT_UNICODE,   0x3A1F)
+#define PR_OTHER_TELEPHONE_NUMBER_A                 PROP_TAG( PT_STRING8,   0x3A1F)
+#define PR_TRANSMITABLE_DISPLAY_NAME                PROP_TAG( PT_TSTRING,   0x3A20)
+#define PR_TRANSMITABLE_DISPLAY_NAME_W              PROP_TAG( PT_UNICODE,   0x3A20)
+#define PR_TRANSMITABLE_DISPLAY_NAME_A              PROP_TAG( PT_STRING8,   0x3A20)
+#define PR_PAGER_TELEPHONE_NUMBER                   PROP_TAG( PT_TSTRING,   0x3A21)
+#define PR_PAGER_TELEPHONE_NUMBER_W                 PROP_TAG( PT_UNICODE,   0x3A21)
+#define PR_PAGER_TELEPHONE_NUMBER_A                 PROP_TAG( PT_STRING8,   0x3A21)
+#define PR_BEEPER_TELEPHONE_NUMBER                  PR_PAGER_TELEPHONE_NUMBER
+#define PR_BEEPER_TELEPHONE_NUMBER_W                PR_PAGER_TELEPHONE_NUMBER_W
+#define PR_BEEPER_TELEPHONE_NUMBER_A                PR_PAGER_TELEPHONE_NUMBER_A
+#define PR_USER_CERTIFICATE                         PROP_TAG( PT_BINARY,    0x3A22)
+#define PR_PRIMARY_FAX_NUMBER                       PROP_TAG( PT_TSTRING,   0x3A23)
+#define PR_PRIMARY_FAX_NUMBER_W                     PROP_TAG( PT_UNICODE,   0x3A23)
+#define PR_PRIMARY_FAX_NUMBER_A                     PROP_TAG( PT_STRING8,   0x3A23)
+#define PR_BUSINESS_FAX_NUMBER                      PROP_TAG( PT_TSTRING,   0x3A24)
+#define PR_BUSINESS_FAX_NUMBER_W                    PROP_TAG( PT_UNICODE,   0x3A24)
+#define PR_BUSINESS_FAX_NUMBER_A                    PROP_TAG( PT_STRING8,   0x3A24)
+#define PR_HOME_FAX_NUMBER                          PROP_TAG( PT_TSTRING,   0x3A25)
+#define PR_HOME_FAX_NUMBER_W                        PROP_TAG( PT_UNICODE,   0x3A25)
+#define PR_HOME_FAX_NUMBER_A                        PROP_TAG( PT_STRING8,   0x3A25)
+#define PR_COUNTRY                                  PROP_TAG( PT_TSTRING,   0x3A26)
+#define PR_COUNTRY_W                                PROP_TAG( PT_UNICODE,   0x3A26)
+#define PR_COUNTRY_A                                PROP_TAG( PT_STRING8,   0x3A26)
+#define PR_LOCALITY                                 PROP_TAG( PT_TSTRING,   0x3A27)
+#define PR_LOCALITY_W                               PROP_TAG( PT_UNICODE,   0x3A27)
+#define PR_LOCALITY_A                               PROP_TAG( PT_STRING8,   0x3A27)
+#define PR_STATE_OR_PROVINCE                        PROP_TAG( PT_TSTRING,   0x3A28)
+#define PR_STATE_OR_PROVINCE_W                      PROP_TAG( PT_UNICODE,   0x3A28)
+#define PR_STATE_OR_PROVINCE_A                      PROP_TAG( PT_STRING8,   0x3A28)
+#define PR_STREET_ADDRESS                           PROP_TAG( PT_TSTRING,   0x3A29)
+#define PR_STREET_ADDRESS_W                         PROP_TAG( PT_UNICODE,   0x3A29)
+#define PR_STREET_ADDRESS_A                         PROP_TAG( PT_STRING8,   0x3A29)
+#define PR_POSTAL_CODE                              PROP_TAG( PT_TSTRING,   0x3A2A)
+#define PR_POSTAL_CODE_W                            PROP_TAG( PT_UNICODE,   0x3A2A)
+#define PR_POSTAL_CODE_A                            PROP_TAG( PT_STRING8,   0x3A2A)
+#define PR_POST_OFFICE_BOX                          PROP_TAG( PT_TSTRING,   0x3A2B)
+#define PR_POST_OFFICE_BOX_W                        PROP_TAG( PT_UNICODE,   0x3A2B)
+#define PR_POST_OFFICE_BOX_A                        PROP_TAG( PT_STRING8,   0x3A2B)
+#define PR_BUSINESS_ADDRESS_POST_OFFICE_BOX         PR_POST_OFFICE_BOX
+#define PR_BUSINESS_ADDRESS_POST_OFFICE_BOX_W       PR_POST_OFFICE_BOX_W
+#define PR_BUSINESS_ADDRESS_POST_OFFICE_BOX_A       PR_POST_OFFICE_BOX_A
+#define PR_TELEX_NUMBER                             PROP_TAG( PT_TSTRING,   0x3A2C)
+#define PR_TELEX_NUMBER_W                           PROP_TAG( PT_UNICODE,   0x3A2C)
+#define PR_TELEX_NUMBER_A                           PROP_TAG( PT_STRING8,   0x3A2C)
+#define PR_ISDN_NUMBER                              PROP_TAG( PT_TSTRING,   0x3A2D)
+#define PR_ISDN_NUMBER_W                            PROP_TAG( PT_UNICODE,   0x3A2D)
+#define PR_ISDN_NUMBER_A                            PROP_TAG( PT_STRING8,   0x3A2D)
+#define PR_ASSISTANT_TELEPHONE_NUMBER               PROP_TAG( PT_TSTRING,   0x3A2E)
+#define PR_ASSISTANT_TELEPHONE_NUMBER_W             PROP_TAG( PT_UNICODE,   0x3A2E)
+#define PR_ASSISTANT_TELEPHONE_NUMBER_A             PROP_TAG( PT_STRING8,   0x3A2E)
+#define PR_HOME2_TELEPHONE_NUMBER                   PROP_TAG( PT_TSTRING,   0x3A2F)
+#define PR_HOME2_TELEPHONE_NUMBER_W                 PROP_TAG( PT_UNICODE,   0x3A2F)
+#define PR_HOME2_TELEPHONE_NUMBER_A                 PROP_TAG( PT_STRING8,   0x3A2F)
+#define PR_ASSISTANT                                PROP_TAG( PT_TSTRING,   0x3A30)
+#define PR_ASSISTANT_W                              PROP_TAG( PT_UNICODE,   0x3A30)
+#define PR_ASSISTANT_A                              PROP_TAG( PT_STRING8,   0x3A30)
+#define PR_SEND_RICH_INFO                           PROP_TAG( PT_BOOLEAN,   0x3A40)
+#define PR_WEDDING_ANNIVERSARY                      PROP_TAG( PT_SYSTIME,   0x3A41)
+#define PR_BIRTHDAY                                 PROP_TAG( PT_SYSTIME,   0x3A42)
+#define PR_HOBBIES                                  PROP_TAG( PT_TSTRING,   0x3A43)
+#define PR_HOBBIES_W                                PROP_TAG( PT_UNICODE,   0x3A43)
+#define PR_HOBBIES_A                                PROP_TAG( PT_STRING8,   0x3A43)
+#define PR_MIDDLE_NAME                              PROP_TAG( PT_TSTRING,   0x3A44)
+#define PR_MIDDLE_NAME_W                            PROP_TAG( PT_UNICODE,   0x3A44)
+#define PR_MIDDLE_NAME_A                            PROP_TAG( PT_STRING8,   0x3A44)
+#define PR_DISPLAY_NAME_PREFIX                      PROP_TAG( PT_TSTRING,   0x3A45)
+#define PR_DISPLAY_NAME_PREFIX_W                    PROP_TAG( PT_UNICODE,   0x3A45)
+#define PR_DISPLAY_NAME_PREFIX_A                    PROP_TAG( PT_STRING8,   0x3A45)
+#define PR_PROFESSION                               PROP_TAG( PT_TSTRING,   0x3A46)
+#define PR_PROFESSION_W                             PROP_TAG( PT_UNICODE,   0x3A46)
+#define PR_PROFESSION_A                             PROP_TAG( PT_STRING8,   0x3A46)
+#define PR_PREFERRED_BY_NAME                        PROP_TAG( PT_TSTRING,   0x3A47)
+#define PR_PREFERRED_BY_NAME_W                      PROP_TAG( PT_UNICODE,   0x3A47)
+#define PR_PREFERRED_BY_NAME_A                      PROP_TAG( PT_STRING8,   0x3A47)
+#define PR_SPOUSE_NAME                              PROP_TAG( PT_TSTRING,   0x3A48)
+#define PR_SPOUSE_NAME_W                            PROP_TAG( PT_UNICODE,   0x3A48)
+#define PR_SPOUSE_NAME_A                            PROP_TAG( PT_STRING8,   0x3A48)
+#define PR_COMPUTER_NETWORK_NAME                    PROP_TAG( PT_TSTRING,   0x3A49)
+#define PR_COMPUTER_NETWORK_NAME_W                  PROP_TAG( PT_UNICODE,   0x3A49)
+#define PR_COMPUTER_NETWORK_NAME_A                  PROP_TAG( PT_STRING8,   0x3A49)
+#define PR_CUSTOMER_ID                              PROP_TAG( PT_TSTRING,   0x3A4A)
+#define PR_CUSTOMER_ID_W                            PROP_TAG( PT_UNICODE,   0x3A4A)
+#define PR_CUSTOMER_ID_A                            PROP_TAG( PT_STRING8,   0x3A4A)
+#define PR_TTYTDD_PHONE_NUMBER                      PROP_TAG( PT_TSTRING,   0x3A4B)
+#define PR_TTYTDD_PHONE_NUMBER_W                    PROP_TAG( PT_UNICODE,   0x3A4B)
+#define PR_TTYTDD_PHONE_NUMBER_A                    PROP_TAG( PT_STRING8,   0x3A4B)
+#define PR_FTP_SITE                                 PROP_TAG( PT_TSTRING,   0x3A4C)
+#define PR_FTP_SITE_W                               PROP_TAG( PT_UNICODE,   0x3A4C)
+#define PR_FTP_SITE_A                               PROP_TAG( PT_STRING8,   0x3A4C)
+#define PR_GENDER                                   PROP_TAG( PT_SHORT,     0x3A4D)
+#define PR_MANAGER_NAME                             PROP_TAG( PT_TSTRING,   0x3A4E)
+#define PR_MANAGER_NAME_W                           PROP_TAG( PT_UNICODE,   0x3A4E)
+#define PR_MANAGER_NAME_A                           PROP_TAG( PT_STRING8,   0x3A4E)
+#define PR_NICKNAME                                 PROP_TAG( PT_TSTRING,   0x3A4F)
+#define PR_NICKNAME_W                               PROP_TAG( PT_UNICODE,   0x3A4F)
+#define PR_NICKNAME_A                               PROP_TAG( PT_STRING8,   0x3A4F)
+#define PR_PERSONAL_HOME_PAGE                       PROP_TAG( PT_TSTRING,   0x3A50)
+#define PR_PERSONAL_HOME_PAGE_W                     PROP_TAG( PT_UNICODE,   0x3A50)
+#define PR_PERSONAL_HOME_PAGE_A                     PROP_TAG( PT_STRING8,   0x3A50)
+#define PR_BUSINESS_HOME_PAGE                       PROP_TAG( PT_TSTRING,   0x3A51)
+#define PR_BUSINESS_HOME_PAGE_W                     PROP_TAG( PT_UNICODE,   0x3A51)
+#define PR_BUSINESS_HOME_PAGE_A                     PROP_TAG( PT_STRING8,   0x3A51)
+#define PR_CONTACT_VERSION                          PROP_TAG( PT_CLSID,     0x3A52)
+#define PR_CONTACT_ENTRYIDS                         PROP_TAG( PT_MV_BINARY, 0x3A53)
+#define PR_CONTACT_ADDRTYPES                        PROP_TAG( PT_MV_TSTRING, 0x3A54)
+#define PR_CONTACT_ADDRTYPES_W                      PROP_TAG( PT_MV_UNICODE, 0x3A54)
+#define PR_CONTACT_ADDRTYPES_A                      PROP_TAG( PT_MV_STRING8, 0x3A54)
+#define PR_CONTACT_DEFAULT_ADDRESS_INDEX            PROP_TAG( PT_LONG,      0x3A55)
+#define PR_CONTACT_EMAIL_ADDRESSES                  PROP_TAG( PT_MV_TSTRING, 0x3A56)
+#define PR_CONTACT_EMAIL_ADDRESSES_W                PROP_TAG( PT_MV_UNICODE, 0x3A56)
+#define PR_CONTACT_EMAIL_ADDRESSES_A                PROP_TAG( PT_MV_STRING8, 0x3A56)
+#define PR_COMPANY_MAIN_PHONE_NUMBER                PROP_TAG( PT_TSTRING,   0x3A57)
+#define PR_COMPANY_MAIN_PHONE_NUMBER_W              PROP_TAG( PT_UNICODE,   0x3A57)
+#define PR_COMPANY_MAIN_PHONE_NUMBER_A              PROP_TAG( PT_STRING8,   0x3A57)
+#define PR_CHILDRENS_NAMES                          PROP_TAG( PT_MV_TSTRING, 0x3A58)
+#define PR_CHILDRENS_NAMES_W                        PROP_TAG( PT_MV_UNICODE, 0x3A58)
+#define PR_CHILDRENS_NAMES_A                        PROP_TAG( PT_MV_STRING8, 0x3A58)
+#define PR_HOME_ADDRESS_CITY                        PROP_TAG( PT_TSTRING,   0x3A59)
+#define PR_HOME_ADDRESS_CITY_W                      PROP_TAG( PT_UNICODE,   0x3A59)
+#define PR_HOME_ADDRESS_CITY_A                      PROP_TAG( PT_STRING8,   0x3A59)
+#define PR_HOME_ADDRESS_COUNTRY                     PROP_TAG( PT_TSTRING,   0x3A5A)
+#define PR_HOME_ADDRESS_COUNTRY_W                   PROP_TAG( PT_UNICODE,   0x3A5A)
+#define PR_HOME_ADDRESS_COUNTRY_A                   PROP_TAG( PT_STRING8,   0x3A5A)
+#define PR_HOME_ADDRESS_POSTAL_CODE                 PROP_TAG( PT_TSTRING,   0x3A5B)
+#define PR_HOME_ADDRESS_POSTAL_CODE_W               PROP_TAG( PT_UNICODE,   0x3A5B)
+#define PR_HOME_ADDRESS_POSTAL_CODE_A               PROP_TAG( PT_STRING8,   0x3A5B)
+#define PR_HOME_ADDRESS_STATE_OR_PROVINCE           PROP_TAG( PT_TSTRING,   0x3A5C)
+#define PR_HOME_ADDRESS_STATE_OR_PROVINCE_W         PROP_TAG( PT_UNICODE,   0x3A5C)
+#define PR_HOME_ADDRESS_STATE_OR_PROVINCE_A         PROP_TAG( PT_STRING8,   0x3A5C)
+#define PR_HOME_ADDRESS_STREET                      PROP_TAG( PT_TSTRING,   0x3A5D)
+#define PR_HOME_ADDRESS_STREET_W                    PROP_TAG( PT_UNICODE,   0x3A5D)
+#define PR_HOME_ADDRESS_STREET_A                    PROP_TAG( PT_STRING8,   0x3A5D)
+#define PR_HOME_ADDRESS_POST_OFFICE_BOX             PROP_TAG( PT_TSTRING,   0x3A5E)
+#define PR_HOME_ADDRESS_POST_OFFICE_BOX_W           PROP_TAG( PT_UNICODE,   0x3A5E)
+#define PR_HOME_ADDRESS_POST_OFFICE_BOX_A           PROP_TAG( PT_STRING8,   0x3A5E)
+#define PR_OTHER_ADDRESS_CITY                       PROP_TAG( PT_TSTRING,   0x3A5F)
+#define PR_OTHER_ADDRESS_CITY_W                     PROP_TAG( PT_UNICODE,   0x3A5F)
+#define PR_OTHER_ADDRESS_CITY_A                     PROP_TAG( PT_STRING8,   0x3A5F)
+#define PR_OTHER_ADDRESS_COUNTRY                    PROP_TAG( PT_TSTRING,   0x3A60)
+#define PR_OTHER_ADDRESS_COUNTRY_W                  PROP_TAG( PT_UNICODE,   0x3A60)
+#define PR_OTHER_ADDRESS_COUNTRY_A                  PROP_TAG( PT_STRING8,   0x3A60)
+#define PR_OTHER_ADDRESS_POSTAL_CODE                PROP_TAG( PT_TSTRING,   0x3A61)
+#define PR_OTHER_ADDRESS_POSTAL_CODE_W              PROP_TAG( PT_UNICODE,   0x3A61)
+#define PR_OTHER_ADDRESS_POSTAL_CODE_A              PROP_TAG( PT_STRING8,   0x3A61)
+#define PR_OTHER_ADDRESS_STATE_OR_PROVINCE          PROP_TAG( PT_TSTRING,   0x3A62)
+#define PR_OTHER_ADDRESS_STATE_OR_PROVINCE_W        PROP_TAG( PT_UNICODE,   0x3A62)
+#define PR_OTHER_ADDRESS_STATE_OR_PROVINCE_A        PROP_TAG( PT_STRING8,   0x3A62)
+#define PR_OTHER_ADDRESS_STREET                     PROP_TAG( PT_TSTRING,   0x3A63)
+#define PR_OTHER_ADDRESS_STREET_W                   PROP_TAG( PT_UNICODE,   0x3A63)
+#define PR_OTHER_ADDRESS_STREET_A                   PROP_TAG( PT_STRING8,   0x3A63)
+#define PR_OTHER_ADDRESS_POST_OFFICE_BOX            PROP_TAG( PT_TSTRING,   0x3A64)
+#define PR_OTHER_ADDRESS_POST_OFFICE_BOX_W          PROP_TAG( PT_UNICODE,   0x3A64)
+#define PR_OTHER_ADDRESS_POST_OFFICE_BOX_A          PROP_TAG( PT_STRING8,   0x3A64)
+#define PR_USER_X509_CERTIFICATE                    PROP_TAG( PT_MV_BINARY, 0x3A70)
+#define PR_SEND_INTERNET_ENCODING                   PROP_TAG( PT_LONG,      0x3A71)
+
+
+
+#define PR_BUSINESS_ADDRESS_CITY                    PR_LOCALITY
+#define PR_BUSINESS_ADDRESS_COUNTRY                 PR_COUNTRY
+#define PR_BUSINESS_ADDRESS_POSTAL_CODE             PR_POSTAL_CODE
+#define PR_BUSINESS_ADDRESS_STATE_OR_PROVINCE       PR_STATE_OR_PROVINCE
+#define PR_BUSINESS_ADDRESS_STREET                  PR_STREET_ADDRESS
+
+
+	   /*
+		*	Message recipient properties
+		*/
+
+#define PR_RECIPIENT_TYPE                           PROP_TAG( PT_LONG,      0x0C15)
+
+		/*
+		 * Secure property id range
+		 */
+
+#define PROP_ID_SECURE_MIN                          0x67F0
+#define PROP_ID_SECURE_MAX                          0x67FF
+
+
+		 /* These are the bits that show up in PR_SEND_INTERNET_ENCODING */
+
+		 /* whether or not an encoding preference is specified
+		 1 - pay attention to the rest of the bits for the encoding preferences
+		 0 - let the mail system choose what's best for it
+		 */
+#define ENCODING_PREFERENCE                     ((ULONG) 0x00020000)
+
+		 /*
+		 1 - message in MIME;
+		 0 - plain text/uuencode attachments
+		 */
+#define ENCODING_TEXT                           ((ULONG) 0x00000000)
+#define ENCODING_MIME                           ((ULONG) 0x00040000)
+
+
+		 /*Specifies how the body of the message is encoded.
+		 00 - Body encoded as text
+		 01 - body encoded as HTML (only valid if message in MIME)
+		 10 - (actualy 1X) Text and HTML as multipart alternative (only valid if message in MIME)
+		 */
+#define BODY_ENCODING_MASK                      ((ULONG) 0x00180000)
+#define BODY_ENCODING_TEXT                      ((ULONG) 0x00000000) /* for completeness */
+#define BODY_ENCODING_HTML                      ((ULONG) 0x00080000)
+#define BODY_ENCODING_TEXT_AND_HTML             ((ULONG) 0x00100000)
+
+		 /*Specifies how to handle Mac attachments
+		 00 - BinHex
+		 01 - UUENCODED (not valid if message in MIME - will be ignored, BinHex used instead)
+		 10 - Apple Single (only valid if message in MIME)
+		 11 - Apple Double (only valid if message in MIME)
+		 */
+#define MAC_ATTACH_ENCODING_MASK                ((ULONG) 0x00600000)
+#define MAC_ATTACH_ENCODING_BINHEX              ((ULONG) 0x00000000)
+#define MAC_ATTACH_ENCODING_UUENCODE            ((ULONG) 0x00200000)
+#define MAC_ATTACH_ENCODING_APPLESINGLE         ((ULONG) 0x00400000)
+#define MAC_ATTACH_ENCODING_APPLEDOUBLE         ((ULONG) 0x00600000)
+
+
+		 // Values for PR_GENDER property
+enum Gender {
+	genderUnspecified = 0,
+	genderFemale,
+	genderMale
+};
+
+#endif  /* WABTAGS_H */
+
 #else
 #include <wabtags.h>
 #endif
@@ -3996,19 +4804,25 @@ typedef unsigned __int64   uintmax_t;
 //#include "wcmapi.h"
 //#include "wcmconfig.h"
 //#include "wcmconfig.idl"
+#if VS_VER > VS_2005
 #include "wcmerrors.h"
+#endif
 #if TOOLSET > 90
 #include "WcnApi.h"
 #include "WcnDevice.h"
 #include "WcnFunctionDiscoveryKeys.h"
 #endif
+#if VS_VER > VS_2005
 #include "wcsplugin.h"
 #include "wct.h"
+#endif
 #include "wctype.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "WDBGEXTS.H"
 #endif
+#if VS_VER > VS_2005
 #include "wdigest.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "wdmguid.h"
 #endif
@@ -4048,14 +4862,18 @@ typedef unsigned __int64   uintmax_t;
 #include "wiatwcmp.h"
 #endif
 //#include "wiautil.h"
+#if VS_VER > VS_2005
 #include "wiawsdsc.h"
+#endif
 //#include "winbase.inl"
 #include "WinBase.h"
 //#include "WinBer.h"
 //#include "winbio_adapter.h"
 //#include "winbio_ioctl.h"
+#if VS_VER > VS_2005
 #include "wincodecsdk.h"
 #include "WinFax.h"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <winapifamily.h>
 #endif
@@ -4075,7 +4893,9 @@ typedef unsigned __int64   uintmax_t;
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "windnsdef.h"
 #endif
+#if VS_VER > VS_2005
 #include "windot11.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "Windows.ApplicationModel.Infrastructure.h"
 #include "Windows.ApplicationModel.resources.management.h"
@@ -4100,11 +4920,15 @@ typedef unsigned __int64   uintmax_t;
 #include "windowscontracts.h"
 #endif
 #endif
+#if VS_VER > VS_2005
 #include "WindowsDefender.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "WindowsNumerics.h"
 #endif
+#if VS_VER > VS_2005
 #include "WindowsSideShow.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #if 0
 typedef VOID* WHV_EMULATOR_HANDLE;
@@ -4136,6 +4960,7 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 //#include "WS2atm.h"
 //#include "WS2spi.h"
 //#include "WS2tcpip.h"
+#if VS_VER > VS_2005
 #include "Wsdapi.h"
 #include "Wsdattachment.h"
 #include "Wsdbase.h"
@@ -4151,6 +4976,7 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "wsdtypes.h"
 #include "Wsdxml.h"
 #include "wsdxmldom.h"
+#endif
 #include "WSNwLink.h"
 //#include "WSPiApi.h"
 #include "WShisotp.h"
@@ -4160,7 +4986,9 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "wtypesbase.h"
 #endif
+#if VS_VER > VS_2005
 #include "Xinput.h"
+#endif
 //#include "xmldom.idl"
 #include "xmldomdid.h"
 //#include "xmldso.idl"
@@ -4174,7 +5002,9 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "activation.h"
 #include "activationregistration.h"
 #endif
+#if VS_VER > VS_2005
 #include "activecf.h"
+#endif
 #if TOOLSET > 90
 #include "activprof.h"
 #endif
@@ -4243,7 +5073,9 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "winres.h"
 #include <winresrc.h>
 #include "winsafer.h"
+#if VS_VER > VS_2005
 #include "winsatcominterfacei.h"
+#endif
 #include <winscard.h>
 #if TOOLSET > 90
 #include "winsdkver.h"
@@ -4258,7 +5090,9 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "winstring.h"
 #endif
 #include <winsvc.h>     // SERVICE_STATUS_HANDLE"
+#if VS_VER > VS_2005
 #include "winsxs.h"
+#endif
 #if TOOLSET > 90
 #include "winsync.h"
 #endif
@@ -4281,24 +5115,29 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include <wldp.h>
 #endif
 #endif
+#if VS_VER > VS_2005
 #include "wlanapi.h"
 #include "wlanihv.h"
 #include "wlanihvtypes.h"
 //#include "wlanihvui.idl"
 #include "wlantypes.h"
 #include "wlclient.h"
+#endif
 #if VS_VER > VCPP_6
 #include <wmistr.h>
 #endif
 //#include "wmcodecdsp.h"
+#if VS_VER > VS_2005
 #include "wmcontainer.h"
 #include "wmdm.h"
 #include "wmdmlog.h"
 //#include "wmdmlog_i.c"
 #include "wmdxva.h"
+#endif
 #if TOOLSET > 90
 #include "wmlss.h"
 #endif
+#if VS_VER > VS_2005
 #include "wmpdevices.h"
 #include "wmpids.h"
 #include "wmpplug.h"
@@ -4313,6 +5152,7 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #endif
 #include "wmsinternaladminnetsource.h"
 #include "wmsysprf.h"
+#endif
 #include <wmiutils.h>
 //#include "wnvapi.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -4329,14 +5169,18 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include <wow64apiset.h>
 #include <wlclient.h>
 #endif
+#if VS_VER > VS_2005
 #include "wpc.h"
 #include "wpcapi.h"
 #include "wpcevent.h"
 #include "wpframework.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "wrl.h"
 #endif
+#if VS_VER > VS_2005
 #include "ws2bth.h"
+#endif
 //#include "ws2ipdef.h"
 #if TOOLSET > 90
 #include "wsbapp.h"
@@ -4365,7 +5209,9 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #if TOOLSET > 90
 #include "wtsprotocol.h"
 #endif
+#if VS_VER > VS_2005
 #include "wuapi.h"
+#endif
 #include <wsipv6ok.h>
 //#include <wspiapi.h>
 #include <wtypes.h>
@@ -4380,9 +5226,13 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "xaudio2fx.h"
 #endif
 #include "xenroll.h"
+#if VS_VER > VS_2005
 #include "xmllite.h"
+#endif
 #include "xoleHlp.h"
+#if VS_VER > VS_2005
 #include "xprtdefs.h"
+#endif
 #if TOOLSET > 90
 #include "xpsdigitalsignature.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
@@ -4408,7 +5258,9 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "ADOGuids.h"
 #endif
 #include "advpub.h"
+#if VS_VER > VS_2005
 #include "ahadmin.h"
+#endif
 //#include "adojet.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "AsyncInfo.h"
@@ -4860,4 +5712,6 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 
 #ifndef COMPILE_MULTIMON_STUBS
 #undef GetSystemMetrics
+#endif
+
 #endif
