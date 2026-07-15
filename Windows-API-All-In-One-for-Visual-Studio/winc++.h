@@ -121,6 +121,12 @@
 #endif
 
 #ifdef NOWARNINGS
+#if MSVC_VER == VS_2003
+#pragma warning(disable: 4267) // ChString.h: from size_t to int
+// Calling _set_se_translator() requires /EHa. 
+//The _set_se_translator function requires the /EHa compiler option, not /EHs or /EHsc.
+#pragma warning(disable: 4535)
+#endif
 #if MSVC_VER == VS_2005
 #pragma warning(disable: 4819)
 #endif
@@ -430,7 +436,9 @@ typedef struct IUnknown IUnknown;
 #include "InkPresenterDesktop.h"
 //#include "InkPresenterDesktop_i.c"
 #endif
+#if VS_VER > VS_2003
 #include "InputScope.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "InteractionContext.h"
 #endif
@@ -1039,7 +1047,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <avrt.h>
 //#include <axextendenums.h>
 #endif
+#if VS_VER > VS_2003
 #include "azroles.h"
+#endif
 //#include "base.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include <dvp.h>
@@ -1107,8 +1117,10 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #undef printf
 #endif
 //#include "certbcli.idl"
+#if VS_VER > VS_2003
 #include "certreqd.h"
 #include "certbase.h"
+#endif
 #include <certadm.h>
 #if VS_VER > VCPP_6
 #include <certbcli.h>
@@ -1515,7 +1527,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "dbscmd.idl"
 #include "dbseci.idl"
 #include "dbsrst.idl"*/
+#if VS_VER > VS_2003
 #include "dciman.h"
+#endif
 #if _MSC_VER > 1500
 #include <dcommon.h>
 #endif
@@ -1581,7 +1595,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <diagnosticdataquerytypes.h>
 #endif
 #include "DhcpCSdk.h"
+#if VS_VER > VS_2003
 #include "dhcpsapi.h"
+#endif
 #include "DhcpSSdk.h"
 #include "dimm.h"
 #if VS_VER > VS_2005
@@ -1683,7 +1699,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "dxgidebug.h"
 //#include "dxmini.h"
 #endif
-#if (MSVC_VER != VS_2013) || (defined NOWARNINGS)
+#if ((MSVC_VER != VS_2013) || (defined NOWARNINGS)) && (VS_VER > VS_2003) 
 #include "dxtmpl.h"
 #endif
 #if VS_VER > VS_2005
@@ -1859,7 +1875,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "gnssdriver.h"
 #include "gpio.h"
 #endif
+#if VS_VER > VS_2003
 #include "gpmgmt.h"
+#endif
 //#include "gso.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "handleapi.h"
@@ -1886,7 +1904,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "hrtfapoapi.h"
 #endif
 #endif
+#if VS_VER > VS_2003
 #include "htiface.h"
+#endif
 #include "HtmlHelp.h"
 //#include "http.h"
 /*#include <httpserv.h>
@@ -1912,7 +1932,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "hypervdevicevirtualization.h"
 #endif
+#if VS_VER > VS_2003
 #include "i_cryptasn1tls.h"
+#endif
 //#include "icodecapi.h"
 #include "icrsint.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -2016,9 +2038,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 //#include "iketypes.idl"
 #if VS_VER > VS_2005
 #include "il21dec.h"
-#endif
 //#include "iisext_i.c"
 #include "iisrsta.h"
+#endif
 #include "IIScnfg.h"
 #if VS_VER > VS_2005
 #include "imapi.h"
@@ -2275,10 +2297,11 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <lsalookup.h>
 #endif
 #include <lzexpand.h>
-#if VS_VER == VS_2005
+#if VS_VER <= VS_2005
 // this definition is copied from https://learn.microsoft.com/en-us/windows/win32/api/ntdef/ns-ntdef-_unicode_string directly.
 // struct _MCAST_SCOPE_ENTRY used this definition as UNICODE_STRING  ScopeDesc; , which is not recognized.
 // and ntdef.h is not included in Visual Studio 2005
+// Visual Studio 2003 detected having this issue
 typedef struct _UNICODE_STRING {
 	USHORT Length;
 	USHORT MaximumLength;
@@ -2673,7 +2696,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if VS_VER > VS_2005
 #include "netlistmgr.h"
 #endif
+#if VS_VER > VS_2003
 #include "netprov.h"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <nettypes.h>
 #endif
@@ -5221,7 +5246,9 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "wsbonline.h"
 #include "wsdemolicensing.h"
 #endif
+#if VS_VER > VS_2003
 #include "wsipv6ok.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "wslapi.h"
 #endif
@@ -5244,7 +5271,9 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #if VS_VER > VS_2005
 #include "wuapi.h"
 #endif
+#if VS_VER > VS_2003
 #include <wsipv6ok.h>
+#endif
 //#include <wspiapi.h>
 #include <wtypes.h>
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
