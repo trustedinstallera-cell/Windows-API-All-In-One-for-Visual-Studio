@@ -32,7 +32,9 @@
 #endif
 #endif
 
-#if __cplusplus >= 202302L || _MSVC_LANG >= 202302L
+#if __cplusplus >= 202603L || _MSVC_LANG >= 202603L
+#define cppver 2026
+#elif __cplusplus >= 202302L || _MSVC_LANG >= 202302L
 #define cppver 2023
 #elif __cplusplus >= 202002L || _MSVC_LANG >= 202002L
 #define cppver 2020
@@ -123,6 +125,8 @@
 #ifdef NOWARNINGS
 #if MSVC_VER == VS_2003
 #pragma warning(disable: 4267) // ChString.h: from size_t to int
+#endif
+#if MSVC_VER <= VS_2003
 // Calling _set_se_translator() requires /EHa. 
 //The _set_se_translator function requires the /EHa compiler option, not /EHs or /EHsc.
 #pragma warning(disable: 4535)
@@ -1076,7 +1080,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VS_2005
 #include "bits3_0.h"
 #endif
+#if VS_VER > VS_2002
 #include "bitscfg.h"
+#endif
 #include "bitsmsg.h"
 #if VS_VER > VS_2005
 #include "bluetoothapis.h"
@@ -1092,7 +1098,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "bthledef.h"
 #endif
 //#include "calendardeviceservice.h"
+#if VS_VER > VS_2002
 #include "callobj.h"
+#endif
 #if TOOLSET > 90
 #include "capi.h"
 #endif
@@ -1137,7 +1145,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <wldp.h>
 #endif
 #include <schannel.h>
+#if VS_VER > VS_2002
 #include <winternl.h> // define _UNICODE_STRING
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include <ntlsa.h>
 #endif
@@ -1397,7 +1407,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VS_2005
 #include "ctfspui.h"
 #endif
+#if VS_VER > VS_2002
 #include "ctxtcall.h"
+#endif
 #include <ctype.h>
 #include "CustCntl.h"
 //#include "cvttyp.idl"
@@ -1575,7 +1587,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "deliveryoptimization.h"
 #endif
+#if VS_VER > VS_2002
 #include "devguid.h"
+#endif
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <devfiltertypes.h>
 #endif
@@ -1868,7 +1882,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "gamingtcui.h"
 #endif
+#if VS_VER > VS_2002
 #include "gb18030.h"
+#endif
 //#include "GL.h"
 //#include "GLU.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -2034,7 +2050,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <ifdef.h>
 #include <ifmib.h>
 #endif
+#if VS_VER > VS_2002
 #include "iiisext.h"
+#endif
 //#include "iketypes.idl"
 #if VS_VER > VS_2005
 #include "il21dec.h"
@@ -2065,7 +2083,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <in6addr.h>
 #include <inaddr.h>
 #endif
+#if VS_VER > VS_2002
 #include "indexsrv.h"
+#endif
 //#include "infocard.h"
 //#include "infotech.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
@@ -2086,7 +2106,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 //#include "inputpanelconfiguration_i.c"
 #include <inspectable.h>
 #endif
+#if VS_VER > VS_2002
 #include <indexsrv.h>
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <interlockedapi.h>
 #endif
@@ -2730,7 +2752,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "nspapip.h"
 #endif
 #include "NspAPI.h"
+#if VS_VER > VS_2002
 #include "Npapi.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "ntdd1394.h"
 #include "ntddbeep.h"
@@ -2834,7 +2858,11 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 //#include "pacmanclientapi_i.c"
 #endif
 //#include "parrst.idl"
+#if VS_VER == VS_2002
+//todo determine the actual value
+#define MAX_NAME_SIZE 256
 #include "parser.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "pbdaerrors.h"
 #endif
@@ -3061,7 +3089,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "pwm.h"
 #endif
+#if VS_VER > VS_2002
 #include "qmgr.h"
+#endif
 #if VS_VER > VS_2005
 #include "qnetwork.h"
 #endif
@@ -3160,7 +3190,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <rpcsal.h>
 #endif
+#if VS_VER > VS_2002
 #include "rpcssl.h"
+#endif
 //#include "rsc.h"
 /*#include "rstasn.idl"
 #include "rstbas.idl"
@@ -3280,7 +3312,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include <setjmp.h>
 #include <setupapi.h>
 #include "Sfc.h"
+#if VS_VER > VS_2002
 #include "shappmgr.h"
+#endif
 #include "share.h"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "sharewindowcommandsourceinterop.h"
@@ -3568,7 +3602,9 @@ typedef unsigned __int64   uintmax_t;
 #include <stireg.h>
 #include <stllock.h>
 //#include <stm.h>
+#if VS_VER > VS_2002
 #include "storprop.h"
+#endif
 #include <stralign.h>
 #endif
 #include <string.h> 
@@ -4045,7 +4081,9 @@ typedef unsigned __int64   uintmax_t;
 #endif
 #include "TCError.h"
 #include "TCGuid.h"
+#if VS_VER > VS_2002
 #include <strsafe.h>
+#endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <tcpestats.h>
 #include <tcpmib.h>
@@ -5318,7 +5356,11 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #if VS_VER > VCPP_6
 #include "ADOGuids.h"
 #endif
+#if VS_VER > VS_2002
 #include "advpub.h"
+#endif
+//todo file exists but needs to avoid redefition
+//#include <netmon.h>
 #if VS_VER > VS_2005
 #include "ahadmin.h"
 #endif
