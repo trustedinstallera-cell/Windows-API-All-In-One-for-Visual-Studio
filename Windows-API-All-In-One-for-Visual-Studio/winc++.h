@@ -1,4 +1,5 @@
-﻿#if _MSC_VER > 1000
+﻿
+#if _MSC_VER > 1000
 #pragma once
 #endif
 
@@ -123,6 +124,10 @@
 #endif
 
 #ifdef NOWARNINGS
+#if VS_VER == VC_6
+// #pragma push_macro : '_MP' is not currently defined as a macro
+#pragma warning(disable: 4601)
+#endif
 #if MSVC_VER == VS_2003
 #pragma warning(disable: 4267) // ChString.h: from size_t to int
 #endif
@@ -175,6 +180,9 @@
 #pragma warning(disable: 4290)
 #pragma warning(disable: 4005)
 #pragma warning(disable: 4038)
+#pragma warning(disable: 4201)
+#pragma warning(disable: 4458)
+#pragma warning(disable: 4324)
 #pragma warning(push)
 #endif
 #endif
@@ -186,6 +194,8 @@
 #endif
 
 #include <tchar.h>
+// todo test the next line
+//#include "WinSock2.h"
 #if (defined _USING_V110_SDK71_ /*XP support*/) || (MSVC_VER <= 2015)
 typedef struct IUnknown IUnknown;
 #endif
@@ -291,14 +301,18 @@ typedef struct IUnknown IUnknown;
 #include "hlink.h"
 #include "Ole2Ver.h"
 //#include "dvbsiparser.h" // redefinition of tagAnalogVideoStandard and tagTunerInputType
+#if VS_CER > VC_6
 #include <WbemCli.h>
 #include "WmiUtils.h"
 #include <WbemProv.h>
+#endif
 //#include "kxarm64unw.h"
 //#include <instance.h>
 //#include <MethodCo.h>
 #include "mstask.h"
+#if VS_CER > VC_6
 #include "msxml2did.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #define __MIDL_itf_msxml6_0000_0000_v0_0_c_ifspec
 #include "msxml6.h"
@@ -319,12 +333,16 @@ typedef struct IUnknown IUnknown;
 #if TOOLSET > 90
 #include "portabledeviceapi.h"
 #endif
+#if VS_CER > VC_6
 #include "propidl.h"
+#endif
 //#include "propidlbase.idl"
 #if TOOLSET > 90
 #include "propkeydef.h"
 #endif
+#if VS_CER > VC_6
 #include "shobjidl.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "shobjidl_core.h"
 #endif
@@ -353,8 +371,10 @@ typedef struct IUnknown IUnknown;
 #include "AtscPsipParser.h"
 #include "AudioEngineEndpoint.h"
 #endif
+#if VS_CER > VC_6
 #include "BiDiSpl.h"
 #include "CDOSys.h"
+#endif
 //#include "CDOSys_I.c"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "CameraUIControl.h"
@@ -385,8 +405,10 @@ typedef struct IUnknown IUnknown;
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "EditionUpgradeHelper.h"
 #endif
+#if VS_CER > VC_6
 #include "EmptyVC.h"
 #include "EventSys.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "ExtensionValidation.h"
 #endif
@@ -395,7 +417,9 @@ typedef struct IUnknown IUnknown;
 #include "FhCfg.h"
 #endif
 #endif
+#if VS_CER > VC_6
 #include "GPEdit.h"
+#endif
 //#include "GameInput.h" // try /clr option
 #include "IAccess.h"
 #if VS_VER > VS_2005
@@ -409,7 +433,9 @@ typedef struct IUnknown IUnknown;
 #include "IE12Plugin.h"
 #endif
 #endif
+#if VS_CER > VC_6
 #include <iedial.h>
+#endif
 #if VS_VER > VS_2005
 #include "IEPMapi.h"
 #endif
@@ -421,7 +447,9 @@ typedef struct IUnknown IUnknown;
 #if VS_VER > VS_2005
 #include "ISysmon.h"
 #endif
+#if VS_CER > VC_6
 #include "Iadmext.h"
+#endif
 #include "Iadmw.h"
 #include "Iads.h"
 #if TOOLSET > 90
@@ -452,7 +480,9 @@ typedef struct IUnknown IUnknown;
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "IsolatedAppLauncher.h"
 #endif
+#if VS_CER > VC_6
 #include "Iwamreg.h"
+#endif
 #if VS_VER > VS_2005
 #include "MDhcp.h"
 #endif
@@ -464,7 +494,9 @@ typedef struct IUnknown IUnknown;
 #include "MemoryBuffer.h"
 #endif
 #include "MimeInfo.h"
+#if VS_CER > VC_6
 #include "Mobsync.h"
+#endif
 #if TOOLSET > 90
 #include "MpegType.h"
 #endif
@@ -474,7 +506,9 @@ typedef struct IUnknown IUnknown;
 #if VS_VER > VS_2005
 #include "Msp.h"
 #endif
+#if VS_CER > VC_6
 #include "ObjSel.h"
+#endif
 #if TOOLSET > 90
 #include "PNPXAssoc.h"
 #endif
@@ -499,7 +533,9 @@ typedef struct IUnknown IUnknown;
 #include "RadioMgr.h"
 #endif
 #include "Reconcil.h"
+#if VS_CER > VC_6
 #include "RrasCfg.h"
+#endif
 #if VS_VER > VS_2005
 #include "RTSCOM.h"
 #include "SearchAPI.h"
@@ -509,7 +545,9 @@ typedef struct IUnknown IUnknown;
 #include "ShellHandwriting.h"
 #endif
 //#include "SpatialAudioHrtf.h"
+#if VS_CER > VC_6
 #include "Sti.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "StorageProvider.h"
 #endif
@@ -517,7 +555,9 @@ typedef struct IUnknown IUnknown;
 #if VS_VER > VS_2005
 #include "SyncMgr.h"
 #endif
+#if VS_CER > VC_6
 #include "TOM.h"
+#endif
 #if TOOLSET > 90
 #include "TSGAuthenticationEngine.h"
 #include "TSGPolicyEngine.h"
@@ -541,7 +581,9 @@ typedef struct IUnknown IUnknown;
 #include "UPnP.h"
 #endif
 #include "UrlHist.h"
+#if VS_CER > VC_6
 #include "UserEnv.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "WRdsGraphicsChannels.h"
 #if VS_VER > VS_2015
@@ -558,12 +600,16 @@ typedef struct IUnknown IUnknown;
 #if VS_VER > VS_2005
 #include "WerApi.h"
 #endif
+#if VS_CER > VC_6
 #include "WiaDevD.h"
 #include "WiaVideo.h"
+#endif
 #if TOOLSET > 90
 #include "WinBio.h"
 #endif
+#if VS_CER > VC_6
 #include "WinDNS.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "WinHvPlatform.h"
 #include "Windows.Graphics.Capture.Interop.h"
@@ -580,7 +626,9 @@ typedef struct IUnknown IUnknown;
 #if VS_VER > VS_2005
 #include "Wscapi.h"
 #endif
+#if VS_CER > VC_6
 #include "WtsApi32.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "XblIdpAuthManager.h"
 #endif
@@ -594,13 +642,57 @@ typedef struct IUnknown IUnknown;
 #include "adhoc.h"
 #include "alg.h"
 #endif
+#include <wincrypt.h>
+#if VS_VER > VC_6
 #include "sqloledb.h"
+#endif
 #if TOOLSET > 90
 #include "txfw32.h"
 #endif
-#if VS_VER > VCPP_6
-#include "mssip.h"
+#if VS_VER <= VC_6
+// following definitions come from C:\Program Files (x86)\Windows Kits\10\Include\10.0.28000.0\um\wincrypt.h
+
+//+-------------------------------------------------------------------------
+//  CRYPTOAPI BLOB definitions
+//--------------------------------------------------------------------------
+// certenrolls_begin -- *_BLOB
+#ifndef CRYPTO_BLOBS_DEFINED
+#define CRYPTO_BLOBS_DEFINED
+typedef struct _CRYPTOAPI_BLOB {
+	DWORD   cbData;
+	/*_Field_size_bytes_(cbData)*/  BYTE* pbData; // no sal.h for Source-code Annotation Language
+} CRYPT_INTEGER_BLOB, * PCRYPT_INTEGER_BLOB,
+CRYPT_UINT_BLOB, * PCRYPT_UINT_BLOB,
+CRYPT_OBJID_BLOB, * PCRYPT_OBJID_BLOB,
+CERT_NAME_BLOB, * PCERT_NAME_BLOB,
+CERT_RDN_VALUE_BLOB, * PCERT_RDN_VALUE_BLOB,
+CERT_BLOB, * PCERT_BLOB,
+CRL_BLOB, * PCRL_BLOB,
+DATA_BLOB, * PDATA_BLOB,
+CRYPT_DATA_BLOB, * PCRYPT_DATA_BLOB,
+CRYPT_HASH_BLOB, * PCRYPT_HASH_BLOB,
+CRYPT_DIGEST_BLOB, * PCRYPT_DIGEST_BLOB,
+CRYPT_DER_BLOB, * PCRYPT_DER_BLOB,
+CRYPT_ATTR_BLOB, * PCRYPT_ATTR_BLOB;
 #endif
+// certenrolls_end
+// basetsd.h
+#if !defined _W64
+#define _W64
+#endif
+typedef _W64 unsigned long ULONG_PTR, * PULONG_PTR;
+typedef ULONG_PTR HCRYPTPROV;
+// wincrypt.h
+typedef struct _CRYPT_ALGORITHM_IDENTIFIER {
+	LPSTR               pszObjId;
+	CRYPT_OBJID_BLOB    Parameters;
+} CRYPT_ALGORITHM_IDENTIFIER, * PCRYPT_ALGORITHM_IDENTIFIER;
+typedef struct _CRYPT_ATTRIBUTE_TYPE_VALUE {
+	LPSTR               pszObjId;
+	CRYPT_OBJID_BLOB    Value;
+} CRYPT_ATTRIBUTE_TYPE_VALUE, * PCRYPT_ATTRIBUTE_TYPE_VALUE;
+#endif
+#include "mssip.h"
 /*
 //#if cppver >= 2017
 //#if 1
@@ -701,7 +793,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #endif
 */ // comment for too large to compile
 //#include "MqOaI.h"
+#if VS_VER > VC_6
 #include "NetCon.h"
+#endif
 #if VS_VER > VS_2005
 #include "NetSh.h"
 #endif
@@ -727,10 +821,10 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if defined(_MSC_VER) && (_MSC_VER > 1400) // above VS2005
 #include <propkey.h>
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <CHString.h>
-#endif
 #include <CHStrArr.h> 
+#endif
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <ComputeDefs.h>
 #endif
@@ -755,7 +849,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <FunctionDiscoveryKeys_devpkey.h>
 #include <GL/gl.h>
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <GenLex.h>
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -781,7 +875,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if (!(defined(_MSVC_TRADITIONAL) && _MSVC_TRADITIONAL == 0))
 #include "Mshtml.h"
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <OPathLex.h>
 #include <ObjPath.h>
 #include <Objsafe.h>
@@ -798,13 +892,13 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <PhotoAcquireProperties.h>
 #include <PhysicalMonitorEnumerationAPI.h>
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <Polarity.h>
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <PropKeyDef.h>
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <ProvExce.h>
 #endif
 #if VS_VER > VS_2005
@@ -875,7 +969,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <VFWMSGS.H>
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <WbemTime.h>
 #endif
 #if _MSC_VER > 1500
@@ -909,7 +1003,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 // #include <_dbdao.h> // internal implements
 #endif
 #include <accctrl.h>
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <aclui.h> 
 #endif
 #include "activscp.h"
@@ -921,7 +1015,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <activdbg.h>
 #include <activprof.h>
 #endif
+#if VS_VER > VC_6
 #include "adodef.h"
+#endif
 //#include "adoint_backcompat.h"
 #include "adsdb.h"
 // #include <adogpool.h> // Cannot be used directly
@@ -937,16 +1033,20 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "audioapotypes.h"
 #endif
 // #include "axcore.idl"
+#if VS_VER > VC_6
 #include "DSAdmin.h"
+#endif
 #if VS_VER > VS_2005
 #include "DSAttrib.h"
 #endif
+#if VS_VER > VC_6
 #include "DSClient.h"
 #include "DSQuery.h"
 #include "DSRole.h"
 #include "DbgHelp.h"
+#endif
 //#include "DbgModel.h"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <adtgen.h>
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -1040,7 +1140,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if TOOLSET > 90
 #include "aux_ulib.h"
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <authz.h>
 #endif
 #if VS_VER > VS_2005
@@ -1067,7 +1167,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <bthdef.h>
 #endif
 //#include "bdaiface.idl"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <ksmedia.h>
 #endif
 #if VS_VER > VS_2005
@@ -1076,14 +1176,24 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "bdatypes.h"
 #endif
 //#include "binres.idl"
+#if VS_VER > VC_6
 #include "bits.h"
+#endif
 #if VS_VER > VS_2005
 #include "bits3_0.h"
 #endif
 #if VS_VER > VS_2002
 #include "bitscfg.h"
 #endif
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+#if VS_VER > VC_6
+====== =
+>>>>>> > 741ae196de3eb5231005e80b13444afa0c96418e
+>>>>>>> e6787da (Added support for Visual Studio 2002 and Visual C++ 6.)
 #include "bitsmsg.h"
+#endif
 #if VS_VER > VS_2005
 #include "bluetoothapis.h"
 #endif
@@ -1119,8 +1229,10 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #endif
 #endif
 #include <cderr.h>
+#if VS_VER > VC_6
 #include "cdosysstr.h"
 #include "celib.h"
+#endif
 #ifdef printf
 #undef printf
 #endif
@@ -1130,21 +1242,29 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "certbase.h"
 #endif
 #include <certadm.h>
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <certbcli.h>
 #endif
 #include <certcli.h>
 #include <certenc.h>
 #include <certexit.h>
 #include <certif.h>
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <certmod.h>
 #endif
 #include <certpol.h>
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include <wldp.h>
 #endif
+#if VS_VER > VC_6
 #include <schannel.h>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+#endif
+	====== =
+	>>>>>> > 741ae196de3eb5231005e80b13444afa0c96418e
+>>>>>>> e6787da (Added support for Visual Studio 2002 and Visual C++ 6.)
 #if VS_VER > VS_2002
 #include <winternl.h> // define _UNICODE_STRING
 #endif
@@ -1155,7 +1275,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <LsaLookup.h>
 #endif
 #ifdef _USING_V110_SDK71_
-typedef enum _SECURITY_LOGON_TYPE {
+	typedef enum _SECURITY_LOGON_TYPE {
 	UndefinedLogonType = 0, // This is used to specify an undefied logon type
 	Interactive = 2,      // Interactively logged on (locally or remotely)
 	Network,              // Accessing system via network
@@ -1180,7 +1300,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "CertPolEng.h"
 #endif
 #include "CertSrv.h"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <certview.h>
 #endif
 #include "Certif.h"
@@ -1215,12 +1335,16 @@ typedef enum _SECURITY_LOGON_TYPE {
 //#include "cmdprst.idl"
 //#include "cmdstrm.idl"
 //#include "cmdtre.idl"
+#if VS_VER > VC_6
 #include "cmdtree.h"
+#endif
 /*#include "cmdtree.idl"
 #include "cmdtxt.idl"
 #include "cmdval.idl"
 #include "cmdwpr.idl"*/
+#if VS_VER > VC_6
 #include "CmnQuery.h"
+#endif
 #if VS_VER > VS_2005
 #include "codecapi.h"
 #endif
@@ -1229,7 +1353,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 // #include "colinf.idl"
 //#include "colrst.idl"
 //#include "ComAdmin.Idl"
+#if VS_VER > VC_6
 #include "comadmin.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "combaseapi.h"
 #if VS_VER > VS_2015
@@ -1245,7 +1371,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 //#include "commctrl.inl"
 #include "commdlg.h"
 //#include "commdlg.inl"
+#if VS_VER > VC_6
 #include "commoncontrols.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "compressapi.h"
 #include "compstui.h"
@@ -1255,16 +1383,17 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "computestorage.h"
 #endif
 #endif
+#if VS_VER > VC_6
 #include "comsvcs.h"
+#endif
 #include "conio.h"
 #ifdef USE_EDGEMODE_JSRT
 #include <jsrt.h>
 #include <chakrart.h>
 #endif
-#if VS_VER > VS_2015
-#include <charconv>
-#endif
+#if VS_VER > VC_6
 #include <chptrarr.h>
+#endif
 #if cppver >= 2011
 #include <chrono>
 #endif
@@ -1386,7 +1515,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <crtdefs.h>
 #endif
 #include "Cplext.h"
+#if VS_VER > VC_6
 #include "cryptuiapi.h"
+#endif
 #if TOOLSET > 90
 #include "cryptxml.h"
 #include "cscapi.h"
@@ -1578,7 +1709,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <debugapi.h>
 #endif
+#if VS_VER > VC_6
 #include "dbgprop.h"
+#endif
 /*#include "dbs.idl"
 #include "dbsdep.idl"
 #include "devenum.idl"*/
@@ -1608,12 +1741,16 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <devquerydef.h>
 #include <diagnosticdataquerytypes.h>
 #endif
+#if VS_VER > VC_6
 #include "DhcpCSdk.h"
+#endif
 #if VS_VER > VS_2003
 #include "dhcpsapi.h"
 #endif
+#if VS_VER > VC_6
 #include "DhcpSSdk.h"
 #include "dimm.h"
+#endif
 #if VS_VER > VS_2005
 #include "Dhcpv6cSdk.h"
 #endif
@@ -1633,7 +1770,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "DirectXColors.h"
 #endif
 //#include "DirectXPackedVector.h"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <diskguid.h>
 #endif
 #include "dispex.h"
@@ -1687,7 +1824,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "dsconf.h"
 #endif
 //#include "drt.h"
+#if VS_VER > VC_6
 #include "DsGetDC.h"
+#endif
 //#include "dshow.h"
 #if VS_VER > VS_2005
 #include "dshowasf.h"
@@ -1806,9 +1945,13 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "FaxMmc.h"
 #include "FaxRoute.h"
 #endif
+#if VS_VER > VC_6
 #include "fci.h"
+#endif
 #include "fcntl.h"
+#if VS_VER > VC_6
 #include "fdi.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "fdi_fci_types.h"
 #include "featurestagingapi.h"
@@ -1825,14 +1968,18 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #include "fibersapi.h"
 #endif
+#if VS_VER > VC_6
 #include "FileHC.h"
+#endif
 //#include "FileOpen.Dlg"
 #include "Filter.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "filterpipeline.h"
 #include "filterpipelineutil.h"
 #endif
+#if VS_VER > VC_6
 #include "fltdefs.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "fltUser.h"
 #include "fltUserStructures.h"
@@ -1841,7 +1988,12 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "fontsub.h"
 #endif
 #include "fpieee.h"
+// todo retest
+#if 0
+#if VS_VER > VC_6
 #include "FrQuery.h"
+#endif
+#endif
 #if TOOLSET > 90
 #include "fsrmtlb.h"
 //#include "ftm.h"
@@ -1923,7 +2075,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VS_2003
 #include "htiface.h"
 #endif
+#if VS_VER > VC_6
 #include "HtmlHelp.h"
+#endif
 //#include "http.h"
 /*#include <httpserv.h>
 #include "httpcach.h"*/
@@ -1960,7 +2114,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VS_2005
 #include "icwcfg.h"
 #endif
+#if VS_VER > VC_6
 #include "IDLMULTI.H"
+#endif
 #include "IDispIds.h"
 //#include "ieautomation.h"
 //#include "ieautomation.idl"
@@ -1985,7 +2141,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <edevdefs.h>  
 #endif
 #include <eh.h>
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <emmintrin.h>
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -2036,7 +2192,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if cppver > 2017
 #include <format>
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <guiddef.h>    // REVIEW: or just redefine GUID here"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -2136,20 +2292,24 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "IcmpAPI.h"
 #endif
 //#include "ioctltypes.h"
+#if VS_VER > VC_6
 #include "ioevent.h"
+#endif
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "ioringapi.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "ip2string.h"
 #endif
+#if VS_VER > VC_6
 #include "iphlpapi.h"
+#endif
 #include <ipifcons.h>
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <ipmib.h>
 #endif
 #include <iprtrmib.h>
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #pragma warning(push)
 #pragma warning(disable: 4005)
 #include <iptypes.h>
@@ -2163,6 +2323,17 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <ipxsap.h>
 #include <ipxtfflt.h>
 //#include "iscsidsc.h"
+#if VS_VER == VC_6
+// redefinition errors in VC++ 6
+#ifndef CLSID_InternetShortcut
+#define CLSID_InternetShortcut
+#ifdef UNICODE
+#define IID_IUniformResourceLocator     IID_IUniformResourceLocatorW
+#else
+#define IID_IUniformResourceLocator     IID_IUniformResourceLocatorA
+#endif
+#endif
+#endif
 #include <isguids.h>            // internet shortcut GUIDs"
 #pragma warning(push)
 #pragma warning(disable: 4005)
@@ -2234,11 +2405,15 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "ksarm64.h"
 #endif
 #include <ks.h>
+#if VS_VER > VC_6
 #include "ksguid.h"
+#endif
 #if TOOLSET > 90
 #include "ksopmapi.h"
 #endif
+#if VS_VER > VC_6
 #include "ksproxy.h"
+#endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <ktmtypes.h>
 #include <l2cmn.h>
@@ -2276,7 +2451,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <lmcons.h>     // LAN Manager common definitions"
 #include <lmerr.h>      // LAN Manager network error definitions"
 #include <lmerrlog.h>   // NetErrorLog class"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <lmjoin.h>     // NetJoinDomain class"
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
@@ -2303,7 +2478,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VS_2005
 #include "lowlevelmonitorconfigurationapi.h"
 #endif
+#if VS_VER > VC_6
 #include "LpmApi.h"
+#endif
 #include "Ipinfoid.h"
 #if TOOLSET > 90
 #include "LsaLookup.h"
@@ -2329,14 +2506,16 @@ typedef struct _UNICODE_STRING {
 	USHORT MaximumLength;
 	PWSTR  Buffer;
 } UNICODE_STRING, * PUNICODE_STRING;
-#include "madcapcl.h"
-#else
+#endif
+#if VS_VER > VC_6
 #include "madcapcl.h"
 #endif
 #if VS_VER > VS_2005
 #include "magnification.h"
 #endif
+#if VS_VER > VC_6
 #include "MailMsgProps.h"
+#endif
 #if TOOLSET > 90
 //#include "manipulations_i.c"
 #endif
@@ -2395,7 +2574,9 @@ typedef struct _UNICODE_STRING {
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <memoryapi.h>
 #endif
+#if VS_VER > VC_6
 #include "mergemod.h"
+#endif
 //#include "mdrrst.idl"
 //#include "messagedeviceservice.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
@@ -2429,7 +2610,9 @@ typedef struct _UNICODE_STRING {
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "mfvirtualcamera.h"
 #endif
+#if VS_VER > VC_6
 #include "Mgm.h"
+#endif
 #include "MgmtAPI.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "mi.h"
@@ -2512,9 +2695,13 @@ typedef struct _UNICODE_STRING {
 #include "msacmdrv.h"
 #endif
 #include "MSAcmDlg.h"
-#include "msado15.h"
+#if VS_VER > VC_6
+// todo recheck
+//#include "msado15.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
-#include "msado15_Backcompat.h"
+// todo recheck
+//#include "msado15_Backcompat.h"
 #if MSVC_VER > 2012
 #include "msapofxproxy.h"
 #endif
@@ -2547,9 +2734,14 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 // define _NTCRYPT_ to skip blocks with issues
 #define _NTCRYPT_
 #endif
+#if VS_VER > VC_6
 #include <mschapp.h>
+#endif
 //#include "MSClus.Idl"
 #include "MSClus.h"
+#if VS_VER == VC_6
+#include <oledb.h>
+#endif
 #include "msdadc.h"
 #include "msdaguid.h"
 #include "msdaora.h"
@@ -2562,7 +2754,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "msdrmgetinfo.h"
 #endif
 //#include "MsHTML.Idl"
+#if VS_VER > VC_6
 #include "msdshape.h"
+#endif
 #if VS_VER > VS_2005
 #include "msfeeds.h"
 #endif
@@ -2600,10 +2794,14 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "MSTask.h"
 #include <mshtmcid.h>
 #include <mshtmdid.h>
+#if VS_VER > VC_6
 #include "msremote.h"
+#endif
 #include "mssip.h"
 #include "msstkppg.h"
+#if VS_VER > VC_6
 #include "mstcpip.h"
+#endif
 //#include "msvidctl.h"
 //#include "msvidctl.idl"
 #if VS_VER > VS_2005
@@ -2611,9 +2809,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #endif
 //#include "MsXml.Idl"
 //#include "MsXml2.Idl"
+#if VS_VER > VC_6
 #include "MsXml2.h"
 #include "MsXml2DId.h"
-#if VS_VER > VCPP_6
 #include <mstcpip.h>
 #endif
 //#include "MSWSock.h"
@@ -2625,9 +2823,13 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "MsXml6.h"
 #endif
 #include "MsXmlDId.h"
+#if VS_VER > VC_6
 #include "Mshtmlc.h"
+#endif
 #include "Msi.h"
+#if VS_VER > VC_6
 #include "MsiDefs.h"
+#endif
 #include "MsiQuery.h"
 #include <msxml.h>
 //#include "MspAddr.h"
@@ -2638,14 +2840,18 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if VS_VER > VS_2005
 #include "mtpext.h"
 #endif
+#if VS_VER > VC_6
 #include "Msplog.h"
+#endif
 //#include "Mspterm.h"
 //#include "Mspthrd.h"
 //#include "Msptrmac.h"
 //#include "Msptrmar.h"
 //#include "Msptrmvc.h"
 //#include "Msputils.h"
+#if VS_VER > VC_6
 #include "MtsAdmin.h"
+#endif
 #include "MtsEvents.h"
 #include "MtsGrp.h"
 #include "Mtx.h"
@@ -2655,6 +2861,309 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "MultiMon.h"
 #include "NTMSAPI.h"
 #include "NTMSMli.h"
+#endif
+#if VS_VER == VC_6
+// cannot find cmdtree
+// ntquery.h(185) : error C2061: syntax error : identifier 'DBCOMMANDTREE'
+typedef ULONG DBLENGTH; // from oledb.h
+typedef WORD DBCOMMANDOP;
+typedef DWORD DBCOMMANDREUSE;
+typedef struct tagDBBYGUID
+{
+	/* [size_is] */ BYTE* pbInfo;
+	DBLENGTH cbInfo;
+	GUID guid;
+} 	DBBYGUID;
+
+#define GENERATE_METHOD_EXACT    ( 0 )
+#define GENERATE_METHOD_PREFIX   ( 1 )
+#define GENERATE_METHOD_INFLECT  ( 2 )
+typedef struct tagDBCONTENT
+{
+	LPOLESTR pwszPhrase;
+	DWORD dwGenerateMethod;
+	LONG lWeight;
+	LCID lcid;
+} 	DBCONTENT;
+
+#define SCOPE_FLAG_MASK      ( 0x000000ff )
+#define SCOPE_FLAG_INCLUDE   ( 0x00000001 )
+#define SCOPE_FLAG_DEEP      ( 0x00000002 )
+#define SCOPE_TYPE_MASK      ( 0xffffff00 )
+#define SCOPE_TYPE_WINPATH   ( 0x00000100 )
+#define SCOPE_TYPE_VPATH     ( 0x00000200 )
+typedef struct tagDBCONTENTSCOPE
+{
+	DWORD dwFlags;
+	LPOLESTR* rgpwszTagName;
+	LPOLESTR pwszElementValue;
+} 	DBCONTENTSCOPE;
+
+typedef struct tagDBCONTENTTABLE
+{
+	LPOLESTR pwszMachine;
+	LPOLESTR pwszCatalog;
+} 	DBCONTENTTABLE;
+
+#define PROPID_QUERY_RANKVECTOR  ( 0x2 )
+#define PROPID_QUERY_RANK        ( 0x3 )
+#define PROPID_QUERY_HITCOUNT    ( 0x4 )
+#define PROPID_QUERY_ALL         ( 0x6 )
+#define PROPID_STG_CONTENTS      ( 0x13 )
+#define VECTOR_RANK_MIN          ( 0 )
+#define VECTOR_RANK_MAX          ( 1 )
+#define VECTOR_RANK_INNER        ( 2 )
+#define VECTOR_RANK_DICE         ( 3 )
+#define VECTOR_RANK_JACCARD      ( 4 )
+typedef struct tagDBCONTENTVECTOR
+{
+	LONG lWeight;
+	DWORD dwRankingMethod;
+} 	DBCONTENTVECTOR;
+
+typedef struct tagDBGROUPINFO
+{
+	LCID lcid;
+} 	DBGROUPINFO;
+
+typedef struct tagDBPARAMETER
+{
+	LPOLESTR pwszName;
+	ITypeInfo* pTypeInfo;
+	DB_NUMERIC* pNum;
+	DBLENGTH cbMaxLength;
+	DBPARAMFLAGS dwFlags;
+	DBTYPE wType;
+} 	DBPARAMETER;
+
+#define DBSETFUNC_NONE       0x0
+#define DBSETFUNC_ALL        0x1
+#define DBSETFUNC_DISTINCT   0x2
+typedef struct tagDBSETFUNC
+{
+	DWORD dwSetQuantifier;
+} 	DBSETFUNC;
+
+typedef struct tagDBSORTINFO
+{
+	BOOL fDesc;
+	LCID lcid;
+} 	DBSORTINFO;
+
+typedef struct tagDBTEXT
+{
+	LPOLESTR pwszText;
+	ULONG ulErrorLocator;
+	ULONG ulTokenLength;
+	GUID guidDialect;
+} 	DBTEXT;
+
+typedef struct tagDBLIKE
+{
+	LONG lWeight;
+	GUID guidDialect;
+} 	DBLIKE;
+
+#define PROXIMITY_UNIT_WORD           ( 0 )
+#define PROXIMITY_UNIT_SENTENCE       ( 1 )
+#define PROXIMITY_UNIT_PARAGRAPH      ( 2 )
+#define PROXIMITY_UNIT_CHAPTER        ( 3 )
+typedef struct tagDBCONTENTPROXIMITY
+{
+	DWORD dwProximityUnit;
+	ULONG ulProximityDistance;
+	LONG lWeight;
+} 	DBCONTENTPROXIMITY;
+
+typedef struct tagDBPROBABILISTIC
+{
+	LONG lWeight;
+	float flK1;
+	float flK2;
+	float flK3;
+	float flB;
+} 	DBPROBABILISTIC;
+
+typedef struct tagDBRELEVANTDOCUMENT
+{
+	LONG lWeight;
+	VARIANT vDocument;
+} 	DBRELEVANTDOCUMENT;
+
+typedef struct tagDBCOMMANDTREE
+{
+	DBCOMMANDOP op;
+	WORD wKind;
+	struct tagDBCOMMANDTREE* pctFirstChild;
+	struct tagDBCOMMANDTREE* pctNextSibling;
+	/* [switch_is][switch_type] */ union
+	{
+		/* [case()] */ __int64 llValue;
+		/* [case()] */ unsigned __int64 ullValue;
+		/* [case()] */ BOOL fValue;
+		/* [case()] */ unsigned char uchValue;
+		/* [case()] */ signed char schValue;
+		/* [case()] */ unsigned short usValue;
+		/* [case()] */ short sValue;
+		/* [case()] */ LPOLESTR pwszValue;
+		/* [case()] */ LONG lValue;
+		/* [case()] */ ULONG ulValue;
+		/* [case()] */ float flValue;
+		/* [case()] */ double dblValue;
+		/* [case()] */ CY cyValue;
+		/* [case()] */ DATE dateValue;
+		/* [case()] */ DBDATE dbdateValue;
+		/* [case()] */ DBTIME dbtimeValue;
+		/* [case()] */ SCODE scodeValue;
+		/* [case()] */ BSTR* pbstrValue;
+		/* [case()] */ ICommand* pCommand;
+		/* [case()] */ IDispatch* pDispatch;
+		/* [case()] */ IMoniker* pMoniker;
+		/* [case()] */ IRowset* pRowset;
+		/* [case()] */ IUnknown* pUnknown;
+		/* [case()] */ DBBYGUID* pdbbygdValue;
+		/* [case()] */ DBCOLUMNDESC* pcoldescValue;
+		/* [case()] */ DBID* pdbidValue;
+		/* [case()] */ DBLIKE* pdblikeValue;
+		/* [case()] */ DBCONTENT* pdbcntntValue;
+		/* [case()] */ DBCONTENTSCOPE* pdbcntntscpValue;
+		/* [case()] */ DBCONTENTTABLE* pdbcntnttblValue;
+		/* [case()] */ DBCONTENTVECTOR* pdbcntntvcValue;
+		/* [case()] */ DBCONTENTPROXIMITY* pdbcntntproxValue;
+		/* [case()] */ DBGROUPINFO* pdbgrpinfValue;
+		/* [case()] */ DBPARAMETER* pdbparamValue;
+		/* [case()] */ DBPROPSET* pdbpropValue;
+		/* [case()] */ DBSETFUNC* pdbstfncValue;
+		/* [case()] */ DBSORTINFO* pdbsrtinfValue;
+		/* [case()] */ DBTEXT* pdbtxtValue;
+		/* [case()] */ DBVECTOR* pdbvectorValue;
+		/* [case()] */ SAFEARRAY* parrayValue;
+		/* [case()] */ VARIANT* pvarValue;
+		/* [case()] */ GUID* pGuid;
+		/* [case()] */ BYTE* pbValue;
+		/* [case()] */ char* pzValue;
+		/* [case()] */ DB_NUMERIC* pdbnValue;
+		/* [case()] */ DBTIMESTAMP* pdbtsValue;
+		/* [case()] */ void* pvValue;
+		/* [case()] */ DBPROBABILISTIC* pdbprobValue;
+		/* [case()] */ DBRELEVANTDOCUMENT* pdbreldocValue;
+	} 	value;
+	HRESULT hrError;
+} 	DBCOMMANDTREE;
+
+
+EXTERN_C const IID IID_ICommandTree;
+
+#if defined(__cplusplus) && !defined(CINTERFACE)
+
+MIDL_INTERFACE("0c733a87-2a1c-11ce-ade5-00aa0044773d")
+ICommandTree : public IUnknown
+{
+public:
+	virtual HRESULT STDMETHODCALLTYPE FindErrorNodes(
+		/* [in] */ const DBCOMMANDTREE * pRoot,
+		/* [out] */ ULONG * pcErrorNodes,
+		/* [out] */ DBCOMMANDTREE * **prgErrorNodes) = 0;
+
+	virtual HRESULT STDMETHODCALLTYPE FreeCommandTree(
+		/* [in] */ DBCOMMANDTREE** ppRoot) = 0;
+
+	virtual HRESULT STDMETHODCALLTYPE GetCommandTree(
+		/* [out] */ DBCOMMANDTREE** ppRoot) = 0;
+
+	virtual HRESULT STDMETHODCALLTYPE SetCommandTree(
+		/* [in] */ DBCOMMANDTREE** ppRoot,
+		/* [in] */ DBCOMMANDREUSE dwCommandReuse,
+		/* [in] */ BOOL fCopy) = 0;
+
+};
+
+
+#else 	/* C style interface */
+
+typedef struct ICommandTreeVtbl
+{
+	BEGIN_INTERFACE
+
+		DECLSPEC_XFGVIRT(IUnknown, QueryInterface)
+		HRESULT(STDMETHODCALLTYPE* QueryInterface)(
+			ICommandTree* This,
+			/* [in] */ REFIID riid,
+			/* [annotation][iid_is][out] */
+			_COM_Outptr_  void** ppvObject);
+
+	DECLSPEC_XFGVIRT(IUnknown, AddRef)
+		ULONG(STDMETHODCALLTYPE* AddRef)(
+			ICommandTree* This);
+
+	DECLSPEC_XFGVIRT(IUnknown, Release)
+		ULONG(STDMETHODCALLTYPE* Release)(
+			ICommandTree* This);
+
+	DECLSPEC_XFGVIRT(ICommandTree, FindErrorNodes)
+		HRESULT(STDMETHODCALLTYPE* FindErrorNodes)(
+			ICommandTree* This,
+			/* [in] */ const DBCOMMANDTREE* pRoot,
+			/* [out] */ ULONG* pcErrorNodes,
+			/* [out] */ DBCOMMANDTREE*** prgErrorNodes);
+
+	DECLSPEC_XFGVIRT(ICommandTree, FreeCommandTree)
+		HRESULT(STDMETHODCALLTYPE* FreeCommandTree)(
+			ICommandTree* This,
+			/* [in] */ DBCOMMANDTREE** ppRoot);
+
+	DECLSPEC_XFGVIRT(ICommandTree, GetCommandTree)
+		HRESULT(STDMETHODCALLTYPE* GetCommandTree)(
+			ICommandTree* This,
+			/* [out] */ DBCOMMANDTREE** ppRoot);
+
+	DECLSPEC_XFGVIRT(ICommandTree, SetCommandTree)
+		HRESULT(STDMETHODCALLTYPE* SetCommandTree)(
+			ICommandTree* This,
+			/* [in] */ DBCOMMANDTREE** ppRoot,
+			/* [in] */ DBCOMMANDREUSE dwCommandReuse,
+			/* [in] */ BOOL fCopy);
+
+	END_INTERFACE
+} ICommandTreeVtbl;
+
+interface ICommandTree
+{
+	CONST_VTBL struct ICommandTreeVtbl* lpVtbl;
+};
+
+
+
+#ifdef COBJMACROS
+
+
+#define ICommandTree_QueryInterface(This,riid,ppvObject)	\
+    ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) ) 
+
+#define ICommandTree_AddRef(This)	\
+    ( (This)->lpVtbl -> AddRef(This) ) 
+
+#define ICommandTree_Release(This)	\
+    ( (This)->lpVtbl -> Release(This) ) 
+
+
+#define ICommandTree_FindErrorNodes(This,pRoot,pcErrorNodes,prgErrorNodes)	\
+    ( (This)->lpVtbl -> FindErrorNodes(This,pRoot,pcErrorNodes,prgErrorNodes) ) 
+
+#define ICommandTree_FreeCommandTree(This,ppRoot)	\
+    ( (This)->lpVtbl -> FreeCommandTree(This,ppRoot) ) 
+
+#define ICommandTree_GetCommandTree(This,ppRoot)	\
+    ( (This)->lpVtbl -> GetCommandTree(This,ppRoot) ) 
+
+#define ICommandTree_SetCommandTree(This,ppRoot,dwCommandReuse,fCopy)	\
+    ( (This)->lpVtbl -> SetCommandTree(This,ppRoot,dwCommandReuse,fCopy) ) 
+
+#endif /* COBJMACROS */
+
+
+#endif 	/* C style interface */
+#endif
 #include "NTQuery.h"
 #if VS_VER > VS_2005
 #include "muiload.h"
@@ -2706,7 +3215,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <ndkinfo.h>
 #endif
+#if VS_VER > VC_6
 #include "ndr64types.h"
+#endif
 //#include <netioapi.h>
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "netcfgn.h"
@@ -2767,15 +3278,17 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "ntddmodm.h"
 #include "ntddmou.h"
 #endif
+#if VS_VER > VC_6
 #include "ntddndis.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "ntddpar.h"
 #endif
+#if VS_VER > VC_6
 #include "NtDDPSch.h"
-#if VS_VER > VCPP_6
 #include <ntddndis.h>
-#endif
 #include "NtDsAPI.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "ntddscm.h"
 #if VS_VER > VS_2003
@@ -2795,7 +3308,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <ntioring_x.h>
 #endif
+#if VS_VER > VC_6
 #include "NtLdap.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "ntlsa.h"
 #endif
@@ -2832,7 +3347,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include <oleauto.h>
 #include <olectl.h>
 //#include "oledb.idl"
+#if VS_VER > VC_6
 #include "oledbdep.h"
+#endif
 //#include "oledbdep.idl"
 //#include "oledbguid.h"
 //#include "oledbnew.idl"
@@ -2866,7 +3383,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "pbdaerrors.h"
 #endif
+#if VS_VER > VC_6
 #include "pchannel.h"
+#endif
 #if VS_VER > VS_2005
 #include "pciprop.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
@@ -2936,14 +3455,21 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 
 #endif // PERSIST_H
 #else
+#if VS_VER > VC_6
 #include "persist.h"
+#endif
 #endif
 #if TOOLSET > 90
 #include "PNPXAssoc.h"
 #endif
+#if VS_VER > VC_6
 #include "PatchApi.h"
 #include "PatchWiz.h"
+#endif
+#if VS_VER > VC_6
+// reason: pdh.h(50) : error C2040: 'HLOG' : 'void *' differs in levels of indirection from 'struct _HLOG' 
 #include "Pdh.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "PeerDist.h"
 #endif
@@ -2971,7 +3497,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "pnrpns.h"
 #endif
 //#include "poclass.h"
+#if VS_VER > VC_6
 #include "Polarity.h"
+#endif
 #if VS_VER > VS_2005
 #include "PortableDevice.h"
 #include "PortableDeviceApi.h"
@@ -2980,7 +3508,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "powerbase.h"
 #include "powersetting.h"
 #endif
+#if VS_VER > VC_6
 #include "powrprof.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include <WinDDIUI.h>
 #endif
@@ -3014,7 +3544,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #endif
 #include "profileapi.h"
 #endif
+#if VS_VER > VC_6
 #include "ProfInfo.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "projectedfslib.h"
 #endif
@@ -3025,13 +3557,19 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #endif
 //#include "prvmon.idl"
 //#include "PropIdl.Idl"
+#if VS_VER > VC_6
 #include "PropIdl.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "PropIdlBase.h"
 #endif
+#if VS_VER > VC_6
 #include "ProvExce.h"
+#endif
 //#include "Provider.h"
+#if VS_VER > VC_6
 #include "Psapi.h"
+#endif
 #if cppver >= 2017
 #include <optional>
 #endif
@@ -3040,7 +3578,7 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include <packoff.h>
 #include <packon.h>
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <pchannel.h>
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -3065,13 +3603,13 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include <processtopologyapi.h>
 #include <profileapi.h>
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <profinfo.h>
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <propapi.h>
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <propidl.h>
 #endif
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
@@ -3100,8 +3638,10 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <qosobjs.h>
 #endif
+#if VS_VER > VC_6
 #include "QosPol.h"
 #include "qossp.h"
+#endif
 //#include "qrybas.idl"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "RadialControllerInterop.h"
@@ -3109,8 +3649,127 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include <ras.h>
 #include "RasDlg.h"
 #include "RasError.h"
+#if VS_VER == VC_6
+// Raseapif.h
+//
+// Value is set to the 32 bit integral value or a pointer to data.
+// 32 bit integral values should be in host format, not network format.
+// Length for a 32 bit integral value can be 1, 2 or 4. The array of
+// attributes must be terminated with an attribute of type raatMinimum.
+//
+typedef enum _RAS_AUTH_ATTRIBUTE_TYPE_
+{
+	raatMinimum = 0,                // Undefined
+	raatUserName,                   // Value field is a Pointer
+	raatUserPassword,               // Value field is a Pointer
+	raatMD5CHAPPassword,            // Value field is a Pointer
+	raatNASIPAddress,               // Value field is a 32 bit integral value
+	raatNASPort,                    // Value field is a 32 bit integral value
+	raatServiceType,                // Value field is a 32 bit integral value
+	raatFramedProtocol,             // Value field is a 32 bit integral value
+	raatFramedIPAddress,            // Value field is a 32 bit integral value
+	raatFramedIPNetmask,            // Value field is a 32 bit integral value
+	raatFramedRouting = 10,         // Value field is a 32 bit integral value
+	raatFilterId,                   // Value field is a Pointer
+	raatFramedMTU,                  // Value field is a 32 bit integral value
+	raatFramedCompression,          // Value field is a 32 bit integral value
+	raatLoginIPHost,                // Value field is a 32 bit integral value
+	raatLoginService,               // Value field is a 32 bit integral value
+	raatLoginTCPPort,               // Value field is a 32 bit integral value
+	raatUnassigned17,               // Undefined
+	raatReplyMessage,               // Value field is a Pointer
+	raatCallbackNumber,             // Value field is a Pointer
+	raatCallbackId = 20,            // Value field is a Pointer
+	raatUnassigned21,               // Undefined
+	raatFramedRoute,                // Value field is a Pointer
+	raatFramedIPXNetwork,           // Value field is a 32 bit integral value
+	raatState,                      // Value field is a Pointer
+	raatClass,                      // Value field is a Pointer
+	raatVendorSpecific,             // Value field is a Pointer
+	raatSessionTimeout,             // Value field is a 32 bit integral value
+	raatIdleTimeout,                // Value field is a 32 bit integral value
+	raatTerminationAction,          // Value field is a 32 bit integral value
+	raatCalledStationId = 30,       // Value field is a Pointer
+	raatCallingStationId,           // Value field is a Pointer
+	raatNASIdentifier,              // Value field is a Pointer
+	raatProxyState,                 // Value field is a Pointer
+	raatLoginLATService,            // Value field is a Pointer
+	raatLoginLATNode,               // Value field is a Pointer
+	raatLoginLATGroup,              // Value field is a Pointer
+	raatFramedAppleTalkLink,        // Value field is a 32 bit integral value
+	raatFramedAppleTalkNetwork,     // Value field is a 32 bit integral value
+	raatFramedAppleTalkZone,        // Value field is a Pointer
+	raatAcctStatusType = 40,        // Value field is a 32 bit integral value
+	raatAcctDelayTime,              // Value field is a 32 bit integral value
+	raatAcctInputOctets,            // Value field is a 32 bit integral value
+	raatAcctOutputOctets,           // Value field is a 32 bit integral value
+	raatAcctSessionId,              // Value field is a Pointer
+	raatAcctAuthentic,              // Value field is a 32 bit integral value
+	raatAcctSessionTime,            // Value field is a 32 bit integral value
+	raatAcctInputPackets,           // Value field is a 32 bit integral value
+	raatAcctOutputPackets,          // Value field is a 32 bit integral value
+	raatAcctTerminateCause,         // Value field is a 32 bit integral value
+	raatAcctMultiSessionId = 50,    // Value field is a Pointer
+	raatAcctLinkCount,              // Value field is a 32 bit integral value
+	raatAcctEventTimeStamp = 55,    // Value field is a 32 bit integral value
+	raatMD5CHAPChallenge = 60,      // Value field is a Pointer
+	raatNASPortType,                // Value field is a 32 bit integral value
+	raatPortLimit,                  // Value field is a 32 bit integral value
+	raatLoginLATPort,               // Value field is a Pointer
+	raatTunnelType,                 // Value field is a 32 bit integral value
+	raatTunnelMediumType,           // Value field is a 32 bit integral value
+	raatTunnelClientEndpoint,       // Value field is a Pointer
+	raatTunnelServerEndpoint,       // Value field is a Pointer
+	raatARAPPassword = 70,          // Value field is a Pointer
+	raatARAPFeatures,               // Value field is a Pointer
+	raatARAPZoneAccess,             // Value field is a 32 bit integral value
+	raatARAPSecurity,               // Value field is a 32 bit integral value
+	raatARAPSecurityData,           // Value field is a Pointer
+	raatPasswordRetry,              // Value field is a 32 bit integral value
+	raatPrompt,                     // Value field is a 32 bit integral value
+	raatConnectInfo,                // Value field is a Pointer
+	raatConfigurationToken,         // Value field is a Pointer
+	raatEAPMessage,                 // Value field is a Pointer
+	raatSignature = 80,             // Value field is a Pointer
+	raatARAPChallengeResponse = 84, // Value field is a Pointer
+	raatAcctInterimInterval = 85,   // Value field is a 32 bit integral value
+	raatNASIPv6Address = 95,
+	raatFramedInterfaceId,
+	raatFramedIPv6Prefix,
+	raatLoginIPv6Host,
+	raatFramedIPv6Route,
+	raatFramedIPv6Pool,
+	raatARAPGuestLogon = 8096,        // Value field is a 32 bit integral value
+	raatCertificateOID,               // Value field is a Pointer
+	raatEAPConfiguration,             // Value field is a Pointer
+	raatPEAPEmbeddedEAPTypeId = 8099, // Value field is a 32 bit integral value
+	raatInnerEAPTypeId = 8099,        // Value field is a 32 bit integral value
+	raatPEAPFastRoamedSession = 8100, // Value field is a 32 bit integral value
+	raatFastRoamedSession = 8100,     // Value field is a 32 bit integral value
+	raatEAPTLV = 8102,                // Value field is a Pointer
+	raatCredentialsChanged,           // Value field is a Integer with boolean semantics
+	raatCertificateThumbprint = 8250, // Value field is a Pointer
+	raatPeerId = 9000,                // Value field is a pointer
+	raatServerId,                     // Value field is a pointer
+	raatMethodId,                     // Value field is a pointer
+	raatEMSK,                         // Value field is a pointer
+	raatSessionId,                    // Value field is a pointer
+	raatReserved = 0xFFFFFFFF         // Undefined
+
+} RAS_AUTH_ATTRIBUTE_TYPE;
+
+typedef struct _RAS_AUTH_ATTRIBUTE
+{
+	RAS_AUTH_ATTRIBUTE_TYPE raaType;
+	DWORD dwLength;
+	/*_Field_size_(dwLength)*/ PVOID Value;
+
+} RAS_AUTH_ATTRIBUTE, * PRAS_AUTH_ATTRIBUTE;
+#endif
 #include "Raseapif.h"
+#if VS_VER > VC_6 // redefinition
 #include "RassHost.h"
+#endif
 #include "Ratings.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "rdpappcontainerclient.h"
@@ -3125,7 +3784,7 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <realtimeapiset.h>
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <reason.h>             // get the public reasons"
 #endif
 //#include "recapis.h"
@@ -3223,13 +3882,17 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "rstwtn.idl"
 #include "rstwtr.idl"
 #include "rstxsc.idl"*/
+#if VS_VER > VC_6
 #include "RrasCfg.h"
 #include "rtccore.h"
+#endif
 #include "RTInfo.h"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "rtlsupportapi.h"
 #endif
+#if VS_VER > VC_6
 #include "RtmV2.h"
+#endif
 //#include "RTSCOM_i.c"
 #include <rtutils.h>
 //#include "rwschg.idl"
@@ -3239,6 +3902,8 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if VS_VER > VS_2003
 #include <sal.h>
 #endif
+#if VS_VER > VC_6
+#include <Sti.h>
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "stiusd.h"
 #endif
@@ -3246,6 +3911,7 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include <sapi.h>
 //#include "sapi.idl"
 #include <sapiddk.h>
+#endif
 #endif
 #if TOOLSET > 90
 #include "sas.h"
@@ -3257,18 +3923,22 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "sberrors.h"
 #include "sbtsv.h"
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <schannel.h>
 #include <schedule.h>
 #include <schnlsp.h> // exists on VC++ 6 but found syntax errors
 //todo recheck this error
 #endif
+#if VS_VER > VC_6
 #include "Schemadef.h"
+#endif
 #if VS_VER > VS_2005
 #include <mswmdm.h>
 #include "scclient.h"
 #endif
+#if VS_VER > VC_6
 #include "scesvc.h"
+#endif
 //#include "scpops.idl"
 #include "ScrnSave.h"
 #include "ScrptIDs.h"
@@ -3279,7 +3949,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "scsi.h"
 #include "scsiscan.h"
 #endif
+#if VS_VER > VC_6
 #include "sddl.h"
+#endif
 //#include "sdoias.h"
 #include <search.h>
 #if TOOLSET == 90
@@ -3293,9 +3965,11 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include <securitybaseapi.h>
 #endif
 //#include "segment.idl"
+#if VS_VER > VC_6
 #include "Sens.h"
 #include "SensAPI.h"
 #include "SensEvts.h"
+#endif
 #if TOOLSET > 90
 #include "sensors.h"
 #endif
@@ -3311,7 +3985,15 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include <set>
 #include <setjmp.h>
 #include <setupapi.h>
+#if VS_VER > VC_6
 #include "Sfc.h"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+#endif
+	====== =
+	>>>>>> > 741ae196de3eb5231005e80b13444afa0c96418e
+>>>>>>> e6787da (Added support for Visual Studio 2002 and Visual C++ 6.)
 #if VS_VER > VS_2002
 #include "shappmgr.h"
 #endif
@@ -3334,12 +4016,14 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if VS_VER > VS_2005
 #include "shidfact.h"
 #endif
-//#include "shimgdata.h"
-//#include "shldisp.idl"
+	//#include "shimgdata.h"
+	//#include "shldisp.idl"
 #include "signal.h"
+#if VS_VER > VC_6
 #include "ShlDisp.h"
+#endif
 #include "ShlGuid.h"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <shtypes.h>
 #include <sipbase.h> // included mssip.h
 #endif
@@ -3353,7 +4037,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <smmintrin.h>
 #endif
+#if VS_VER > VC_6
 #include "SmtpGuid.h"
+#endif
 #include <snmp.h>
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "socketapi.h"
@@ -3361,7 +4047,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "softintrin.h"
 #endif
+#if VS_VER > VC_6
 #include "SoftPub.h"
+#endif
 #if cppver > 2017
 #include <source_location>
 #include <span>
@@ -3399,7 +4087,19 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 //#include "spuihelp.h"
 //#include "sqleri.idl"
 #include "sqlext.h"
+#ifdef SUCCESS
+#pragma push_macro("SUCCESS")
+#undef SUCCESS
+#if VS_VER > VC_6
 #include "Sql_1.h"
+#endif
+#pragma pop_macro("SUCCESS")
+#else
+#if VS_VER > VC_6
+#include "Sql_1.h"
+#endif
+#endif
+//#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "sqlspi.h"
 //#include "srcrst.idl"
@@ -3407,7 +4107,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "srpapi.h"
 #endif
 #endif
+#if VS_VER > VC_6
 #include "SrRestorePtApi.h"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <sqlext.h>
 #endif
@@ -3432,9 +4134,11 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if VS_VER > VS_2005
 #include "StgProp.h"
 #endif
+#if VS_VER > VC_6
 #include "stierr.h"
 #include "stireg.h"
 #include "StlLock.h"
+#endif
 #ifdef ISSP_LEVEL
 #include <sspi.h>
 #endif
@@ -3597,7 +4301,7 @@ typedef unsigned __int64   uintmax_t;
 
 #endif
 #include <stdio.h>  
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <stierr.h>
 #include <stireg.h>
 #include <stllock.h>
@@ -4030,7 +4734,9 @@ typedef unsigned __int64   uintmax_t;
 #include "windowssideshowdriverevents.h"
 #endif
 #include "windowsx.h"
+#if VS_VER > VC_6
 #include "winefs.h"
+#endif
 #if VS_VER > VS_2005
 #include "winevt.h"
 #endif
@@ -4061,7 +4767,7 @@ typedef unsigned __int64   uintmax_t;
 #define __callback               __allowed(on_function) 
 #include "t2embapi.h"
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <tapi3err.h>
 #endif
 #if VS_VER > VS_2005
@@ -4079,8 +4785,16 @@ typedef unsigned __int64   uintmax_t;
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "tbt3ioctls.h"
 #endif
+#if VS_VER > VC_6
 #include "TCError.h"
 #include "TCGuid.h"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+#endif
+	====== =
+	>>>>>> > 741ae196de3eb5231005e80b13444afa0c96418e
+>>>>>>> e6787da (Added support for Visual Studio 2002 and Visual C++ 6.)
 #if VS_VER > VS_2002
 #include <strsafe.h>
 #endif
@@ -4088,7 +4802,7 @@ typedef unsigned __int64   uintmax_t;
 #include <tcpestats.h>
 #include <tcpmib.h>
 #endif
-//#include "tcpioctl.h"
+	//#include "tcpioctl.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "tcpxcv.h"
 //#include "tdh.h"
@@ -4150,7 +4864,9 @@ typedef unsigned __int64   uintmax_t;
 #endif
 #include "Transact.h"
 //#include "Tune.h"
+#if VS_VER > VC_6
 #include "traffic.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "transportsettings.h"
 /*#include "trnjoi.idl"
@@ -4182,7 +4898,7 @@ typedef unsigned __int64   uintmax_t;
 #include "typeresolution.h"
 #endif
 //#include "types.h"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <tvout.h>
 #endif
 #include "TxCoord.h"
@@ -4244,8 +4960,10 @@ typedef unsigned __int64   uintmax_t;
 #if VS_VER > VS_2015
 #include "UserConsentVerifierInterop.h"
 #endif
-#endif
+#endif	  
+#if VS_VER > VC_6
 #include "utillib.h"
+#endif
 //#include "vdscmmn.idl"
 //#include "vdscmprv.idl"
 #if cppver >= 2011
@@ -4274,7 +4992,7 @@ typedef unsigned __int64   uintmax_t;
 #include "uusbfn.h"
 #endif
 #define _UXTHEME_H_  	 // fix for VS 2010. Use condition macro if get warnings in higher versions of VS
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <uxtheme.h>
 #endif
 #if VS_VER > VS_2005
@@ -4867,7 +5585,7 @@ typedef unsigned __int64   uintmax_t;
 
 
 		 // Values for PR_GENDER property
-enum Gender {
+	enum Gender {
 	genderUnspecified = 0,
 	genderFemale,
 	genderMale
@@ -4883,15 +5601,21 @@ enum Gender {
 #include "warning.h"
 #endif
 //#include <wbcl.h>
+#if VS_VER > VC_6
 #include "WbemAds.h"
+#endif
 //#include <wbemcli.h>
+#if VS_VER > VC_6
 #include "wbemdisp.h"
+#endif
 //#include "FwCommon.h"
 //#include "wbemglue.h"
+#if VS_VER > VC_6
 #include "WbemIdl.h"
 #include "WbemProv.h"
 #include "WbemTime.h"
 #include "WbemTran.h"
+#endif
 #include <wchar.h>
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <widemath.h>                // 64-bit and 128-bit math helper functions"
@@ -4943,8 +5667,10 @@ enum Gender {
 #endif
 #endif
 //#include "wheadef.h"
+#if VS_VER > VC_6
 #include "wia.h"
 #include "wiadef.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "wiaintfc.h"
 #include "wiamicro.h"
@@ -5041,12 +5767,80 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #endif
 #include "winsmcrd.h"
 #include "WinSnmp.h"
-//#include "WinSock2.h"
+#if VS_VER == VC_6
+//wintrust.h(139) : error C2143: syntax error : missing ';' before '*'
+// from wincrypt.h
+// definitions for the next definitions
+typedef struct _CRYPT_ATTRIBUTE {
+	LPSTR               pszObjId;
+	DWORD               cValue;
+	PCRYPT_ATTR_BLOB    rgValue;
+} CRYPT_ATTRIBUTE, * PCRYPT_ATTRIBUTE;
+typedef struct _CRYPT_ATTRIBUTES {
+	DWORD                cAttr;
+	PCRYPT_ATTRIBUTE     rgAttr;
+} CRYPT_ATTRIBUTES, * PCRYPT_ATTRIBUTES;
+typedef struct _CRYPT_BIT_BLOB {
+	DWORD   cbData;
+	BYTE* pbData;
+	DWORD   cUnusedBits;
+} CRYPT_BIT_BLOB, * PCRYPT_BIT_BLOB;
+typedef struct _CERT_PUBLIC_KEY_INFO {
+	CRYPT_ALGORITHM_IDENTIFIER    Algorithm;
+	CRYPT_BIT_BLOB                PublicKey;
+} CERT_PUBLIC_KEY_INFO, * PCERT_PUBLIC_KEY_INFO;
+typedef struct _CERT_EXTENSION {
+	LPSTR               pszObjId;
+	BOOL                fCritical;
+	CRYPT_OBJID_BLOB    Value;
+} CERT_EXTENSION, * PCERT_EXTENSION;
+typedef struct _CERT_INFO {
+	DWORD                       dwVersion;
+	CRYPT_INTEGER_BLOB          SerialNumber;
+	CRYPT_ALGORITHM_IDENTIFIER  SignatureAlgorithm;
+	CERT_NAME_BLOB              Issuer;
+	FILETIME                    NotBefore;
+	FILETIME                    NotAfter;
+	CERT_NAME_BLOB              Subject;
+	CERT_PUBLIC_KEY_INFO        SubjectPublicKeyInfo;
+	CRYPT_BIT_BLOB              IssuerUniqueId;
+	CRYPT_BIT_BLOB              SubjectUniqueId;
+	DWORD                       cExtension;
+	PCERT_EXTENSION             rgExtension;
+} CERT_INFO, * PCERT_INFO;
+typedef void* HCERTSTORE;
+typedef struct _CERT_CONTEXT {
+	DWORD                   dwCertEncodingType;
+	BYTE* pbCertEncoded;
+	DWORD                   cbCertEncoded;
+	PCERT_INFO              pCertInfo;
+	HCERTSTORE              hCertStore;
+} CERT_CONTEXT, * PCERT_CONTEXT;
+typedef const CERT_CONTEXT* PCCERT_CONTEXT;
+typedef void* HCRYPTMSG;
+// definitions for WinTrust.h
+typedef struct _CMSG_SIGNER_INFO {
+	DWORD                       dwVersion;
+	CERT_NAME_BLOB              Issuer;
+	CRYPT_INTEGER_BLOB          SerialNumber;
+	CRYPT_ALGORITHM_IDENTIFIER  HashAlgorithm;
+
+	// This is also referred to as the SignatureAlgorithm
+	CRYPT_ALGORITHM_IDENTIFIER  HashEncryptionAlgorithm;
+
+	CRYPT_DATA_BLOB             EncryptedHash;
+	CRYPT_ATTRIBUTES            AuthAttrs;
+	CRYPT_ATTRIBUTES            UnauthAttrs;
+} CMSG_SIGNER_INFO, * PCMSG_SIGNER_INFO;
+typedef void* HCERTSTORE;
+#endif
 #include "WinTrust.h"
 #include "WinUser.h"
 //#include "winuser.inl"
 #include "WinWlx.h"
+#if VS_VER > VC_6
 #include "WMIUtils.h"
+#endif
 #include "WowNT32.h"
 #if TOOLSET > 90
 #include "WpdMtpExtensions.h"
@@ -5085,9 +5879,13 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "Xinput.h"
 #endif
 //#include "xmldom.idl"
+#if VS_VER > VC_6
 #include "xmldomdid.h"
+#endif
 //#include "xmldso.idl"
+#if VS_VER > VC_6
 #include "xmldsodid.h"
+#endif
 //#include "_dbdao.h"
 //#include "access.idl"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
@@ -5103,20 +5901,28 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #if TOOLSET > 90
 #include "activprof.h"
 #endif
+#if VS_VER > VC_6
 #include "adc.h"
+#endif
 //#include "adoctint.h"
 //#include "adogpool.h"
 #include "ADSIid.h"
+#if VS_VER > VC_6
 #include "AF_Irda.h"
+#endif
 #include "AccCtrl.h"
 #include "ActiveDS.h"
 #include "AdsErr.h"
 #include "AdsHlp.h"
+#if VS_VER > VC_6
 #include "AdsProp.h"
+#endif
 #include "Adsnms.h"
 #include "Adssts.h"
+#if VS_VER > VC_6
 #include "AdtGen.h"
 #include "Authif.h"
+#endif
 #include "AviFmt.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "DLNADeviceInterfaceIds.h"
@@ -5145,7 +5951,7 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include <windows.graphics.effects.h>
 #endif
 #include <windowsx.h>
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <winefs.h>
 #endif
 #include <winerror.h>
@@ -5167,9 +5973,14 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include <winreg.h>
 #include "winres.h"
 #include <winresrc.h>
+#if VS_VER > VC_6
 #include "winsafer.h"
+#endif
 #if VS_VER > VS_2005
 #include "winsatcominterfacei.h"
+#endif
+#if VS_VER == VC_6
+#define _LPCBYTE_DEFINED // winscard.h(43) : error C2373: 'LPCBYTE' : redefinition; different type modifiers
 #endif
 #include <winscard.h>
 #if TOOLSET > 90
@@ -5218,7 +6029,7 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "wlantypes.h"
 #include "wlclient.h"
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <wmistr.h>
 #endif
 //#include "wmcodecdsp.h"
@@ -5248,7 +6059,9 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "wmsinternaladminnetsource.h"
 #include "wmsysprf.h"
 #endif
+#if VS_VER > VC_6
 #include <wmiutils.h>
+#endif
 //#include "wnvapi.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "wofapi.h"
@@ -5324,7 +6137,9 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #include "xaudio2.h"
 #include "xaudio2fx.h"
 #endif
+#if VS_VER > VC_6
 #include "xenroll.h"
+#endif
 #if VS_VER > VS_2005
 #include "xmllite.h"
 #endif
@@ -5346,14 +6161,14 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <wtypesbase.h>
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include <xmmintrin.h>
 #endif
 #if defined _SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING || defined _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include <yvals.h>
 #endif
 //#include "CameraUIControl.idl"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include "ADOGuids.h"
 #endif
 #if VS_VER > VS_2002
@@ -5553,7 +6368,7 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #endif
 //#include "FRQuery.h"
 #include "activscp.h"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include "adodef.h"
 #endif
 //#include "adoint_backcompat.h"
@@ -5572,27 +6387,28 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 //#include "axcore.idl"
 #include "basetsd.h"
 //#include "bits.h"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include "bitsmsg.h"
 #include "cdosysstr.h"
 #endif
 #if VS_VER > VS_2003
 #include "certbase.h"
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include "comadmin.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include "commctrl.inl"
 #include "commdlg.inl"
 #endif
+#if VS_VER > VC_6
 #include "comsvcs.h"
-
+#endif
 //#include "dbgprop.h"
 //#include "dbs.idl"
 //#include "dbsdep.idl"
 //#include "devenum.idl"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include "dbgprop.h"
 #endif
 //#include "exdisp.h"
@@ -5620,20 +6436,20 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include "transportsettingcommon.h"
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include "utillib.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include "vsserror.h"
 #endif
 #include "winsmcrd.h"
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include "winuser.inl"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include "wsdxmldom.h"
 #endif
-#if VS_VER > VCPP_6
+#if VS_VER > VC_6
 #include "xmldomdid.h"
 #endif
 //#include "dvdif.idl"
@@ -5645,7 +6461,9 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #endif
 #include "iads.h"
 //#include "icodecapi.idl"
+#if VS_VER > VC_6
 #include "idlmulti.h"
+#endif
 #if MSVC_VER > VS_2013
 using namespace Gdiplus;
 #include "GdiplusMatrix.h"
@@ -5815,6 +6633,4 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 
 #ifndef COMPILE_MULTIMON_STUBS
 #undef GetSystemMetrics
-#endif
-
 #endif
