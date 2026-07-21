@@ -1,0 +1,24 @@
+Deleting output files for rebuild.
+Compiling...
+C:\MSVC20\BIN\WinAPI\WinAPI.cpp
+C:\MSVC20\BIN\WinAPI\winc++.h(4349) : warning C4068: unknown pragma
+C:\MSVC20\BIN\WinAPI\winc++.h(4354) : warning C4068: unknown pragma
+C:\MSVC20\BIN\WinAPI\winc++.h(4420) : warning C4068: unknown pragma
+C:\MSVC20\BIN\WinAPI\winc++.h(4429) : warning C4612: bad #pragma syntax, pragma ignored
+C:\MSVC20\BIN\WinAPI\winc++.h(4558) : warning C4612: bad #pragma syntax, pragma ignored
+c:\msvc20\mfc\include\winres.h(234) : warning C4005: 'ES_LEFT' : macro redefinition
+c:\msvc20\mfc\include\winres.h(235) : warning C4005: 'ES_CENTER' : macro redefinition
+c:\msvc20\mfc\include\winres.h(236) : warning C4005: 'ES_RIGHT' : macro redefinition
+c:\msvc20\mfc\include\winres.h(237) : warning C4005: 'ES_MULTILINE' : macro redefinition
+c:\msvc20\mfc\include\winres.h(238) : warning C4005: 'ES_UPPERCASE' : macro redefinition
+c:\msvc20\mfc\include\winres.h(239) : warning C4005: 'ES_LOWERCASE' : macro redefinition
+c:\msvc20\mfc\include\winres.h(240) : warning C4005: 'ES_PASSWORD' : macro redefinition
+c:\msvc20\mfc\include\winres.h(241) : warning C4005: 'ES_AUTOVSCROLL' : macro redefinition
+c:\msvc20\mfc\include\winres.h(242) : warning C4005: 'ES_AUTOHSCROLL' : macro redefinition
+c:\msvc20\mfc\include\winres.h(243) : warning C4005: 'ES_NOHIDESEL' : macro redefinition
+c:\msvc20\mfc\include\winres.h(244) : warning C4005: 'ES_OEMCONVERT' : macro redefinition
+c:\msvc20\mfc\include\winres.h(245) : warning C4005: 'ES_READONLY' : macro redefinition
+c:\msvc20\mfc\include\winres.h(246) : warning C4005: 'ES_WANTRETURN' : macro redefinition
+c:\msvc20\mfc\include\winres.h(287) : warning C4005: 'LB_ADDSTRING' : macro redefinition
+c:\msvc20\mfc\include\winres.h(288) : warning C4005: 'CB_ADDSTRING' : macro redefinition
+WinAPI.obj - 0 error(s), 20 warning(s)
