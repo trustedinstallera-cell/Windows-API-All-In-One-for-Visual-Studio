@@ -1,4 +1,6 @@
-﻿
+﻿// rename VC_2 to #if VS_VERSION > VC_CURRENT because minor version not determined
+
+
 #if _MSC_VER > 1000
 #pragma once
 #endif
@@ -84,6 +86,9 @@
 #define VS_VER VS_VERSION
 #define MSVC_VER VS_VERSION
 #define MSVC_VERSION VS_VERSION
+
+// todo remove this macro definition
+#define VC_CURRENT VC_2
 
 #if _MSC_VER >= 1950
 #define TOOLSET 145  // VS 2026 and later
@@ -210,7 +215,9 @@ typedef struct IUnknown IUnknown;
 #if VS_VER > VC_5
 #include <shlwapi.h>
 #endif
+#if VS_VERSION > VC_CURRENT
 #include <Shlobj.h>
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #if MSVC_VER > 2015
 #include <ShlObj_core.h>
@@ -338,7 +345,9 @@ typedef struct IUnknown IUnknown;
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "ntverp.ver"
 #endif
+#if VS_VERSION > VC_CURRENT
 #include "oledlg.h"
+#endif
 //#include "opcbase.idl"
 //#include "opcdigitalsignature.idl"
 //#include "opcobjectmodel.idl"
@@ -570,7 +579,9 @@ typedef struct IUnknown IUnknown;
 //#include "Query.h"
 #include "RadioMgr.h"
 #endif
+#if VS_VERSION > VC_CURRENT
 #include "Reconcil.h"
+#endif
 #if VS_CER > VC_6
 #include "RrasCfg.h"
 #endif
@@ -1576,7 +1587,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 //#include "cper.h"
 //#include "cperguid.h"
 #include "Cpl.h"
+#if VS_VERSION > VC_CURRENT
 #include <crtdbg.h>
+#endif
 #if VS_VER > VS_2005
 #include "credentialprovider.h"
 #include "credssp.h"
@@ -1588,7 +1601,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VS_2003
 #include <crtdefs.h>
 #endif
+#if VS_VERSION > VC_CURRENT
 #include "Cplext.h"
+#endif
 #if VS_VER > VC_6
 #include "cryptuiapi.h"
 #endif
@@ -1719,7 +1734,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if NTDDI_VERSION == 0x0A000010 // 10.0.26100.0
 #include "d3dshadercacheregistration.h"
 #endif
+#if VS_VERSION > VC_CURRENT
 #include <daogetrw.h>
+#endif
 //#include "databuffer.h"
 //#include "databuffertypes.h"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -1734,9 +1751,11 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if _MFC_VER >= 0x0420
 #include "dbdao.h"
 #endif
+#if VS_VERSION > VC_CURRENT
 #include "dbdaoerr.h"
 #include <dbdaoid.h>
 #include <dbdaoint.h>
+#endif
 /*#include "dbdsad.idl"
 #include "dbinfo.idl"
 #include "dbinit.idl"*/
@@ -1757,7 +1776,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "dcomp.h"
 #endif
+#if VS_VERSION > VC_CURRENT
 #include <unknwn.h>
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include <dcomptypes.h>     // for CompositionSurfaceType"
 #endif
@@ -1795,7 +1816,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 /*#include "dbs.idl"
 #include "dbsdep.idl"
 #include "devenum.idl"*/
+#if VS_VERSION > VC_CURRENT
 #include "Dbt.h"
+#endif
 //#include "def.h"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "deliveryoptimization.h"
@@ -2338,7 +2361,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "imepad.h"
 #endif
+#if VS_VERSION > VC_CURRENT
 #include <imm.h>
+#endif
 //#include "immdev.h"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <immintrin.h>
@@ -2624,7 +2649,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VC_5
 #include "Ipxtfflt.h"
 #endif
+#if VS_VERSION > VC_CURRENT
 #include "IsGuids.h"
+#endif
 #if VS_VER > VC_5
 #include "IssPer16.h"
 #endif
@@ -2670,7 +2697,9 @@ typedef struct _UNICODE_STRING {
 #define FLAGS_UNDEFINED
 #undef FLAGS
 #endif
+#if VS_VERSION > VC_CURRENT
 #include "MAPI.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "MapiUnicodeHelp.h"
 #endif
@@ -2699,7 +2728,9 @@ typedef struct _UNICODE_STRING {
 #endif
 //#include "mddset.idl"
 //#include "mdfind.idl"
+#if VS_VERSION > VC_CURRENT
 #include <mcx.h>
+#endif
 #if VS_VER > VC_5
 #include <mdcommsg.h>
 #include "Mddefw.h"
@@ -2773,7 +2804,9 @@ typedef struct _UNICODE_STRING {
 #include "microsoft.diagnostics.appanalysis.h"
 #endif
 //#include "microsoft.diagnostics.appanalysis.idl"
+#if VS_VERSION > VC_CURRENT
 #include "Midles.h"
+#endif
 //#include "mileffects.h"
 //#include "mimeole.idl"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -2946,7 +2979,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "msrdc.h"
 #endif
 //#include "msrdc.idl"
+#if VS_VERSION > VC_CURRENT
 #include "MSPST.h"
+#endif
 #if VS_VER > VC_5
 #include "MSTErr.h"
 #include "MSTask.h"
@@ -3506,7 +3541,9 @@ interface ICommandTree
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "nvme.h"
 #endif
+#if VS_VERSION > VC_CURRENT
 #include <oaidl.h>
+#endif
 //#include "objactnl.idl"
 //#include "objectheader.h"
 #if (defined(NTDDI_WIN10_VB)) && (NTDDI_VERSION > NTDDI_WIN10_VB)
@@ -3517,7 +3554,9 @@ interface ICommandTree
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "objidlbase.h"
 #endif
+#if VS_VERSION > VC_CURRENT
 #include <objidl.h> // for IStream"
+#endif
 #if VS_VER > VC_4
 #include <ocidl.h>
 #endif
@@ -3544,8 +3583,10 @@ interface ICommandTree
 //#include "oledbdep.idl"
 //#include "oledbguid.h"
 //#include "oledbnew.idl"
+#if VS_VERSION > VC_CURRENT
 #include <oleidl.h>
 #include "OleDlg.h"
+#endif
 //#include "OleDlg.Dlg"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "ondemandconnroutehelper.h"
@@ -3815,7 +3856,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #endif
 //#include <propvarutil.h>  
 //#include <provider.h>
+#if VS_VERSION > VC_CURRENT
 #include <prsht.h>
+#endif
 #include <pshpack2.h>
 #include <pshpack4.h>
 #include <pshpack8.h>
@@ -3996,7 +4039,9 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "rectypes.h"
 #endif
 //#include "regprv.idl"
+#if VS_VERSION > VC_CURRENT
 #include "RegStr.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "relogger.h"
 #if VS_VER > VS_2015
@@ -4021,7 +4066,9 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include <restrictedErrorInfo.h>
 #endif
 //#include "returncontext.h"
+#if VS_VERSION > VC_CURRENT
 #include "Richedit.h"
+#endif
 //#include "ringtonedeviceservice.h"
 #if NTDDI_VERSION > 0x0A000C00 // v143
 #include "RoMetadataApi.h"
@@ -4231,7 +4278,9 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if VS_VER > VC_6
 #include "ShlDisp.h"
 #endif
+#if VS_VERSION > VC_CURRENT
 #include "ShlGuid.h"
+#endif
 #if VS_VER > VC_6
 #include <shtypes.h>
 #include <sipbase.h> // included mssip.h
@@ -4980,7 +5029,9 @@ typedef unsigned __int64   uintmax_t;
 #define __export
 #endif
 #endif
+#if VS_VERSION > VC_CURRENT
 #include <tapi.h>
+#endif
 #ifdef ORIGINAL_WIN32
 #undef WIN32
 #define WIN32 ORIGINAL_WIN32
@@ -5063,8 +5114,10 @@ typedef unsigned __int64   uintmax_t;
 //#include "TSGAuthenticationEngine_i.c"
 //#include "TSGPolicyEngine_i.c"
 #endif
+#if VS_VERSION > VC_CURRENT
 #include "TSPI.h"
 #include "Tapi.h"
+#endif
 //#include "Tapi3.h"
 #if VS_VER > VS_2005 // not found ddraw.h
 #include "Tapi3ds.h"
@@ -5075,7 +5128,9 @@ typedef unsigned __int64   uintmax_t;
 #include "TextStor.h"
 #endif
 //#include "TipAutoComplete_i.c"
+#if VS_VERSION > VC_CURRENT
 #include "TlHelp32.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "TraceLoggingActivity.h"
 #endif
@@ -5151,7 +5206,9 @@ typedef unsigned __int64   uintmax_t;
 #include "UIRibbonKeydef.h"
 #endif
 //#include "Unknwn.Idl"
+#if VS_VERSION > VC_CURRENT
 #include "Unknwn.h"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <unknwnbase.h>
 #endif
@@ -6076,7 +6133,9 @@ typedef void* HCERTSTORE;
 #endif
 #include "WinUser.h"
 //#include "winuser.inl"
+#if VS_VERSION > VC_CURRENT
 #include "WinWlx.h"
+#endif
 #if VS_VER > VC_6
 #include "WMIUtils.h"
 #endif
