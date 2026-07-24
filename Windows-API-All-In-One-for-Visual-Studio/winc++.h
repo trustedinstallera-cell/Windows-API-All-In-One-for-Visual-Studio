@@ -22,6 +22,12 @@
 || (defined WIN32_LEAN_AND_MEAN)
 #error Fatal error: NOGDI, NONAMELESSUNION, NOSERVICE and WIN32_LEAN_AND_MEAN are not compatible with this header.
 #error use NOEXCLUSIONMACROS to undef these macros.
+#include <con/unexist.hppx>
+#endif
+
+#ifdef __midl // MIDL compiler, Microsoft Interface Definition Language, generate C/C++ code for COM/DCOM components
+#error Fatal error: MIDL compiler not supported.
+#include <con/unexist.hppx>
 #endif
 
 // scsi.h requires _NTSCSI_USER_MODE_ only when compiling in pure user-mode.
@@ -342,10 +348,6 @@ typedef struct IUnknown IUnknown;
 #if VS_VERSION > VC_2
 #include "oledlg.h"
 #endif
-//#include "opcbase.idl"
-//#include "opcdigitalsignature.idl"
-//#include "opcobjectmodel.idl"
-//#include "opcparturi.idl"
 //#include <pix_xbox.h>
 #if TOOLSET > 90
 #include "portabledeviceapi.h"
@@ -353,7 +355,6 @@ typedef struct IUnknown IUnknown;
 #if VS_CER > VC_6
 #include "propidl.h"
 #endif
-//#include "propidlbase.idl"
 #if TOOLSET > 90
 #include "propkeydef.h"
 #endif
@@ -363,8 +364,6 @@ typedef struct IUnknown IUnknown;
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "shobjidl_core.h"
 #endif
-//#include "srchntfyinlinesite.idl"
-//#include "srchprth.idl"
 #if VS_VER > VS_2005
 #include "tapi3ds.h"	 // included ddraw, but No such file or directory
 #include "tapi3if.h"
@@ -411,7 +410,6 @@ typedef struct IUnknown IUnknown;
 
 #if (TOOLSET > 90)
 #include "DeleteBrowsingHistory.h"
-//#include "DeleteBrowsingHistory.idl"
 #include "DeviceCategories.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -560,13 +558,11 @@ typedef struct IUnknown IUnknown;
 #include "PhotoAcquire.h"
 #endif
 //#include "PortableDeviceConnectApi.h"
-//#include "PortableDeviceConnectImports.idl"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "Presentation.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "PrintPreview.h"
-//#include "PrinterExtension.idl"
 #if MSVC_VER > 2012
 #include "ProofOfPossessionCookieInfo.h"
 #endif
@@ -583,7 +579,6 @@ typedef struct IUnknown IUnknown;
 #include "RTSCOM.h"
 #include "SearchAPI.h"
 #endif
-//#include "SearchApi.idl"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "ShellHandwriting.h"
 #endif
@@ -616,13 +611,10 @@ typedef struct IUnknown IUnknown;
 #endif
 #if TOOLSET > 90
 #include "UIAnimation.h"
-//#include "UIAnimation.idl"
 #include "UIRibbon.h"
-//#include "UIRibbon.idl"
 #include "UIRibbonPropertyHelpers.h"
 #endif
 #if VS_VER > VS_2005
-//#include "UPnP.Idl"
 #include "UPnP.h"
 #endif
 #if VS_VER > VC_5
@@ -965,15 +957,6 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_5
 #include "SCardErr.h"
 #endif
-#ifdef __midl // MIDL compiler, Microsoft Interface Definition Language, generate C/C++ code for COM/DCOM components
-// todo: move all *.idl files and begin test
-#include "SearchAdmin.idl"
-#include "SearchCatalog.idl"
-#include "SearchCrawlScopeManager.idl"
-#include "SearchLanguageSupport.idl"
-#include "SearchNotifications.idl"
-#include "SearchQuery.idl"
-#endif
 #if TOOLSET > 90
 #include "SessdirPublicTypes.h"
 #endif
@@ -981,7 +964,6 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "StructuredQuery.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "TpmVscAttestation.h"
-//#include "VMRender.idl"
 #endif
 #include "VSStyle.h"
 #endif
@@ -1099,7 +1081,6 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if TOOLSET > 90
 #include "audioapotypes.h"
 #endif
-// #include "axcore.idl"
 #if VS_VER > VC_6
 #include "DSAdmin.h"
 #endif
@@ -1165,8 +1146,6 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #endif
 //#include "async.h"
 #include "assert.h"
-//#include "asynot.idl"
-//#include "asysta.idl"
 #if VS_VER > VS_2005
 #include "atacct.h"
 #endif
@@ -1241,7 +1220,6 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <bcrypt.h>
 #include <bthdef.h>
 #endif
-//#include "bdaiface.idl"
 #if VS_VER > VC_6
 #include <ksmedia.h>
 #endif
@@ -1250,7 +1228,6 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "bdatif.h"
 #include "bdatypes.h"
 #endif
-//#include "binres.idl"
 #if VS_VER > VC_6
 #include "bits.h"
 #endif
@@ -1305,7 +1282,6 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #ifdef printf
 #undef printf
 #endif
-//#include "certbcli.idl"
 #if VS_VER > VS_2003
 #include "certreqd.h"
 #include "certbase.h"
@@ -1389,7 +1365,6 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <charconv>
 #endif
 //#include "checksum.h"
-//#include "chprst.idl"
 #if VS_VER > VS_2005
 #include "clfs.h"
 //#include "clfslsn.h"
@@ -1398,27 +1373,15 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "clfsw32.h"
 #endif
 //#include "client.h"
-//#include "clinf2.idl"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "cloneviewhelper.h"
 #endif
 #if VS_VER > VC_5
 #include "clusapi.h"
 #endif
-//#include "cmdbas.idl"
-//#include "cmdcst.idl"
-//#include "cmdpre.idl"
-//#include "cmdprp.idl"
-//#include "cmdprst.idl"
-//#include "cmdstrm.idl"
-//#include "cmdtre.idl"
 #if VS_VER > VC_6
 #include "cmdtree.h"
 #endif
-/*#include "cmdtree.idl"
-#include "cmdtxt.idl"
-#include "cmdval.idl"
-#include "cmdwpr.idl"*/
 #if VS_VER > VC_6
 #include "CmnQuery.h"
 #endif
@@ -1427,9 +1390,6 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 //#include "coguid.h"
 //#include "Color.Dlg" // This is a dialog file
-// #include "colinf.idl"
-//#include "colrst.idl"
-//#include "ComAdmin.Idl"
 #if VS_VER > VC_6
 #include "comadmin.h"
 #endif
@@ -1597,7 +1557,6 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "credentialprovider.h"
 #include "credssp.h"
 #endif
-//#include "crtrow.idl"
 #if VS_VER > VS_2005
 #include "cryptdlg.h"
 #endif
@@ -1639,7 +1598,6 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #include <ctype.h>
 #include "CustCntl.h"
-//#include "cvttyp.idl"
 #if _MSC_VER > 1500
 #include <d2d1.h>
 #endif
@@ -1749,8 +1707,6 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "davclnt.h"
 #endif
 //#include <d3dukmdt.h> // Should not be included directly
-//#include "dbccmd.idl"
-//#include "dbcses.idl"
 #if _MFC_VER >= 0x0420
 #include "dbdao.h"
 #endif
@@ -1759,17 +1715,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <dbdaoid.h>
 #include <dbdaoint.h>
 #endif
-/*#include "dbdsad.idl"
-#include "dbinfo.idl"
-#include "dbinit.idl"*/
 #if VS_VER > VS_2005
 #include "dbnetlib.h"
 #endif
-/*#include "dbprop.idl"
-#include "dbrtpr.idl"
-#include "dbscmd.idl"
-#include "dbseci.idl"
-#include "dbsrst.idl"*/
 #if VS_VER > VS_2003
 #include "dciman.h"
 #endif
@@ -1819,9 +1767,6 @@ DECLARE_HANDLE(HSZ);
 #if VS_VER > VC_6
 #include "dbgprop.h"
 #endif
-/*#include "dbs.idl"
-#include "dbsdep.idl"
-#include "devenum.idl"*/
 #if VS_VERSION > VC_2
 #include "Dbt.h"
 #endif
@@ -2016,17 +1961,14 @@ DECLARE_HANDLE(HSZ);
 #include "encdec_enums.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
-//#include "encdec.idl"
 #if VS_VER > VS_2015
 #include "enclaveapi.h"
 #endif
 #include "errhandlingapi.h"
 #endif
-//#include "errlup.idl"
 #include "errno.h"
 #if VS_VER > VS_2005
 #include "errors.h"
-//#include "errrec.idl"
 #include "esent.h"
 #include "evalcom2.h"
 #include "evcode.h"
@@ -2036,7 +1978,6 @@ DECLARE_HANDLE(HSZ);
 #include "ExDisp.h"
 #include "ExDispid.h"
 #endif
-//#include "ExDisp.Idl"
 //#include "event.h"
 //#include "evntcons.h"
 #if VS_VER > VS_2005
@@ -2129,7 +2070,6 @@ DECLARE_HANDLE(HSZ);
 //#include "fullenumsyncdeviceservice.h"
 // #include "functiondiscovery.h"
 #include "functiondiscoveryapi.h"
-//#include "functiondiscoveryapi.idl"
 #include "functiondiscoverycategories.h"
 #include "functiondiscoveryconstraints.h"
 #include "functiondiscoveryerror.h"
@@ -2213,7 +2153,6 @@ DECLARE_HANDLE(HSZ);
 #if TOOLSET > 90
 #include "httpcompression.h"
 #endif
-//#include "httprequest.idl"
 #if VS_VER > VC_4
 #include "HttpExt.h"
 #endif
@@ -2256,7 +2195,6 @@ DECLARE_HANDLE(HSZ);
 #include "IDispIds.h"
 #endif
 //#include "ieautomation.h"
-//#include "ieautomation.idl"
 //#include "ieee8021q.h"
 //#include "iewebdriver.h"
 #if VS_VER > VS_2005
@@ -2354,7 +2292,6 @@ DECLARE_HANDLE(HSZ);
 #if VS_VER > VS_2002
 #include "iiisext.h"
 #endif
-//#include "iketypes.idl"
 #if VS_VER > VS_2005
 #include "il21dec.h"
 //#include "iisext_i.c"
@@ -2365,7 +2302,6 @@ DECLARE_HANDLE(HSZ);
 #endif
 #if VS_VER > VS_2005
 #include "imapi.h"
-//#include "imapi2.idl"
 #include "imapi2fs.h"
 #include "imapierror.h"
 #endif
@@ -2383,7 +2319,6 @@ DECLARE_HANDLE(HSZ);
 #include <immintrin.h>
 #endif
 //#include "implements.h"
-//#include "inddef.idl"
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <in6addr.h>
 #include <inaddr.h>
@@ -2503,7 +2438,6 @@ DECLARE_HANDLE(HSZ);
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include <ivectorchangedeventargs.h>
-//#include "ivectorchangedeventargs.idl"
 #include "iwscapi.h"
 #endif
 #if VS_VER > VS_2005
@@ -2749,8 +2683,6 @@ typedef struct _UNICODE_STRING {
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <mciapi.h>
 #endif
-//#include "mddset.idl"
-//#include "mdfind.idl"
 #if VS_VERSION > VC_2
 #include <mcx.h>
 #endif
@@ -2779,7 +2711,6 @@ typedef struct _UNICODE_STRING {
 #if VS_VER > VC_6
 #include "mergemod.h"
 #endif
-//#include "mdrrst.idl"
 //#include "messagedeviceservice.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "MessageDispatcherApi.h"
@@ -2828,12 +2759,10 @@ typedef struct _UNICODE_STRING {
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "microsoft.diagnostics.appanalysis.h"
 #endif
-//#include "microsoft.diagnostics.appanalysis.idl"
 #if VS_VERSION > VC_2
 #include "Midles.h"
 #endif
 //#include "mileffects.h"
-//#include "mimeole.idl"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <minappmodel.h>
 #endif
@@ -2883,7 +2812,6 @@ typedef struct _UNICODE_STRING {
 //#include "module.h"
 #if VS_VER > VS_2005
 #include "Mpeg2Error.h"
-//#include "Mpeg2Structs.idl"
 #include "mpconfig.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
@@ -2954,7 +2882,6 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if VS_VER > VC_6
 #include <mschapp.h>
 #endif
-//#include "MSClus.Idl"
 #if VS_VER > VC_5
 #include "MSClus.h"
 #endif
@@ -2974,14 +2901,12 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "msdrmerror.h"
 #include "msdrmgetinfo.h"
 #endif
-//#include "MsHTML.Idl"
 #if VS_VER > VC_6
 #include "msdshape.h"
 #endif
 #if VS_VER > VS_2005
 #include "msfeeds.h"
 #endif
-//#include "msfeeds.idl"
 #if VS_VER > VC_5
 #include "MsHTML.h"
 #endif
@@ -3004,14 +2929,12 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 //#include "msinkaut15_i.c"
 //#include "msinkaut_i.c"
 //#include "msoav.h"
-//#include "msopc.idl"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "msports.h"
 #endif
 #if VS_VER > VS_2005
 #include "msrdc.h"
 #endif
-//#include "msrdc.idl"
 #if VS_VERSION > VC_2
 #include "MSPST.h"
 #endif
@@ -3034,12 +2957,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "mstcpip.h"
 #endif
 //#include "msvidctl.h"
-//#include "msvidctl.idl"
 #if VS_VER > VS_2005
 #include "mswsockdef.h"
 #endif
-//#include "MsXml.Idl"
-//#include "MsXml2.Idl"
 #if VS_VER > VC_6
 #include "MsXml2.h"
 #include "MsXml2DId.h"
@@ -3049,7 +2969,6 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <mswsockdef.h>
 #endif
-//#include "MsXml6.Idl"
 #if VS_VER > VS_2005
 #include "MsXml6.h"
 #endif
@@ -3416,7 +3335,6 @@ interface ICommandTree
 #endif
 #if VS_VER > VS_2005
 #include "muiload.h"
-//#include "mulres.idl"
 #include "mxdc.h"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <namedpipeapi.h>
@@ -3585,7 +3503,6 @@ interface ICommandTree
 #if VS_VERSION > VC_2
 #include <oaidl.h>
 #endif
-//#include "objactnl.idl"
 //#include "objectheader.h"
 #if (defined(NTDDI_WIN10_VB)) && (NTDDI_VERSION > NTDDI_WIN10_VB)
 #include <objbase.h>           // Windows COM declarations"
@@ -3593,7 +3510,6 @@ interface ICommandTree
 #if VS_VER > VC_1
 #include <objerror.h>
 #endif
-//#include "objidl.Idl"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "objidlbase.h"
 #endif
@@ -3621,13 +3537,10 @@ interface ICommandTree
 #include <oleauto.h>                 
 #include <olectl.h> 
 #endif
-//#include "oledb.idl"
 #if VS_VER > VC_6
 #include "oledbdep.h"
 #endif
-//#include "oledbdep.idl"
 //#include "oledbguid.h"
-//#include "oledbnew.idl"
 #if VS_VERSION > VC_2
 #include <oleidl.h>
 #include "OleDlg.h"
@@ -3641,7 +3554,6 @@ interface ICommandTree
 #include "openservice.h"
 #endif
 //#include "opmapi.h"
-//#include "opnrst.idl"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "packagevirtualizationcontext.h"
 #endif
@@ -3651,7 +3563,6 @@ interface ICommandTree
 #include "pacmanclientapi.h"
 //#include "pacmanclientapi_i.c"
 #endif
-//#include "parrst.idl"
 #if VS_VER == VS_2002
 //todo determine the actual value
 #define MAX_NAME_SIZE 256
@@ -3834,8 +3745,6 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "propkey.h"
 #include "propvarutil.h"
 #endif
-//#include "prvmon.idl"
-//#include "PropIdl.Idl"
 #if VS_VER > VC_6
 #include "PropIdl.h"
 #endif
@@ -3929,7 +3838,6 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "QosPol.h"
 #include "qossp.h"
 #endif
-//#include "qrybas.idl"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "RadialControllerInterop.h"
 #endif            
@@ -4071,13 +3979,10 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "rdpappcontainerclient.h"
 #endif
-//#include "rdpappcontainerclient.idl"
 #if VS_VER > VS_2005
 #include "rdpencomapi.h"
 #endif
-//#include "rdpencomapi.idl"
 //#include "rdpencomapi_i.c"
-//#include "readdt.idl"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <realtimeapiset.h>
 #endif
@@ -4089,7 +3994,6 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "recdefs.h"
 #include "rectypes.h"
 #endif
-//#include "regprv.idl"
 #if VS_VERSION > VC_2
 #include "RegStr.h"
 #endif
@@ -4134,11 +4038,6 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "roparameterizediid.h"
 #include "roregistrationapi.h"
 #endif
-/*#include "row.idl"
-#include "rowchg.idl"
-#include "rowinf.idl"
-#include "rowpos.idl"
-#include "rowpsc.idl"*/
 #if VS_VER > VC_1
 #include <rpc.h> 
 #endif
@@ -4160,35 +4059,6 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "rpcssl.h"
 #endif
 //#include "rsc.h"
-/*#include "rstasn.idl"
-#include "rstbas.idl"
-#include "rstbmrk.idl"
-#include "rstcei.idl"
-#include "rstchg.idl"
-#include "rstchpmb.idl"
-#include "rstcpr.idl"
-#include "rstcridx.idl"
-#include "rstfnd.idl"
-#include "rstidn.idl"
-#include "rstind.idl"
-#include "rstinf.idl"
-#include "rstkys.idl"
-#include "rstlkr.idl"
-#include "rstloc.idl"
-#include "rstnot.idl"
-#include "rstnra.idl"
-#include "rstnwr.idl"
-#include "rstnxr.idl"
-#include "rstres.idl"
-#include "rstrfres.idl"
-#include "rstscr.idl"
-#include "rstupd.idl"
-#include "rstvw.idl"
-#include "rstwpr.idl"
-#include "rstwta.idl"
-#include "rstwtn.idl"
-#include "rstwtr.idl"
-#include "rstxsc.idl"*/
 #if VS_VER > VC_6
 #include "RrasCfg.h"
 #include "rtccore.h"
@@ -4206,7 +4076,6 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if VS_VER > VC_5
 #include <rtutils.h>
 #endif
-//#include "rwschg.idl"
 #if TOOLSET > 90
 #include "safeint.h"
 #endif
@@ -4220,7 +4089,6 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #endif
 #if VS_VER > VS_2005
 #include <sapi.h>
-//#include "sapi.idl"
 #include <sapiddk.h>
 #endif
 #endif
@@ -4250,7 +4118,6 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if VS_VER > VC_6
 #include "scesvc.h"
 #endif
-//#include "scpops.idl"
 #include "ScrnSave.h"
 #if VS_VER > VC_5
 #include "ScrptIDs.h"
@@ -4277,7 +4144,6 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include <securityappcontainer.h>
 #include <securitybaseapi.h>
 #endif
-//#include "segment.idl"
 #if VS_VER > VC_6
 #include "Sens.h"
 #include "SensAPI.h"
@@ -4290,11 +4156,9 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "sensorsdef.h"
 #include "sensorsutils.h"
 #endif
-//#include "sesprp.idl"
 #if TOOLSET > 90
 #include "sessdirpublictypes.h"
 #endif
-//#include "seurinfo.idl"
 #if VS_VER > VC_4
 #include <set>
 #endif
@@ -4328,7 +4192,6 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "shidfact.h"
 #endif
 //#include "shimgdata.h"
-//#include "shldisp.idl"
 #include "signal.h"
 #if VS_VER > VC_6
 #include "ShlDisp.h"
@@ -4400,7 +4263,6 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 //#include "sphelper.h"
 //#include "speventq.h"
 //#include "spuihelp.h"
-//#include "sqleri.idl"
 #include "sqlext.h"
 #ifdef SUCCESS
 #pragma push_macro("SUCCESS")
@@ -4417,7 +4279,6 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 //#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "sqlspi.h"
-//#include "srcrst.idl"
 #if VS_VER > VS_2015
 #include "srpapi.h"
 #endif
@@ -4642,7 +4503,6 @@ typedef unsigned __int64   uintmax_t;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <stringapiset.h>    
 #endif
-//#include "strmif.idl"
 //#include <strmif.h>     // Generated IDL header file for streams interfaces"
 #if VS_VER > VS_2005
 #include "structuredquery.h"
@@ -4849,7 +4709,6 @@ typedef unsigned __int64   uintmax_t;
 #include "windows.graphics.printing.protectedprint.h"
 #include "windows.graphics.printing.workflow.h"
 #include "windows.graphics.printing.workflow.native.h"
-//#include "windows.graphics.printing.workflow.native.idl"
 //#include "windows.graphics.printing3d.h"
 #include "windows.management.core.h"
 #include "windows.management.deployment.h"
@@ -4932,7 +4791,6 @@ typedef unsigned __int64   uintmax_t;
 #include "windows.security.exchangeactivesyncprovisioning.h"
 #include "windows.security.isolation.h"
 #include "windows.security.isolation.isolatedenvironmentinterop.h"
-//#include "windows.security.isolation.isolatedenvironmentinterop.idl"
 //#include "windows.services.cortana.h"
 #include "windows.services.maps.guidance.h"
 #include "windows.services.maps.h"
@@ -5032,7 +4890,6 @@ typedef unsigned __int64   uintmax_t;
 #include "windows.ui.xaml.hosting.desktopwindowxamlsource.h"
 #include "windows.ui.xaml.hosting.h"
 #include "windows.ui.xaml.hosting.referencetracker.h"
-//#include "windows.ui.xaml.hosting.referencetracker.idl"
 #include "windows.ui.xaml.input.h"
 #include "windows.ui.xaml.interop.h"
 #include "windows.ui.xaml.markup.h"
@@ -5112,16 +4969,12 @@ typedef unsigned __int64   uintmax_t;
 #include <tapi3err.h>
 #endif
 #if VS_VER > VS_2005
-//#include "tabdef.idl"
 #include "tabflicks.h"
 #endif
-//#include "tabren.idl"
 //#include "taskdeviceservice.h"
 #if VS_VER > VS_2005
 #include "taskschd.h"
 #endif
-//#include "tbdefcnt.idl"
-//#include "tblcrt.idl"
 //#include "tbs.h"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "tbt3ioctls.h"
@@ -5210,11 +5063,6 @@ typedef unsigned __int64   uintmax_t;
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "transportsettings.h"
-/*#include "trnjoi.idl"
-#include "trnlcl.idl"
-#include "trnobj.idl"
-#include "truadmin.idl"
-#include "trugpadm.idl"*/
 #if MSVC_VER > 2012
 #include "tspubplugin2com.h"
 #endif
@@ -5228,7 +5076,6 @@ typedef unsigned __int64   uintmax_t;
 #if TOOLSET > 90
 #include "tsvirtualchannels.h"
 #endif
-//#include "tuner.idl"
 #if cppver >= 2011
 #include <tuple>
 #endif
@@ -5272,16 +5119,12 @@ typedef unsigned __int64   uintmax_t;
 #if TOOLSET > 90
 #include "UIRibbonKeydef.h"
 #endif
-//#include "Unknwn.Idl"
 #if VS_VERSION > VC_2
 #include "Unknwn.h"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <unknwnbase.h>
 #endif
-//#include "unknwnbase.idl"
-//#include "urlacc.idl"
-//#include "urlaccsdk.idl"
 #if VS_VER > VS_2005
 #include "upnphost.h"
 #endif
@@ -5309,8 +5152,6 @@ typedef unsigned __int64   uintmax_t;
 #if VS_VER > VC_6
 #include "utillib.h"
 #endif
-//#include "vdscmmn.idl"
-//#include "vdscmprv.idl"
 #if cppver >= 2011
 #include <unordered_map>
 #endif
@@ -5355,9 +5196,7 @@ typedef unsigned __int64   uintmax_t;
 #if VS_VER > VS_2005
 #include "vds.h"
 #endif
-//#include "vds.idl"
 //#include "vdshwprv.h"
-//#include "vdshwprv.idl"
 #if cppver >= 2017
 #include <vcruntime.h>
 #include <vcruntime_new_debug.h>
@@ -5373,7 +5212,6 @@ typedef unsigned __int64   uintmax_t;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <vdmctxt.h>
 #endif
-//#include "vdssys.idl"
 #if VS_VER > VS_2005
 #include "vdserr.h"
 #endif
@@ -5392,11 +5230,6 @@ typedef unsigned __int64   uintmax_t;
 #if VS_VER > VS_2005
 #include "vsserror.h"
 #endif
-//#include "vdshp.idl"
-//#include "vdshpcm.idl"
-//#include "vdsprvcm.idl"
-//#include "vdssp.idl"
-//#include "vdsvd.idl"
 #if VS_VER > VC_4
 #include <vector>
 #endif
@@ -5425,10 +5258,6 @@ typedef unsigned __int64   uintmax_t;
 #include "vssym32.h"
 #endif
 //#include "vswriter.h"
-/*#include "vwchp.idl"
-#include "vwflt.idl"
-#include "vwrst.idl"
-#include "vwsrt.idl"*/
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "WaaSApiTypes.h"
 #endif
@@ -5981,7 +5810,6 @@ enum Gender {
 #endif
 //#include "wcmapi.h"
 //#include "wcmconfig.h"
-//#include "wcmconfig.idl"
 #if VS_VER > VS_2005
 #include "wcmerrors.h"
 #endif
@@ -6074,7 +5902,6 @@ enum Gender {
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "wincontypes.h"
 //#include "wincred.h"
-//#include "wincrypt.idl"
 //#include "winddi.h"
 #include "winddiui.h"
 #endif
@@ -6093,7 +5920,6 @@ enum Gender {
 #include "Windows.Graphics.Display.DisplayEnhancementOverride.Interop.h"
 #endif
 #include "Windows.Graphics.Holographic.Interop.h"
-//#include "Windows.Graphics.Holographic.Interop.idl"
 #include "Windows.Media.Protection.PlayReadyErrors.h"
 #endif
 #if MSVC_VER > 2012
@@ -6265,16 +6091,13 @@ typedef void* HCERTSTORE;
 #if VS_VER > VS_2005
 #include "Xinput.h"
 #endif
-//#include "xmldom.idl"
 #if VS_VER > VC_6
 #include "xmldomdid.h"
 #endif
-//#include "xmldso.idl"
 #if VS_VER > VC_6
 #include "xmldsodid.h"
 #endif
 //#include "_dbdao.h"
-//#include "access.idl"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #if VS_VER > VS_2015
 #include "accountssettingspaneinterop.h"
@@ -6446,7 +6269,6 @@ typedef void* HCERTSTORE;
 #include "wlanapi.h"
 #include "wlanihv.h"
 #include "wlanihvtypes.h"
-//#include "wlanihvui.idl"
 #include "wlantypes.h"
 #include "wlclient.h"
 #endif
@@ -6553,7 +6375,6 @@ typedef void* HCERTSTORE;
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "x3daudio.h"
 //#include "xamlOM.h"
-//#include "xamlOM.idl"
 #include "xapo.h"
 #include "xapobase.h"
 #include "xapofx.h"
@@ -6582,7 +6403,6 @@ typedef void* HCERTSTORE;
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "xpsrassvc.h"
 #endif
-//#include "objidlbase.idl"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <wtypesbase.h>
 #endif
@@ -6592,7 +6412,6 @@ typedef void* HCERTSTORE;
 #if defined _SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING || defined _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include <yvals.h>
 #endif
-//#include "CameraUIControl.idl"
 #if VS_VER > VC_6
 #include "ADOGuids.h"
 #endif
@@ -6642,7 +6461,6 @@ typedef void* HCERTSTORE;
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include "TpmVscAttestation.h"
 #endif
-//#include "VMRender.idl"
 #include "VSStyle.h"
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include "VmSavedStateDumpDefs.h"
@@ -6815,7 +6633,6 @@ typedef void* HCERTSTORE;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include "audioapotypes.h"
 #endif
-//#include "axcore.idl"
 #if VS_VER > VC_5
 #include "basetsd.h"
 #endif
@@ -6838,9 +6655,6 @@ typedef void* HCERTSTORE;
 #include "comsvcs.h"
 #endif
 //#include "dbgprop.h"
-//#include "dbs.idl"
-//#include "dbsdep.idl"
-//#include "devenum.idl"
 #if VS_VER > VC_6
 #include "dbgprop.h"
 #endif
@@ -6852,19 +6666,15 @@ typedef void* HCERTSTORE;
 #include "mddefw.h"
 #endif
 //#include "mmc.h"
-//#include "propidlbase.idl"
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include "prsht.inl"
 #endif
-//#include "sapiaut.idl"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include "sdv_driverspecs.h"
 #endif
 #if TOOLSET > 90
 #include "SessdirPublicTypes.h"
 #endif
-//#include "srchntfyinlinesite.idl"
-//#include "srchprth.idl"
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include "stgprop.h"
 #endif
@@ -6891,8 +6701,6 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include "xmldomdid.h"
 #endif
-//#include "dvdif.idl"
-//#include "dyngraph.idl"
 #if VS_VER > VC_4
 #include "exdisp.h"
 #endif
@@ -6903,7 +6711,6 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_5
 #include "iads.h"
 #endif
-//#include "icodecapi.idl"
 #if VS_VER > VC_6
 #include "idlmulti.h"
 #endif
@@ -6928,126 +6735,27 @@ typedef UCHAR KIRQL;
 #endif
 
 /*
-#include "\"access.idl\"   // IAccessor                : IUnknown"
-#include "\"altidx.idl\"   // IAlterIndex              : IUnknown"
-#include "\"alttab.idl\"   // IAlterTable              : IUnknown"
-#include "\"asynot.idl\"   // IDBAsynchNotify          : IUnknown"
-#include "\"asysta.idl\"   // IDBAsynchStatus          : IUnknown"
-#include "\"binres.idl\"        // IBindResource                        : IUnknown"
-#include "\"chprst.idl\"   // IChapteredRowset         : IUnknown"
-#include "\"clinf2.idl\"        // IColumnsInfo2                        : IColumnsInfo"
-#include "\"cmdbas.idl\"   // ICommand                 : IUnknown"
-#include "\"cmdcst.idl\"   // ICommandCost             : IUnknown"
-#include "\"cmdpre.idl\"   // ICommandPrepare          : IUnknown"
-#include "\"cmdprp.idl\"   // ICommandProperties       : IUnknown"
-#include "\"cmdprst.idl\"  // ICommandPersist          : ICommand"
-#include "\"cmdstrm.idl\"  // ICommandStream           : IUnknown"
-#include "\"cmdtre.idl\"   // ICommandTree             : IUnknown"
-#include "\"cmdtxt.idl\"   // ICommandText             : IUnknown"
-#include "\"cmdval.idl\"        // ICommandValidate                     : IUnknown"
-#include "\"cmdwpr.idl\"   // ICommandWithParameters   : IUnknown"
-#include "\"colinf.idl\"   // IColumnsInfo             : IUnknown"
-#include "\"colrst.idl\"   // IColumnsRowset           : IUnknown"
-#include "\"crtrow.idl\"        // ICreateRow                           : IUnknown"
-#include "\"cvttyp.idl\"   // IConvertType             : IUnknown"
 #include "\"d3d10.h\" //"
 #include "\"d3d11.h\" //"
 #include "\"d3d11_1.h\" //"
 #include "\"d3d11_2.h\" //"
 #include "\"d3d11_3.h\" //"
-#include "\"dbccmd.idl\"   // IDBCreateCommand         : IUnknown"
-#include "\"dbcses.idl\"   // IDBCreateSession         : IUnknown"
-#include "\"dbdsad.idl\"   // IDBDataSourceAdmin       : IUnknown"
-#include "\"dbinfo.idl\"   // IDBInfo                  : IUnknown"
-#include "\"dbinit.idl\"   // IDBInitialize            : IUnknown"
-#include "\"dbprop.idl\"   // IDBProperties            : IUnknown"
-#include "\"dbrtpr.idl\"        // IDBResetProperties           : IUnknown"
-#include "\"dbscmd.idl\"   // IDBSchemaCommand         : IUnknown"
-#include "\"dbsrst.idl\"   // IDBSchemaRowset          : IUnknown"
 #include "\"dciddi.h\"         // interface to the DCI provider"
-#include "\"errlup.idl\"   // IErrorLookup             : IUnknown"
-#include "\"errrec.idl\"   // IErrorRecords            : IUnknown"
-#include "\"getdts.idl\"   // IGetDataSource           : IUnknown"
-#include "\"getrow.idl\"        // IGetRow                                      : IUnknown"
-#include "\"getses.idl\"        // IGetSession                          : IUnknown"
-#include "\"getsrw.idl\"        // IGetSourceRow                        : IUnknown"
 #include "\"guids.h\"  // PRIVATE"
-#include "\"inddef.idl\"   // IIndexDefinition         : IUnknown"
-#include "\"mddset.idl\"   // IMDDataset               : IUnknown"
-#include "\"mdfind.idl\"   // IMDFind                  : IUnknown"
-#include "\"mdrrst.idl\"   // IMDRangeRowset           : IUnknown"
 #include "\"msi.h\"  // INSTALLSTATE"
-#include "\"mulres.idl\"   // IMultipleResults         : IUnknown"
-#include "\"objactnl.idl\"      // IObjectAccessControl         : IUnknown"
 #include "\"objbase.h\" //Required by msxml2.h"
-#include "\"opnrst.idl\"   // IOpenRowset              : IUnknown"
-#include "\"parrst.idl\"   // IParentRowset            : IUnknown"
 #include "\"poppack.h\"                        // Back to 4 byte packing"
 #include "\"poppack.h\"                    // Back to 4 byte packing"
 #include "\"poppack.h\"                // Back to the initial value"
 #include "\"poppack.h\"        /* Revert to default packing *//*"
 #include "\"poppack.h\"    /* Revert to default packing *//*"
-#include "\"prvmon.idl\"   // IProvideMoniker          : IUnknown"
 #include "\"pshpack1.h\"   /* Assume byte packing throughout *//*"
 #include "\"pshpack1.h\"   // Assume byte packing throughout"
 #include "\"pshpack2.h\"                       // Symbols, relocs, and linenumbers are 2 byte packed"
 #include "\"pshpack2.h\"                   // 16 bit headers are 2 byte packed"
 #include "\"pshpack4.h\"                   // 4 byte packing is the default"
 #include "\"pshpack8.h\"                       // Use align 8 for the 64-bit IAT."
-#include "\"qrybas.idl\"   // IQuery                   : ICommandTree"
-#include "\"readdt.idl\"   // IReadData                : IUnknown"
-#include "\"regprv.idl\"        // IRegisterProvider            : IUnknown"
-#include "\"row.idl\"           // IRow                                         : IUnknown"
-#include "\"rowchg.idl\"        // IRowChange                           : IUnknown"
-#include "\"rowinf.idl\"   // IRowInfo                : IUnknown"
-#include "\"rowpos.idl\"   // IRowPosition             : IUnknown"
-#include "\"rowpsc.idl\"   // IRowPositionChange       : IUnknown"
-#include "\"rstasn.idl\"   // IRowsetAsynch            : IUnknown"
-#include "\"rstbas.idl\"   // IRowset                  : IUnknown"
-#include "\"rstbmrk.idl\"  // IRowsetBookmark          : IUnknown"
-#include "\"rstchg.idl\"   // IRowsetChange            : IUnknown"
-#include "\"rstchpmb.idl\" // IRowsetChapterMember     : IChapeteredRowset"
-#include "\"rstcpr.idl\"   // IRowsetCopyRows          : IUnknown"
-#include "\"rstcridx.idl\"      // IRowsetCurrentIndex          : IRowsetIndex"
-#include "\"rstfnd.idl\"   // IRowsetFind              : IUnknown"
-#include "\"rstidn.idl\"   // IRowsetIdentity          : IUnknown"
-#include "\"rstind.idl\"   // IRowsetIndex             : IUnknown"
-#include "\"rstinf.idl\"   // IRowsetInfo              : IUnknown"
-#include "\"rstkys.idl\"   // IRowsetKeys              : IUnknown"
-#include "\"rstloc.idl\"   // IRowsetLocate            : IRowset"
-#include "\"rstnot.idl\"   // IRowsetNotify            : IUnknown"
-#include "\"rstnra.idl\"   // IRowsetNewRowAfter       : IRowsetNewRow"
-#include "\"rstnxr.idl\"   // IRowsetNextRowset        : IUnknown"
-#include "\"rstres.idl\"   // IRowsetResynch           : IRowset"
-#include "\"rstrfres.idl\" // IRowsetRefresh           : IUnknown"
-#include "\"rstscr.idl\"   // IRowsetScroll            : IRowsetLocate"
-#include "\"rstupd.idl\"   // IRowsetUpdate            : IRowsetChange"
-#include "\"rstvw.idl\"    // IRowsetView              : IUnknown"
-#include "\"rstwpr.idl\"   // IRowsetWithParamters     : IUnknown"
-#include "\"rstwta.idl\"   // IRowsetWatchAll          : IUnknown"
-#include "\"rstwtn.idl\"   // IRowsetWatchNotify       : IUnknown"
-#include "\"rstwtr.idl\"   // IRowsetWatchRegion       : IUnknown"
-#include "\"rstxsc.idl\"   // IRowsetExactScroll       : IRowsetScroll"
-#include "\"rwschg.idl\"        // IRowSchemaChange                     : IRowsetChange"
-#include "\"scpops.idl\"        // IScopedOperations            : IBindResource"
-#include "\"sesprp.idl\"   // ISessionProperties       : IUnknown"
-#include "\"seurinfo.idl\"      // ISecurityInfo                        : IUnknown"
-#include "\"sqleri.idl\"   // ISQLErrorInfo            : IUnknown"
-#include "\"srcrst.idl\"   // ISourcesRowset           : IUnknown"
-#include "\"tabdef.idl\"   // ITableDefinition         : IUnknown"
-#include "\"tabren.idl\"   // ITableRename             : IUnknown"
-#include "\"tbdefcnt.idl\"      // ITableDefinitionWithConstraints                      : ITableCreation"
-#include "\"tblcrt.idl\"        // ITableCreation                       : ITableDefinition"
-#include "\"trnjoi.idl\"   // ITransactionJoin         : IUnknown"
-#include "\"trnlcl.idl\"   // ITransactionLocal        : ITransaction"
-#include "\"trnobj.idl\"   // ITransactionObject       : IUnknown"
-#include "\"truadmin.idl\"      // ITrusteeAdmin                        : IUnknown"
-#include "\"trugpadm.idl\"      // ITrusteeMemberAdmin          : IUnknown"
-#include "\"vwchp.idl\"    // IViewChapter             : IUnknown"
-#include "\"vwflt.idl\"    // IViewFilter              : IUnknown"
-#include "\"vwrst.idl\"    // IViewRowset              : IUnknown"
-#include "\"vwsrt.idl\"    // IViewSort                : IUnknown"*/
-
+*/
 // extensions
 #ifndef NO_EXTENSIONS
 // if not support Windows 2000 and compiler is not later than  Microsoft Visual Studio .NET 2003
