@@ -364,3 +364,7 @@ FodyWeavers.xsd
 /Windows-API-All-In-One-for-Visual-Studio/CodeCounter.exe
 /Windows-API-All-In-One-for-Visual-Studio/winc++.h
 /Windows-API-All-In-One-for-Visual-Studio/monitor.conf
+/Windows-API-All-In-One-for-Visual-Studio/ifdef_macros_cpp.txt
+/Windows-API-All-In-One-for-Visual-Studio/ifdef_results.txt
+/Windows-API-All-In-One-for-Visual-Studio/ifdef_macro_scanner.exe
+/Windows-API-All-In-One-for-Visual-Studio/WINAPI_20260729.zip
