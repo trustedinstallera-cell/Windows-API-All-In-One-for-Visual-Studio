@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Windows-API-All-In-One-for-Visual-Studio/CodeCounter.exe
+/Windows-API-All-In-One-for-Visual-Studio/monitor.conf
+/Windows-API-All-In-One-for-Visual-Studio/ConsoleApplication1.vcxproj
