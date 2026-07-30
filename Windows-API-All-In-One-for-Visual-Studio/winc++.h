@@ -59,6 +59,32 @@
 #define cppver 1998
 #endif
 
+#if defined(_MSC_VER)
+// ===== Microsoft Visual C++ =====
+#if defined(_M_ARM64)
+#define ARCH_ARM64 1
+#elif defined(_M_ARM)
+#define ARCH_ARM 1
+#elif defined(_M_AMD64) || defined(_M_X64)
+#define ARCH_X64 1
+#elif defined(_M_IX86)
+#define ARCH_X86 1
+#endif
+
+#elif defined(__GNUC__) || defined(__clang__)
+// ===== GCC / Clang =====
+#if defined(__aarch64__) || defined(_M_ARM64)
+#define ARCH_ARM64 1
+#elif defined(__arm__) || defined(_M_ARM)
+#define ARCH_ARM 1
+#elif defined(__x86_64__) || defined(_M_X64)
+#define ARCH_X64 1
+#elif defined(__i386__) || defined(_M_IX86)
+#define ARCH_X86 1
+#endif
+
+#endif
+
 #if (defined WIN7_SUPPORT) || (defined WINDOWS7_SUPPORT)
 #ifdef _WIN32_WINNT
 #undef _WIN32_WINNT
@@ -179,29 +205,33 @@
 #define _SILENCE_NODISCARD_LOCK_WARNINGS
 #define _ALLOW_KEYWORD_MACROS
 #define _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
-#if MSVC_VER > VS_2013
-#pragma warning(disable: 5040) // Cannot recognize in VS 2013
+#if MSVC_VER > VS_2013 // Cannot recognize in VS 2013
+#pragma warning(disable: 5040) // warning C5040: dynamic exception specifications are valid only in C++14 and earlier; treating as noexcept(false)
 #endif
 #if (MSVC_VER == VS_2013) || (MSVC_VER == VS_2012) || (MSVC_VER == VS_2010)
 #pragma warning(disable: 4068) // Unknown pargma
 #endif
-#pragma warning(disable: 4996)
-#pragma warning(disable: 4995)
+#pragma warning(disable: 4996) // error C4996: 'GetVersionExW': was declared deprecated
+#pragma warning(disable: 4995) // name was marked as #pragma deprecated
 #pragma warning(disable: 4477)
-#pragma warning(disable: 4091)
+#pragma warning(disable: 4091) // ignored on left of 'short' when no variable is declared
 #pragma warning(disable: 4290)
 #pragma warning(disable: 4005)
 #pragma warning(disable: 4038)
-#pragma warning(disable: 4324)
-#pragma warning(disable: 4201)
-#pragma warning(disable: 4458)
+#pragma warning(disable: 4324) // warning C4324: '_CLS_SCAN_CONTEXT': structure was padded due to alignment specifier
+#pragma warning(disable: 4201) // warning C4201: nonstandard extension used: nameless struct/union
+#pragma warning(disable: 4458) // warning C4458: declaration of 'pNext' hides class member
+#pragma warning(disable: 4459) // VS 2026, SDK 10.0.26100.0: decleation "Error" hid global decleration
+#pragma warning(disable: 4834) // VS 2026: discarding return value with [[nodiscard]] attrib
 #pragma warning(disable: 4467) // warning C4467: deprecated ATL attribute
 #pragma warning(disable: 4100) // warning C4100: unreferenced parameter. Occurs after included FwCommon.h, throw by wbemglue.h directly
-#pragma warning(disable: 4099) // warning C4099: “Location”: 类型名称以前使用“struct”现在使用的是“class”
+#pragma warning(disable: 4099) // warning C5054: operator '|': deprecated between enumerations of different types
+#if cppver >= 2020
+//#pragma warning(disable: 5054) // VS 2026, BdaTypes: operator | between enums with different types has been discarded
+#endif
 #pragma warning(push)
 #endif
 #endif
-// todo The macros the header uses
 
 #if ((defined(_WIN32_WINNT) && _WIN32_WINNT == 0x0603) || (defined(NTDDI_VERSION) && NTDDI_VERSION == 0x06030000)) && (defined(_MSC_VER) && _MSC_VER >= 1951) // VS 2026, SDK 8.1
 #error Cannot use this SDK 8.1 on VS 2026
@@ -210,9 +240,6 @@
 
 #include <tchar.h>
 #include "WinSock2.h"
-#if VS_VERSION > VC_2
-#include <tapi.h>
-#endif
 #if (defined _USING_V110_SDK71_ /*XP support*/) || (MSVC_VER <= 2015)
 typedef struct IUnknown IUnknown;
 #endif
@@ -302,10 +329,10 @@ typedef struct IUnknown IUnknown;
 #include <WbemProv.h>
 #endif
 //#include "kxarm64unw.h"
-#include <RefPtrCo.h>
+//#include <RefPtrCo.h>
 #include <Polarity.h>
 #include <ThrdBase.h>
-#include <MethodCo.h>
+//#include <MethodCo.h>
 #if VS_VER > VC_5
 #include "mstask.h"
 #endif
@@ -423,7 +450,7 @@ typedef struct IUnknown IUnknown;
 #if VS_VER > VC_6
 #include "GPEdit.h"
 #endif
-#include "GameInput.h" // try /clr option
+//#include "GameInput.h" // try /clr option
 #if VS_VER > VC_5
 #include "IAccess.h"
 #endif
@@ -1083,6 +1110,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #endif
 // ObjectContext has been defined before
 #define __ObjectContext_FWD_DEFINED__
+#include <exception>
 #include "DbgModel.h"
 #if VS_VER > VC_6
 #include <adtgen.h>
@@ -1474,7 +1502,8 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #if defined _SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING || defined _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #if cppver >= 2011
-#include <complex.h>
+// todo check invocation of clog, or introduce a macro like USINGNAMESPACESTD
+//#include <complex.h>
 #endif
 #endif
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
@@ -1533,9 +1562,6 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #if NTDDI_VERSION > 0x0A000C00 // v143
 #include <corhdr.h>
-#endif
-#if cppver > 2017
-#include <coroutine>
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "CoreWindow.h"
@@ -1998,7 +2024,7 @@ DECLARE_HANDLE(HSZ);
 #if defined(_MSC_VER) && (_MSC_VER > 1400) // undetermined value
 #include "FaxComEx.h"
 #include "FaxComEx_i.c"
-#include "FaxDev.h"
+//#include "FaxDev.h"
 #else
 #if VS_VER > VS_2005
 #include "FaxCom.h"
@@ -2230,7 +2256,7 @@ DECLARE_HANDLE(HSZ);
 #endif
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <enclaveapi.h>
-#include <enclaveium.h>
+//#include <enclaveium.h>
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <errhandlingapi.h>
@@ -2256,7 +2282,11 @@ DECLARE_HANDLE(HSZ);
 #endif
 #include <exdisp.h>
 #ifdef _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
+#if cppver == 2017
 #include <experimental/coroutine>
+#elif cppver > 2017
+#include <coroutine>
+#endif
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <exposeenums2managed.h>
@@ -3378,7 +3408,11 @@ interface ICommandTree
 #endif
 #if VS_VER > VS_2005
 #include "ndfapi.h"
+#if VS_VER >= VS_2026
+#ifdef NOWARNINGS
 #include "ndhelper.h"
+#endif
+#endif
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "ndisguid.h"
@@ -3387,7 +3421,7 @@ interface ICommandTree
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <ndis/hashtypes.h>
 #include <ndis/ioctltypes.h>
-#include <ndis/nbluro.h>
+//#include <ndis/nbluro.h>
 #include <ndis/ndisport.h>
 #include <ndis/nicswitchtypes.h>
 #include <ndis/objectheader.h>
@@ -3409,7 +3443,7 @@ interface ICommandTree
 #if VS_VER > VS_2005
 #include "netfw.h"
 #endif
-#include "netiodef.h"
+//#include "netiodef.h"
 #if VS_VER > VS_2005
 #include "netlistmgr.h"
 #endif
@@ -3782,7 +3816,7 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "ProvExce.h"
 #endif
 #include <FRQuery.h>
-#include "Provider.h"
+//#include "Provider.h"
 #if VS_VER > VC_6
 #include "Psapi.h"
 #endif
@@ -4274,7 +4308,11 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "spb.h"
 #endif
 #endif
+#if VS_VER >= VS_2026
+#ifdef NOWARNINGS
 #include "spddkhlp.h"
+#endif
+#endif
 #if VS_VER > VS_2005
 #include "spcollec.h"
 #endif
@@ -4288,10 +4326,19 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if VS_VER > VS_2005
 #include "sperror.h"
 #endif
+#if VS_VER >= VS_2026
+#ifdef NOWARNINGS
 #include "sphelper.h"
+#endif
+#endif
+#include <atlbase.h>
 #include <atlcom.h>
+#if VS_VER >= VS_2026
+#ifdef NOWARNINGS
 #include "speventq.h"
 #include "spuihelp.h"
+#endif
+#endif
 #include "sqlext.h"
 #ifdef SUCCESS
 #pragma push_macro("SUCCESS")
@@ -4568,13 +4615,8 @@ typedef unsigned __int64   uintmax_t;
 #include <sysinfoapi.h>
 #include <systemtopologyapi.h>
 #endif
-#if (defined INCLUDE_WINDOWS_RT) || \
-((defined _BIGOBJ) || (defined __BIGOBJ__))
-/*
-* 严重性	代码	说明	项目	文件	行	抑制状态	详细信息
-错误	C1128	节数超过对象文件格式限制: 请使用 /bigobj 进行编译	Windows-API-All-In-One-for-Visual-Studio	C:\Users\Admin\source\repos\Windows-API-All-In-One-for-Visual-Studio\Windows-API-All-In-One-for-Visual-Studio\ConsoleApplication1.cpp	1
-
-*/
+// todo This takes a lot of time. Commenting
+#if 0
 #include "windows.ai.actions.h"
 #include "windows.ai.actions.hosting.h"
 #include "windows.ai.actions.provider.h"
@@ -5252,7 +5294,7 @@ typedef unsigned short ushort;
 #if VS_VER > VS_2005
 #include "vdserr.h"
 #endif
-#include "veinterop.h"
+//#include "veinterop.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "VersionHelpers.h"
 #endif
@@ -5271,7 +5313,7 @@ typedef unsigned short ushort;
 #if VS_VER > VC_4
 #include <vector>
 #endif
-#include <veinterop_kcm.h>
+//#include <veinterop_kcm.h>
 //#include <verrsrc.h>
 #if cppver > 2017
 #include <version>
@@ -5302,11 +5344,11 @@ typedef unsigned short ushort;
 #if VS_VER > VC_5
 #include <wabcode.h>
 #endif
-#include <wabdefs.h>
+/*#include <wabdefs.h>
 #include <wabiab.h>
 #include <wabapi.h>
 #include <wabmem.h>
-#include <wabnot.h>
+#include <wabnot.h>*/
 
 // Mismatch	 #if/#endif in VS2003/2005 because solved */ as ?/
 #if VS_VER <= VS_2005
@@ -5820,7 +5862,7 @@ enum Gender {
 #else
 #include <wabtags.h>
 #endif
-#include <wabutil.h>
+//#include <wabutil.h>
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "warning.h"
 #endif
@@ -5892,7 +5934,7 @@ enum Gender {
 #include "webapplication.h"
 #endif
 #include "webauthn.h"
-#include "webauthnplugin.h"
+//#include "webauthnplugin.h"
 #include "webhost.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "websocket.h"
@@ -6201,7 +6243,7 @@ typedef void* HCERTSTORE;
 #include <wincontypes.h>
 #endif
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
-#include <windnsdef.h>
+//#include <windnsdef.h>
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <windot11.h>
@@ -6370,7 +6412,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include <wmiutils.h>
 #endif
-#include "wnvapi.h"
+//#include "wnvapi.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "wofapi.h"
 #endif
@@ -6494,7 +6536,7 @@ typedef void* HCERTSTORE;
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include "BdaTypes.h"
 #endif
-#include "CodeAnalysis/sourceannotations.h"
+//#include "CodeAnalysis/sourceannotations.h"
 #include "DirectXCollision.inl"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include "DirectXMathConvert.inl"
@@ -6528,9 +6570,9 @@ typedef void* HCERTSTORE;
 #include "VmSavedStateDumpDefs.h"
 #include "WaaSAPITypes.h"
 #include "Wincodec.h"
-#include "Windows.AI.Actions.Hosting.h"
-#include "Windows.AI.Actions.h"
-#include "Windows.AI.Agents.h"
+//#include "Windows.AI.Actions.Hosting.h"
+//#include "Windows.AI.Actions.h"
+//#include "Windows.AI.Agents.h"
 #include "Windows.ApplicationModel.Activation.h"
 #include "Windows.ApplicationModel.AppService.h"
 #include "Windows.ApplicationModel.Appointments.AppointmentsProvider.h"
@@ -6822,7 +6864,502 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 
 // libraries
 #if defined LINK_ALL
-#pragma comment(lib, "shlwapi.lib")
+#if ARCH_X86
+#pragma comment(lib,"ASycFilt.Lib")
+#pragma comment(lib,"OlePro32.Lib")
+#pragma comment(lib,"Thunk32.Lib")
+#pragma comment(lib,"VdmDbg.Lib")
+#pragma comment(lib,"Wow32.Lib")
+#pragma comment(lib,"apidll.lib")
+#pragma comment(lib,"int64.lib")
+#pragma comment(lib,"jetoledb.lib")
+#pragma comment(lib,"ntvdm.lib")
+#pragma comment(lib,"patchwiz.lib")
+#pragma comment(lib,"twain_32.lib")
+#pragma comment(lib,"unicows.lib")
+#endif
+
+#if ARCH_X64
+#pragma comment(lib,"WinHvEmulation.lib")
+#pragma comment(lib,"nanosrv.lib")
+#pragma comment(lib,"vmsavedstatedumpprovider.lib")
+#pragma comment(lib,"wnvapi.lib")
+#endif
+
+#if ARCH_ARM
+#pragma comment(lib,"arm64rt.lib")
+#endif
+
+#if (defined ARCH_X64) || (defined ARCH_X86)
+#pragma comment(lib,"IsolatedWindowsEnvironmentUtils.lib")
+#pragma comment(lib,"d3dcsx.lib")
+#pragma comment(lib,"d3dcsxd.lib")
+#pragma comment(lib,"dciman32.lib")
+#pragma comment(lib,"easregprov.lib")
+#pragma comment(lib,"fxsutility.lib")
+#pragma comment(lib,"infocardapi.Lib")
+#pragma comment(lib,"winfax.lib")
+#pragma comment(lib,"wsbapp_uuid.Lib")
+#pragma comment(lib,"wsbonline.lib")
+#endif
+
+#if (defined ARCH_X86) || (defined ARCH_ARM)
+#endif
+
+#if (defined ARCH_X64) || (defined ARCH_ARM)
+#pragma comment(lib,"WinHvPlatform.lib")
+#pragma comment(lib,"computecore.lib")
+#pragma comment(lib,"computenetwork.lib")
+#pragma comment(lib,"computestorage.lib")
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
+#pragma comment(lib,"veinterop.lib")
+#endif
+#pragma comment(lib,"vertdll.lib")
+#pragma comment(lib,"vmdevicehost.lib")
+#endif
+
+#pragma comment(lib,"ADSIid.Lib")
+#pragma comment(lib,"AclUI.Lib")
+#pragma comment(lib,"ActiveDS.Lib")
+#pragma comment(lib,"AdvAPI32.Lib")
+#pragma comment(lib,"AudioBaseProcessingObjectV140.lib")
+#pragma comment(lib,"AuthZ.Lib")
+#pragma comment(lib,"Bits.Lib")
+#pragma comment(lib,"BluetoothApis.lib")
+#pragma comment(lib,"BufferOverflow.lib")
+#pragma comment(lib,"BufferOverflowU.lib")
+#pragma comment(lib,"Cabinet.Lib")
+#pragma comment(lib,"CertIdl.Lib")
+#pragma comment(lib,"CertPolEng.Lib")
+#pragma comment(lib,"Chakrart.lib")
+#pragma comment(lib,"ClusApi.Lib")
+#pragma comment(lib,"ComCtl32.Lib")
+#pragma comment(lib,"ComDlg32.Lib")
+#pragma comment(lib,"ComSvcs.Lib")
+#pragma comment(lib,"CompPkgSup.lib")
+#pragma comment(lib,"CoreMessaging.lib")
+#pragma comment(lib,"Credui.lib")
+#pragma comment(lib,"Crypt32.Lib")
+#pragma comment(lib,"CryptNet.Lib")
+#pragma comment(lib,"DSProp.Lib")
+#pragma comment(lib,"DSUIExt.Lib")
+#pragma comment(lib,"DbgEng.Lib")
+#pragma comment(lib,"DbgHelp.Lib")
+#pragma comment(lib,"DbgModel.Lib")
+#pragma comment(lib,"DhcpCSvc.Lib")
+#pragma comment(lib,"DhcpCSvc6.Lib")
+#pragma comment(lib,"DiagnosticDataQuery.Lib")
+#pragma comment(lib,"DnsAPI.Lib")
+#pragma comment(lib,"DtcHelp.Lib")
+#pragma comment(lib,"ElsCore.lib")
+#pragma comment(lib,"FaultRep.Lib")
+#pragma comment(lib,"FhSvcCtl.lib")
+#pragma comment(lib,"FrameDyd.Lib")
+#pragma comment(lib,"FrameDyn.Lib")
+#pragma comment(lib,"GPEdit.lib")
+#pragma comment(lib,"Gdi32.Lib")
+#pragma comment(lib,"GlU32.Lib")
+#pragma comment(lib,"HLink.Lib")
+#pragma comment(lib,"Htmlhelp.Lib")
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
+#pragma comment(lib,"HwReqChk.lib")
+#endif
+#pragma comment(lib,"IEPMAPI.Lib")
+#pragma comment(lib,"Icm32.Lib")
+#pragma comment(lib,"Icmui.Lib")
+#pragma comment(lib,"ImageHlp.Lib")
+#pragma comment(lib,"Imm32.Lib")
+#pragma comment(lib,"Iprop.Lib")
+#pragma comment(lib,"KSProxy.Lib")
+#pragma comment(lib,"LicenseProtection.Lib")
+#pragma comment(lib,"LoadPerf.Lib")
+#pragma comment(lib,"Lz32.Lib")
+#pragma comment(lib,"MAPI32.Lib")
+#pragma comment(lib,"MDMRegistration.lib")
+#pragma comment(lib,"MMC.Lib")
+#pragma comment(lib,"MSAcm32.Lib")
+#pragma comment(lib,"MSImg32.Lib")
+#pragma comment(lib,"MSRating.Lib")
+#pragma comment(lib,"MSTask.Lib")
+#pragma comment(lib,"Mf.lib")
+#pragma comment(lib,"Mfcore.lib")
+#pragma comment(lib,"Mfplat.lib")
+#pragma comment(lib,"Mfsrcsnk.lib")
+#pragma comment(lib,"MgmtAPI.Lib")
+#pragma comment(lib,"Mpr.Lib")
+#pragma comment(lib,"Mprapi.Lib")
+#pragma comment(lib,"MqOA.Lib")
+#pragma comment(lib,"MqRt.Lib")
+#pragma comment(lib,"MrmSupport.lib")
+#pragma comment(lib,"MsCtfMonitor.lib")
+#pragma comment(lib,"MsWSock.Lib")
+#pragma comment(lib,"MsXml2.Lib")
+#pragma comment(lib,"Mscms.Lib")
+#pragma comment(lib,"Msi.Lib")
+#pragma comment(lib,"Mtx.Lib")
+#pragma comment(lib,"NetAPI32.Lib")
+#pragma comment(lib,"NetSh.Lib")
+#pragma comment(lib,"NtDsAPI.Lib")
+#pragma comment(lib,"NtQuery.Lib")
+#pragma comment(lib,"OemLicense.lib")
+#pragma comment(lib,"Ole32.Lib")
+#pragma comment(lib,"OleAcc.Lib")
+#pragma comment(lib,"OleAut32.Lib")
+#pragma comment(lib,"OleDlg.Lib")
+#pragma comment(lib,"OneCore.Lib")
+#pragma comment(lib,"OneCoreUAP.Lib")
+#pragma comment(lib,"OneCoreUAP_apiset.Lib")
+#pragma comment(lib,"OneCoreUAP_downlevel.Lib")
+#pragma comment(lib,"OneCore_apiset.Lib")
+#pragma comment(lib,"OneCore_downlevel.Lib")
+#pragma comment(lib,"OpenGL32.Lib")
+#pragma comment(lib,"Pdh.Lib")
+#pragma comment(lib,"PeerDist.lib")
+#pragma comment(lib,"PhotoAcquireUID.lib")
+#pragma comment(lib,"PortableDeviceGuids.lib")
+#pragma comment(lib,"ProjectedFSLib.lib")
+#pragma comment(lib,"RASAPI32.Lib")
+#pragma comment(lib,"RASDlg.Lib")
+#pragma comment(lib,"RTWorkQ.lib")
+#pragma comment(lib,"RpcRT4.Lib")
+#pragma comment(lib,"Rpcns4.Lib")
+#pragma comment(lib,"Rtm.Lib")
+#pragma comment(lib,"SAPI.Lib")
+#pragma comment(lib,"SCardDlg.Lib")
+#pragma comment(lib,"ScrnSavW.Lib")
+#pragma comment(lib,"ScrnSave.Lib")
+#pragma comment(lib,"SearchSDK.lib")
+#pragma comment(lib,"Secur32.Lib")
+#pragma comment(lib,"SensAPI.Lib")
+#pragma comment(lib,"SensorsUtils.lib")
+#pragma comment(lib,"SetupAPI.Lib")
+#pragma comment(lib,"Sfc.Lib")
+#pragma comment(lib,"ShFolder.Lib")
+#pragma comment(lib,"ShLwApi.Lib")
+#pragma comment(lib,"SnmpAPI.Lib")
+#pragma comment(lib,"SpOrder.Lib")
+#pragma comment(lib,"SrClient.lib")
+#pragma comment(lib,"Sti.Lib")
+#pragma comment(lib,"Svcguid.Lib")
+#pragma comment(lib,"Tapi32.Lib")
+#pragma comment(lib,"Traffic.Lib")
+#pragma comment(lib,"TranscodeImageUID.lib")
+#pragma comment(lib,"UIAutomationCore.lib")
+#pragma comment(lib,"USP10.Lib")
+#pragma comment(lib,"Urlmon.Lib")
+#pragma comment(lib,"User32.Lib")
+#pragma comment(lib,"UserEnv.Lib")
+#pragma comment(lib,"Uuid.Lib")
+#pragma comment(lib,"Uxtheme.lib")
+#pragma comment(lib,"Version.Lib")
+#pragma comment(lib,"Vfw32.Lib")
+#pragma comment(lib,"Virtdisk.Lib")
+#pragma comment(lib,"WS2_32.Lib")
+#pragma comment(lib,"WSnmp32.Lib")
+#pragma comment(lib,"WSock32.Lib")
+#pragma comment(lib,"WebServices.lib")
+#pragma comment(lib,"Wer.lib")
+#pragma comment(lib,"WiaGuid.Lib")
+#pragma comment(lib,"WinBio.lib")
+#pragma comment(lib,"WinMM.Lib")
+#pragma comment(lib,"WinSpool.Lib")
+#pragma comment(lib,"WinStrm.Lib")
+#pragma comment(lib,"WinTrust.Lib")
+#pragma comment(lib,"WindowsApp.lib")
+#pragma comment(lib,"WindowsApp_downlevel.lib")
+#pragma comment(lib,"Wldap32.Lib")
+#pragma comment(lib,"Wldp.Lib")
+#pragma comment(lib,"WtsApi32.Lib")
+#pragma comment(lib,"Xinput9_1_0.lib")
+#pragma comment(lib,"advpack.Lib")
+#pragma comment(lib,"ahadmin.lib")
+#pragma comment(lib,"amsi.lib")
+#pragma comment(lib,"amstrmid.lib")
+#pragma comment(lib,"appmgmts.lib")
+#pragma comment(lib,"appmgr.lib")
+#pragma comment(lib,"appnotify.lib")
+#pragma comment(lib,"audiobaseprocessingobject.lib")
+#pragma comment(lib,"audioeng.lib")
+#pragma comment(lib,"audiomediatypecrt.lib")
+#pragma comment(lib,"aux_ulib.lib")
+#pragma comment(lib,"avifil32.Lib")
+#pragma comment(lib,"avrt.lib")
+#pragma comment(lib,"basesrv.lib")
+#pragma comment(lib,"bcp47mrm.Lib")
+#pragma comment(lib,"bcrypt.lib")
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
+#pragma comment(lib,"bindlink.lib")
+#endif
+#pragma comment(lib,"bthprops.lib")
+#pragma comment(lib,"certadm.lib")
+#pragma comment(lib,"certca.lib")
+#pragma comment(lib,"certcli.lib")
+#pragma comment(lib,"cfgmgr32.lib")
+#pragma comment(lib,"cimfs.lib")
+#pragma comment(lib,"cldapi.lib")
+#pragma comment(lib,"clfsw32.lib")
+#pragma comment(lib,"compstui.lib")
+#pragma comment(lib,"corrEngine.lib")
+#pragma comment(lib,"cryptdll.lib")
+#pragma comment(lib,"cryptui.lib")
+#pragma comment(lib,"cryptxml.lib")
+#pragma comment(lib,"cscapi.lib")
+#pragma comment(lib,"cscdll.lib")
+#pragma comment(lib,"d2d1.lib")
+#pragma comment(lib,"d3d10.lib")
+#pragma comment(lib,"d3d10_1.lib")
+#pragma comment(lib,"d3d11.lib")
+#pragma comment(lib,"d3d12.lib")
+#pragma comment(lib,"d3d9.lib")
+#pragma comment(lib,"d3dcompiler.lib")
+#pragma comment(lib,"davclnt.lib")
+#pragma comment(lib,"dcomp.lib")
+#pragma comment(lib,"ddraw.lib")
+#pragma comment(lib,"devenum.lib")
+#pragma comment(lib,"deviceaccess.lib")
+#pragma comment(lib,"devmgr.lib")
+#pragma comment(lib,"dflayout.lib")
+#pragma comment(lib,"dhcpsapi.lib")
+#pragma comment(lib,"dinput8.lib")
+#pragma comment(lib,"directml.lib")
+#pragma comment(lib,"dloadhelper.lib")
+#pragma comment(lib,"dmoguids.lib")
+#pragma comment(lib,"dmprocessxmlfiltered.lib")
+#pragma comment(lib,"dnscrcli.lib")
+#pragma comment(lib,"dnslib.lib")
+#pragma comment(lib,"dnsperf.lib")
+#pragma comment(lib,"dnsrpc.lib")
+#pragma comment(lib,"dnsrslvr.lib")
+#pragma comment(lib,"dpx.lib")
+#pragma comment(lib,"dsound.lib")
+#pragma comment(lib,"dssec.lib")
+#pragma comment(lib,"dststlog.lib")
+#pragma comment(lib,"dwmapi.lib")
+#pragma comment(lib,"dwrite.lib")
+#pragma comment(lib,"dxcompiler.lib")
+#pragma comment(lib,"dxcore.lib")
+#pragma comment(lib,"dxgi.lib")
+#pragma comment(lib,"dxguid.lib")
+#pragma comment(lib,"dxtmsft.lib")
+#pragma comment(lib,"dxtrans.lib")
+#pragma comment(lib,"dxva2.lib")
+#pragma comment(lib,"eappcfg.lib")
+#pragma comment(lib,"eappprxy.lib")
+#pragma comment(lib,"efswrt.lib")
+#pragma comment(lib,"ehstorguids.lib")
+#pragma comment(lib,"els.lib")
+#pragma comment(lib,"esent.lib")
+#pragma comment(lib,"evr.lib")
+#pragma comment(lib,"feclient.lib")
+#pragma comment(lib,"fileextd.lib")
+#pragma comment(lib,"fltLib.lib")
+#pragma comment(lib,"fontsub.lib")
+#pragma comment(lib,"fwpuclnt.lib")
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
+#pragma comment(lib,"gameinput.lib")
+#endif
+#pragma comment(lib,"gdiplus.lib")
+#pragma comment(lib,"glmf32.lib")
+#pragma comment(lib,"gpmuuid.lib")
+#pragma comment(lib,"hbaapi.lib")
+#pragma comment(lib,"hhsetup.lib")
+#pragma comment(lib,"hid.lib")
+#pragma comment(lib,"hrtfapo.lib")
+#pragma comment(lib,"httpapi.lib")
+#pragma comment(lib,"iashlpr.lib")
+#pragma comment(lib,"icu.lib")
+#pragma comment(lib,"icuin.Lib")
+#pragma comment(lib,"icuuc.lib")
+#pragma comment(lib,"iesetup.lib")
+
+#pragma comment(lib,"imgutil.Lib")
+#pragma comment(lib,"inkobjcore.lib")
+#pragma comment(lib,"inseng.lib")
+#pragma comment(lib,"iphlpapi.lib")
+#pragma comment(lib,"iscsidsc.lib")
+#pragma comment(lib,"jsrt.lib")
+#pragma comment(lib,"kerbcli.lib")
+#pragma comment(lib,"kernel32.Lib")
+#pragma comment(lib,"keycredmgr.lib")
+#pragma comment(lib,"ksuser.lib")
+#pragma comment(lib,"ktmw32.lib")
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
+#pragma comment(lib,"lamparray.lib")
+#endif
+#pragma comment(lib,"locationapi.lib")
+#pragma comment(lib,"magnification.lib")
+#pragma comment(lib,"mbnapi_uuid.lib")
+#pragma comment(lib,"mciole32.lib")
+#pragma comment(lib,"mdmlocalmanagement.lib")
+#pragma comment(lib,"mfplay.lib")
+#pragma comment(lib,"mfreadwrite.lib")
+#pragma comment(lib,"mfsensorgroup.lib")
+#pragma comment(lib,"mfuuid.lib")
+#pragma comment(lib,"mi.lib")
+#pragma comment(lib,"mincore.lib")
+#pragma comment(lib,"mincore_downlevel.lib")
+#pragma comment(lib,"mmdevapi.lib")
+#pragma comment(lib,"mprsnap.lib")
+#pragma comment(lib,"msaatext.lib")
+#pragma comment(lib,"msdasc.lib")
+#pragma comment(lib,"msdelta.lib")
+#pragma comment(lib,"msdmo.lib")
+#pragma comment(lib,"msdrm.lib")
+#pragma comment(lib,"mspatcha.lib")
+#pragma comment(lib,"mspatchc.lib")
+#pragma comment(lib,"mspbase.lib")
+#pragma comment(lib,"msports.lib")
+#pragma comment(lib,"msv1_0.lib")
+#pragma comment(lib,"msvfw32.Lib")
+#pragma comment(lib,"msxml6.lib")
+#pragma comment(lib,"mtxdm.lib")
+#pragma comment(lib,"muiload.lib")
+#pragma comment(lib,"ncrypt.lib")
+#pragma comment(lib,"nddeapi.lib")
+#pragma comment(lib,"ndfapi.lib")
+#pragma comment(lib,"ndproxystub.lib")
+#pragma comment(lib,"netlib.lib")
+#pragma comment(lib,"newdev.lib")
+#pragma comment(lib,"ninput.lib")
+#pragma comment(lib,"normaliz.lib")
+#pragma comment(lib,"nt.lib")
+#pragma comment(lib,"ntdll.lib")
+#pragma comment(lib,"ntdsa.lib")
+#pragma comment(lib,"ntdsatq.lib")
+#pragma comment(lib,"ntdsetup.lib")
+#pragma comment(lib,"ntfrsapi.lib")
+#pragma comment(lib,"ntlanman.lib")
+#pragma comment(lib,"ntmarta.lib")
+//#pragma comment(lib,"ntstc_libcmt.lib")
+//#pragma comment(lib,"ntstc_msvcrt.lib")
+#pragma comment(lib,"objsel.lib")
+#pragma comment(lib,"odbc32.lib")
+#pragma comment(lib,"odbcbcp.lib")
+#pragma comment(lib,"odbccp32.lib")
+#pragma comment(lib,"olecli32.lib")
+#pragma comment(lib,"oledb.lib")
+#pragma comment(lib,"olesvr32.lib")
+#pragma comment(lib,"ondemandconnroutehelper.lib")
+#pragma comment(lib,"osptk.lib")
+#pragma comment(lib,"pathcch.lib")
+#pragma comment(lib,"powrprof.lib")
+#pragma comment(lib,"prntvpt.lib")
+#pragma comment(lib,"propsys.lib")
+#pragma comment(lib,"psapi.lib")
+#pragma comment(lib,"quartz.lib")
+#pragma comment(lib,"query.lib")
+#pragma comment(lib,"qwave.lib")
+#pragma comment(lib,"rasuser.lib")
+#pragma comment(lib,"resutils.lib")
+#pragma comment(lib,"rometadata.lib")
+#pragma comment(lib,"rpcexts.lib")
+#pragma comment(lib,"rpcproxy.lib")
+#pragma comment(lib,"rpcutil.lib")
+#pragma comment(lib,"rstrtmgr.lib")
+#pragma comment(lib,"rtutils.lib")
+#pragma comment(lib,"runtimeobject.lib")
+#pragma comment(lib,"samlib.lib")
+#pragma comment(lib,"samsrv.lib")
+#pragma comment(lib,"sas.lib")
+#pragma comment(lib,"sbtsv.lib")
+#pragma comment(lib,"scecli.lib")
+#pragma comment(lib,"scesrv.lib")
+#pragma comment(lib,"schannel.lib")
+#pragma comment(lib,"security.lib")
+#pragma comment(lib,"sens.lib")
+#pragma comment(lib,"sensorsapi.lib")
+#pragma comment(lib,"shcore.lib")
+#pragma comment(lib,"shdocvw.lib")
+#pragma comment(lib,"shell32.lib")
+#pragma comment(lib,"slc.lib")
+#pragma comment(lib,"slcext.lib")
+#pragma comment(lib,"slwga.lib")
+#pragma comment(lib,"softintrin.lib")
+#pragma comment(lib,"spoolss.lib")
+#pragma comment(lib,"srpapi.lib")
+#pragma comment(lib,"ssdpapi.lib")
+#pragma comment(lib,"strmbase.lib")
+#pragma comment(lib,"strmiids.lib")
+#pragma comment(lib,"strsafe.lib")
+#pragma comment(lib,"structuredquery.lib")
+#pragma comment(lib,"swdevice.lib")
+#pragma comment(lib,"synchronization.lib")
+#pragma comment(lib,"t2embed.lib")
+#pragma comment(lib,"tapi32l.lib")
+#pragma comment(lib,"taskschd.lib")
+#pragma comment(lib,"tbs.lib")
+#pragma comment(lib,"tdh.lib")
+#pragma comment(lib,"tokenbinding.lib")
+#pragma comment(lib,"tsec.lib")
+#pragma comment(lib,"tspubplugincom.lib")
+#pragma comment(lib,"twinapi.lib")
+#pragma comment(lib,"txfw32.lib")
+#pragma comment(lib,"ualapi.lib")
+#pragma comment(lib,"umpdddi.lib")
+#pragma comment(lib,"vccomsup.lib")
+#pragma comment(lib,"vds_uuid.lib")
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
+#pragma comment(lib,"volatileaccessu.lib")
+#endif
+#pragma comment(lib,"vscmgr.lib")
+#pragma comment(lib,"vss_uuid.lib")
+#pragma comment(lib,"vssapi.lib")
+#pragma comment(lib,"vstorinterface.lib")
+#pragma comment(lib,"wbemuuid.lib")
+#pragma comment(lib,"wcmapi.lib")
+#pragma comment(lib,"wcmguid.lib")
+#pragma comment(lib,"wdsClientAPI.LIB")
+#pragma comment(lib,"wdsbp.lib")
+#pragma comment(lib,"wdsmc.lib")
+#pragma comment(lib,"wdspxe.lib")
+#pragma comment(lib,"wdstptc.lib")
+#pragma comment(lib,"webauthn.lib")
+#pragma comment(lib,"websocket.lib")
+#pragma comment(lib,"wecapi.lib")
+#pragma comment(lib,"wevtapi.lib")
+#pragma comment(lib,"wiaservc.lib")
+#pragma comment(lib,"wiautil.lib")
+#pragma comment(lib,"windows.ai.machinelearning.lib")
+#pragma comment(lib,"windows.data.pdf.lib")
+#pragma comment(lib,"windows.media.mediacontrol.lib")
+#pragma comment(lib,"windows.networking.lib")
+#pragma comment(lib,"windows.ui.lib")
+#pragma comment(lib,"windowscodecs.lib")
+#pragma comment(lib,"windowscoreheadless.Lib")
+#pragma comment(lib,"windowscoreheadless_apiset.Lib")
+#pragma comment(lib,"windowssideshowguids.lib")
+#pragma comment(lib,"winhttp.lib")
+#pragma comment(lib,"wininet.Lib")
+#pragma comment(lib,"winml.lib")
+#pragma comment(lib,"winsatapi.lib")
+#pragma comment(lib,"winscard.lib")
+#pragma comment(lib,"winsqlite3.lib")
+#pragma comment(lib,"winsta.lib")
+#pragma comment(lib,"winusb.lib")
+#pragma comment(lib,"wlanapi.lib")
+#pragma comment(lib,"wlanui.lib")
+#pragma comment(lib,"wmcodecdspuuid.lib")
+#pragma comment(lib,"wmip.lib")
+#pragma comment(lib,"wmiutils.lib")
+#pragma comment(lib,"wmvcore.lib")
+#pragma comment(lib,"wofutil.lib")
+#pragma comment(lib,"workspaceax.lib")
+#pragma comment(lib,"wscapi.lib")
+#pragma comment(lib,"wsclient.lib")
+#pragma comment(lib,"wsdapi.lib")
+#pragma comment(lib,"wsmsvc.lib")
+#pragma comment(lib,"wuguid.lib")
+#pragma comment(lib,"xapobase.lib")
+#pragma comment(lib,"xapobase2_8.lib")
+#pragma comment(lib,"xaswitch.lib")
+#pragma comment(lib,"xaudio2.lib")
+#pragma comment(lib,"xaudio2_8.lib")
+#pragma comment(lib,"xinput.lib")
+#pragma comment(lib,"xinputuap.lib")
+#pragma comment(lib,"xmllite.lib")
+#pragma comment(lib,"xolehlp.lib")
+#pragma comment(lib,"xpsdocumenttargetprint.lib")
+#pragma comment(lib,"xpsprint.lib")
 #endif
 
 #endif
