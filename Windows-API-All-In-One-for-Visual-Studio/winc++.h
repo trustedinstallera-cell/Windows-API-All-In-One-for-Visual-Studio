@@ -35,6 +35,22 @@
 #include <con/unexist.hppx>
 #endif
 
+#define ALLOW_CLR_EXPERIMENTAL
+#ifndef ALLOW_CLR_EXPERIMENTAL
+#ifdef _MANAGED
+//#if VS_VER < VS_2026
+#error Fatal error: /clr is intentionally blocked by def.h.
+#include <con/unexist.hppx>
+//#else
+//#endif
+#endif
+#else
+#pragma warning(disable: 5308)
+#undef _MANAGED
+#pragma message("Note: Limited testing indicates that some native C++ code can compile and run correctly under /clr after bypassing the _MANAGED check, but they are blocked by the #error directive in def.h.")
+#pragma message("Use at your own risk in a managed C++/CLI environment. This configuration has not been fully validated in managed C++/CLI projects.")
+#endif
+
 // scsi.h requires _NTSCSI_USER_MODE_ only when compiling in pure user-mode.
 // Do NOT define it if any kernel/driver mode macro is active.
 #if (!defined _KERNEL_MODE) && (!defined _NTSRB_) && (!defined _NTSRB_) && (!defined _MINIPORT_) && (!defined _NTDDK_)
@@ -225,9 +241,12 @@
 #pragma warning(disable: 4834) // VS 2026: discarding return value with [[nodiscard]] attrib
 #pragma warning(disable: 4467) // warning C4467: deprecated ATL attribute
 #pragma warning(disable: 4100) // warning C4100: unreferenced parameter. Occurs after included FwCommon.h, throw by wbemglue.h directly
-#pragma warning(disable: 4099) // warning C5054: operator '|': deprecated between enumerations of different types
+#pragma warning(disable: 4099) 
 #if cppver >= 2020
-//#pragma warning(disable: 5054) // VS 2026, BdaTypes: operator | between enums with different types has been discarded
+#pragma warning(disable: 5054) // VS 2026, warning C5054: operator '|': deprecated between enumerations of different types
+#endif
+#if (defined _MANAGED)
+#pragma warning(disable: 4561)
 #endif
 #pragma warning(push)
 #endif
@@ -270,6 +289,7 @@ typedef struct IUnknown IUnknown;
 #include <wincodec.h>
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#ifndef _MANAGED
 #include <wrl.h>
 #include <wrl\client.h>
 #include <wrl\def.h>
@@ -281,6 +301,7 @@ typedef struct IUnknown IUnknown;
 //#include <wrl\internalevent.h>
 #include <wrl\module.h>
 #include <wrl\wrappers\corewrappers.h>
+#endif
 #endif
 /*
 // todo: check in XP system or toolset
@@ -329,10 +350,26 @@ typedef struct IUnknown IUnknown;
 #include <WbemProv.h>
 #endif
 //#include "kxarm64unw.h"
-//#include <RefPtrCo.h>
+#if NTDDI_VERSION >= 0x0A00000C // 10.0.22621.0
+#ifdef PURE
+#pragma push_macro("PURE")
+#undef PURE
+#include "FwCommon.h"
+#pragma pop_macro("PURE")
+#else
+#include "FwCommon.h"
+#endif
+
+#include <RefPtrCo.h>
+#if (defined _MANAGED)
+#error err
+#endif
+#endif
+template <class TYPED_PTR> class TRefPointerCollection;
+//template <class ThreadModel> class CComObjectRootEx;
 #include <Polarity.h>
 #include <ThrdBase.h>
-//#include <MethodCo.h>
+
 #if VS_VER > VC_5
 #include "mstask.h"
 #endif
@@ -392,7 +429,9 @@ typedef struct IUnknown IUnknown;
 #if VS_VER > VC_4
 #include "AclAPI.h"
 #endif
+#if NTDDI_VERSION >= 0x0A00000C // 10.0.22621.0
 #include "ActivityCoordinator.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "AppxPackaging.h"
 #endif
@@ -866,7 +905,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_1
 #include <basetyps.h> 
 #endif
-#if cppver > 2017
+#if NTDDI_VERSION > 0x0A000008
 #include <ATLBASE.h>
 #include <ATLCONV.H>
 #endif
@@ -997,7 +1036,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <SPError.h>
 #endif
 #ifdef NOWARNINGS
+#if NTDDI_VERSION > 0x0A000008
 #include <SPHelper.h>
+#endif
 #endif
 #if _MSC_VER > 1500
 #include <SensorsApi.h>
@@ -2177,6 +2218,10 @@ DECLARE_HANDLE(HSZ);
 #if VS_VER > VC_6
 #include "HtmlHelp.h"
 #endif
+// #if NTDDI_VERSION >= 0x0A00000C // 10.0.22621.0
+#ifdef HTTP_VERSION
+#undef HTTP_VERSION
+#endif
 #include "http.h"
 #include <httpserv.h>
 #include "httpcach.h"
@@ -2606,6 +2651,9 @@ DECLARE_HANDLE(HSZ);
 #include <lmuseflg.h>                   // Deletion force level flags"
 #include <lmwksta.h>    // Workstation class"       
 #endif
+class CInstance;
+#include <MethodCo.h>
+#include <Instance.h>
 #if VS_VER > VC_4
 #include "LoadPerf.h"
 #endif
@@ -4310,7 +4358,10 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #endif
 #if VS_VER >= VS_2026
 #ifdef NOWARNINGS
+#if (NTDDI_VERSION >= 0x0A00000C /*10.0.22621.0*/)
+// faulty implementation in 
 #include "spddkhlp.h"
+#endif
 #endif
 #endif
 #if VS_VER > VS_2005
@@ -4331,9 +4382,10 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "sphelper.h"
 #endif
 #endif
-#include <atlbase.h>
+#if NTDDI_VERSION > 0x0A000008
 #include <atlcom.h>
-#if VS_VER >= VS_2026
+#endif
+#if NTDDI_VERSION > 0x0A000008
 #ifdef NOWARNINGS
 #include "speventq.h"
 #include "spuihelp.h"
@@ -5874,14 +5926,7 @@ enum Gender {
 #if VS_VER > VC_6
 #include "wbemdisp.h"
 #endif
-#ifdef PURE
-#pragma push_macro("PURE")
-#undef PURE
-#include "FwCommon.h"
-#pragma pop_macro("PURE")
-#else
-#include "FwCommon.h"
-#endif
+
 #include "wbemglue.h"
 #if VS_VER > VC_6
 #include "WbemIdl.h"
@@ -6485,8 +6530,10 @@ typedef void* HCERTSTORE;
 #include "xapo.h"
 #include "xapobase.h"
 #include "xapofx.h"
+#if NTDDI_VERSION > 0x0A000008 || VS_VER < VS_2026
 #include "xaudio2.h"
 #include "xaudio2fx.h"
+#endif
 #endif
 #if VS_VER > VC_6
 #include "xenroll.h"
@@ -6821,7 +6868,6 @@ typedef void* HCERTSTORE;
 #endif
 #include "AudioClient.h"
 #include "dvbsiparser.h"
-#include <instance.h>
 #if MSVC_VER > VS_2013
 using namespace Gdiplus;
 #include "GdiplusMatrix.h"
@@ -6971,7 +7017,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"Imm32.Lib")
 #pragma comment(lib,"Iprop.Lib")
 #pragma comment(lib,"KSProxy.Lib")
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"LicenseProtection.Lib")
+#endif
 #pragma comment(lib,"LoadPerf.Lib")
 #pragma comment(lib,"Lz32.Lib")
 #pragma comment(lib,"MAPI32.Lib")
@@ -7085,7 +7133,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"avifil32.Lib")
 #pragma comment(lib,"avrt.lib")
 #pragma comment(lib,"basesrv.lib")
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"bcp47mrm.Lib")
+#endif
 #pragma comment(lib,"bcrypt.lib")
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"bindlink.lib")
@@ -7274,7 +7324,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"slc.lib")
 #pragma comment(lib,"slcext.lib")
 #pragma comment(lib,"slwga.lib")
+#if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"softintrin.lib")
+#endif
 #pragma comment(lib,"spoolss.lib")
 #pragma comment(lib,"srpapi.lib")
 #pragma comment(lib,"ssdpapi.lib")
