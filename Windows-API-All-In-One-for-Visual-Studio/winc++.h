@@ -38,17 +38,17 @@
 #define ALLOW_CLR_EXPERIMENTAL
 #ifndef ALLOW_CLR_EXPERIMENTAL
 #ifdef _MANAGED
-//#if VS_VER < VS_2026
+#if VS_VER > VS_2022
 #error Fatal error: /clr is intentionally blocked by def.h.
 #include <con/unexist.hppx>
 //#else
-//#endif
 #endif
 #else
 #pragma warning(disable: 5308)
 #undef _MANAGED
 #pragma message("Note: Limited testing indicates that some native C++ code can compile and run correctly under /clr after bypassing the _MANAGED check, but they are blocked by the #error directive in def.h.")
 #pragma message("Use at your own risk in a managed C++/CLI environment. This configuration has not been fully validated in managed C++/CLI projects.")
+#endif
 #endif
 
 // scsi.h requires _NTSCSI_USER_MODE_ only when compiling in pure user-mode.
@@ -108,6 +108,10 @@
 #define _WIN32_WINNT 0x0601
 #endif
 
+#if defined(_MSC_VER) && !defined(_MSC_EXTENSIONS)
+#define ZA_ENABLED
+#endif
+
 // Compiler version definitions
 #ifdef _MSC_VER
 #define VS_VERSION _MSC_VER
@@ -130,12 +134,32 @@
 #define VS_2015  1900
 #define VS_2017  1910
 #define VS_2019  1920
-#define VS_2022  1930
-#define VS_2026  1950
+#define VS_2022  1944
+#define VS_2026  1958
 
 #define VS_VER VS_VERSION
 #define MSVC_VER VS_VERSION
 #define MSVC_VERSION VS_VERSION
+
+#include <sdkddkver.h>
+#define SDK_8_1 0x06030000
+#define SDK_10_0_15086_0 0x0A000000
+#define SDK_10_0_19041_0 0x0A000008
+#define SDK_10_0_22621_0 0x0A00000C
+#define SDK_VERSION NTDDI_VERSION
+#define SDK_VER SDK_VERSION
+
+/*
+#include <iostream>
+#include <sdkddkver.h>
+#define CURRENT_SDK_VERSION NTDDI_VERSION
+
+int main(){
+	printf("Current SDK Version: 0x%08X\n", CURRENT_SDK_VERSION);
+	system("pause");
+	return 0;
+}
+*/
 
 #if _MSC_VER >= 1950
 #define TOOLSET 145  // VS 2026 and later
@@ -176,6 +200,8 @@
 #endif
 
 #ifdef NOWARNINGS
+#pragma warning(push)
+#pragma warning(disable: 4251) 
 #if VS_VER == VC_6
 // #pragma push_macro : '_MP' is not currently defined as a macro
 #pragma warning(disable: 4601)
@@ -248,7 +274,6 @@
 #if (defined _MANAGED)
 #pragma warning(disable: 4561)
 #endif
-#pragma warning(push)
 #endif
 #endif
 
@@ -257,6 +282,10 @@
 #include <con/unexist.hppx>
 #endif
 
+#if SDK_VER == SDK_8_1
+struct IUnknown;
+typedef struct IUnknown IUnknown;
+#endif
 #include <tchar.h>
 #include "WinSock2.h"
 #if (defined _USING_V110_SDK71_ /*XP support*/) || (MSVC_VER <= 2015)
@@ -290,8 +319,8 @@ typedef struct IUnknown IUnknown;
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #ifndef _MANAGED
+#if SDK_VER != SDK_8_1
 #include <wrl.h>
-#include <wrl\client.h>
 #include <wrl\def.h>
 #include <wrl\event.h>
 #include <wrl\ftm.h>
@@ -301,6 +330,7 @@ typedef struct IUnknown IUnknown;
 //#include <wrl\internalevent.h>
 #include <wrl\module.h>
 #include <wrl\wrappers\corewrappers.h>
+#endif
 #endif
 #endif
 /*
@@ -334,6 +364,7 @@ typedef struct IUnknown IUnknown;
 #include "BdaTypes.h"
 #endif
 #if VS_VER >= VS_2015
+#pragma warning(disable: 4596)
 #include "Gdiplus.h"
 #endif
 #if VS_VER > VC_5
@@ -348,6 +379,17 @@ typedef struct IUnknown IUnknown;
 #include <WbemCli.h>
 #include "WmiUtils.h"
 #include <WbemProv.h>
+#endif
+class CFramework_Exception;
+#if defined _MSVC_NON_PERMISSIVE_MODE
+#ifdef PURE
+#pragma push_macro("PURE")
+#undef PURE
+#include "FwCommon.h"
+#pragma pop_macro("PURE")
+#else
+#include "FwCommon.h"
+#endif
 #endif
 //#include "kxarm64unw.h"
 #if NTDDI_VERSION >= 0x0A00000C // 10.0.22621.0
@@ -378,7 +420,9 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #define __MIDL_itf_msxml6_0000_0000_v0_0_c_ifspec
+#if (defined _MSVC_NON_PERMISSIVE_MODE)
 #include "msxml6.h"
+#endif
 #endif
 #if VS_VER > VC_5
 #include "msxmldid.h"
@@ -462,7 +506,9 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "DirectML.h"
 #endif
 #if (TOOLSET > 90)
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "DocObjectService.h"
+#endif
 #include "DownloadMgr.h"
 #endif
 #if VS_VER > VC_5
@@ -612,10 +658,12 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if MSVC_VER > 2012
 #include "ProofOfPossessionCookieInfo.h"
 #endif
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #ifndef _MSVC_NON_PERMISSIVE_MODE
 #define QUERY_H_RESTRICTION_PERMISSIVE 1
 #endif
 #include "Query.h"
+#endif
 #include "RadioMgr.h"
 #endif
 #if VS_VERSION > VC_2
@@ -664,7 +712,9 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if TOOLSET > 90
 #include "UIAnimation.h"
 #include "UIRibbon.h"
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "UIRibbonPropertyHelpers.h"
+#endif
 #endif
 #if VS_VER > VS_2005
 #include "UPnP.h"
@@ -677,7 +727,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "WRdsGraphicsChannels.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "WaaSApi.h"
 #endif
 #endif
@@ -975,7 +1025,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "MFTransform.h"
 #endif
 #if VS_VER > VC_5
-#if (!(defined(_MSVC_TRADITIONAL) && _MSVC_TRADITIONAL == 0))
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "Mshtml.h"
 #endif
 #endif
@@ -1152,7 +1202,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 // ObjectContext has been defined before
 #define __ObjectContext_FWD_DEFINED__
 #include <exception>
+#if SDK_VER > SDK_8_1
 #include "DbgModel.h"
+#endif
 #if VS_VER > VC_6
 #include <adtgen.h>
 #endif
@@ -1199,7 +1251,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "appnotify.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "appserviceinterop.h"
 #endif
 #endif
@@ -1458,7 +1510,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "combaseapi.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "coml2api.h"
 #endif
 #endif
@@ -1477,7 +1529,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "compressapi.h"
 #include "compstui.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "computecore.h"
 #include "computenetwork.h"
 #include "computestorage.h"
@@ -1551,7 +1603,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "CompPkgSup.h"
 #endif
 #ifdef NOWARNINGS
+#if SDK_VER > SDK_8_1
 #include "ContactAggregation.h"
+#endif
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <compstui.h>
@@ -1615,6 +1669,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VERSION > VC_2
 #include <crtdbg.h>
 #endif
+
 #if VS_VER > VS_2005
 #include "credentialprovider.h"
 #include "credssp.h"
@@ -1669,7 +1724,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if MSVC_VER > 2012
 #include <d2d1effects_1.h>
 #endif
-#if MSVC_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include <d2d1effects_2.h>
 #endif
 #endif
@@ -1711,7 +1766,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <d3d9.h>
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "d3d11_4.h"
 #endif
 #include "d3d11shadertracing.h"
@@ -1740,7 +1795,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #include "d3dhalex.h"
 //#include <d3dkmdt.h> // Should not be included directly
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "d3dkmthk.h"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -1749,7 +1804,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #include <d3d.h> 
 #include <d3dcaps.h>
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "d3dkmthk.h"
 #endif
 //#include <d3dukmdt.h> // Should not be included directly
@@ -1808,7 +1863,7 @@ DECLARE_HANDLE(HSZ);
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "ddpbackup.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "ddpchunk.h"
 #include "ddpdataport.h"
 #endif
@@ -1914,7 +1969,9 @@ DECLARE_HANDLE(HSZ);
 #if TOOLSET > 90
 #include "dls2.h"
 #endif
+#if SDK_VER > SDK_8_1
 #include "dpa_dsa.inl"
+#endif
 #include "dmksctrl.h"
 #if VS_VER > VS_2005
 #include "dmo.h"
@@ -1994,12 +2051,16 @@ DECLARE_HANDLE(HSZ);
 #include "dxva2swdev.h"
 #include "eapauthenticatortypes.h"
 #include "EapHostError.h"
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "eaphostpeerconfigapis.h"
 #include "EapHostPeerTypes.h"
+#endif
 #include <eapmethodtypes.h>
 #include "eapmethodauthenticatorapis.h"
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "eapmethodpeerapis.h"
 #include "eappapis.h"
+#endif
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "easencryptprov.h"
@@ -2032,7 +2093,7 @@ DECLARE_HANDLE(HSZ);
 #include "encdec_enums.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "enclaveapi.h"
 #endif
 #include "errhandlingapi.h"
@@ -2063,7 +2124,9 @@ DECLARE_HANDLE(HSZ);
 #include "expandedresources.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400) // undetermined value
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "FaxComEx.h"
+#endif
 #include "FaxComEx_i.c"
 //#include "FaxDev.h"
 #else
@@ -2094,7 +2157,7 @@ DECLARE_HANDLE(HSZ);
 #include "FhStatus.h"
 #include "FhSvcCtl.h"
 #include "fileapi.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "fileapifromapp.h"
 #endif
 #include "fibersapi.h"
@@ -2130,7 +2193,9 @@ DECLARE_HANDLE(HSZ);
 #endif
 #endif
 #if TOOLSET > 90
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "fsrmtlb.h"
+#endif
 //#include "ftm.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "fttypes.h"
@@ -2184,7 +2249,9 @@ DECLARE_HANDLE(HSZ);
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "handleapi.h"
 //#include "hashtypes.h"
+#if SDK_VER > SDK_8_1
 #include "hbaapi.h"
+#endif
 #include "hidsdi.h"
 #endif
 #if VS_VER > VS_2005
@@ -2201,14 +2268,14 @@ DECLARE_HANDLE(HSZ);
 #include "HlIface.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "HolographicSpaceInterop.h"
 #endif
 #if MSVC_VER > 2012
 #include "homepagesetting.h"
 #endif
 #include <xapo.h>
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "hrtfapoapi.h"
 #endif
 #endif
@@ -2234,7 +2301,9 @@ DECLARE_HANDLE(HSZ);
 #include "httpserv.h"
 #if VS_VER > VS_2005
 #include "httptrace.h"
+#if SDK_VER > SDK_8_1
 #include "hvsocket.h"
+#endif
 #include "hwebcore.h"
 #endif
 #if VS_VER > VC_4
@@ -2271,7 +2340,9 @@ DECLARE_HANDLE(HSZ);
 #endif
 #include "ieautomation.h"
 //#include "ieee8021q.h"
+#if SDK_VER > SDK_8_1
 #include "iewebdriver.h"
+#endif
 #if VS_VER > VS_2005
 #include "iextag.h"
 #endif
@@ -2282,7 +2353,9 @@ DECLARE_HANDLE(HSZ);
 #include <dvdevcod.h>   // DVD error event codes"
 #endif
 #include <dxgi.h>
+#if SDK_VER > SDK_8_1
 #include <dxgi1_5.h>    // for DXGI_ALPHA_MODE, DXGI_HDR_METADATA_TYPE"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <dxgiformat.h>
 #endif
@@ -2418,7 +2491,7 @@ DECLARE_HANDLE(HSZ);
 #endif
 //#include "inked_i.c"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "inkrenderer.h"
 #include "inkrenderer_i.c"
 #include "inputpaneinterop.h"
@@ -2538,7 +2611,7 @@ DECLARE_HANDLE(HSZ);
 #include "jscript9diag.h"
 #include "jsrt.h"
 #endif
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "jsrt9.h"
 #endif
 #pragma push_macro("X10")
@@ -2566,13 +2639,13 @@ DECLARE_HANDLE(HSZ);
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <kernelspecs.h>
 #endif
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "keycredmgr.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <knownfolders.h>
 #endif
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "knownfolderpathscom.h"
 #endif
 #endif
@@ -2606,7 +2679,7 @@ DECLARE_HANDLE(HSZ);
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <libloaderapi.h> // LibLoader Apiset dependencies"
 #endif
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "libloaderapi2.h"
 #endif
 #endif
@@ -2812,7 +2885,7 @@ typedef struct _UNICODE_STRING {
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "mfcaptureengine.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "mfcontentdecryptionmodule.h"
 #endif
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
@@ -2827,7 +2900,7 @@ typedef struct _UNICODE_STRING {
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "mfsharingengine.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "mfspatialaudio.h"
 #endif
 #endif
@@ -3063,7 +3136,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include <mswsockdef.h>
 #endif
 #if VS_VER > VS_2005
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "MsXml6.h"
+#endif
 #endif
 #if VS_VER > VC_5
 #include "MsXmlDId.h"
@@ -3510,7 +3585,7 @@ interface ICommandTree
 #include <new>
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "nfcradiodev.h"
 #endif
 #include "nfpdev.h"
@@ -3648,7 +3723,9 @@ interface ICommandTree
 #include "oobenotification.h"
 #endif
 #if TOOLSET > 90
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "openservice.h"
+#endif
 #endif
 //#include "opmapi.h"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
@@ -3802,9 +3879,12 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #endif
 //#include "prcomoem.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+//#if SDK_VER <= SDK_8_1
+interface IXMLDOMDocument2;
+//#endif
 #include "prdrvcom.h"
 #include "printoem.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "Print3DManagerInterop.h"
 #endif
 #include "PrintManagerInterop.h"
@@ -4098,7 +4178,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include <reason.h>             // get the public reasons"
 #endif
 // failed in VS2026. Redefinition at ComSvcs.h, line 17835
-#if VS_VER < VS_2026
+#if VS_VER < VS_2022
 #include "recapis.h"
 #endif
 #if VS_VER > VS_2005
@@ -4110,7 +4190,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "relogger.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "RemoteSystemsInterop.h"
 #endif
 #endif
@@ -4121,7 +4201,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 //#include "Resapi.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "reshub.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "ResourceIndexer.h"
 #endif
 #endif
@@ -4140,7 +4220,9 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include <roapi.h>
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#ifdef __cplusplus_winrt
 #include "robuffer.h"
+#endif
 //#define MPR60 1
 #ifndef MAX_ROUTING_DOMAIN_NAME_LEN
 #define MAX_ROUTING_DOMAIN_NAME_LEN 255
@@ -4199,8 +4281,10 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "stiusd.h"
 #endif
 #if VS_VER > VS_2005
+#if (defined _MSVC_NON_PERMISSIVE_MODE) || VS_VER >= VS_2026
 #include <sapi.h>
 #include <sapiddk.h>
+#endif
 #endif
 #endif
 #if TOOLSET > 90
@@ -4387,6 +4471,9 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #endif
 #if NTDDI_VERSION > 0x0A000008
 #ifdef NOWARNINGS
+#if VS_VER < VS_2026
+#include <spddkhlp.h>
+#endif
 #include "speventq.h"
 #include "spuihelp.h"
 #endif
@@ -4407,7 +4494,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 //#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "sqlspi.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "srpapi.h"
 #endif
 #endif
@@ -4423,7 +4510,9 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #endif
 #endif
 #include "sys/stat.h"
+#if SDK_VER > SDK_8_1
 #include "statehelpers.h"
+#endif
 //#include "status.h"
 //#include "statusdeviceservice.h"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
@@ -4647,7 +4736,7 @@ typedef unsigned __int64   uintmax_t;
 #include <suppress.h>
 //#include <swdevicedef.h>
 #include <synchapi.h>
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "SystemMediaTransportControlsInterop.h"
 #endif
 #endif
@@ -5112,7 +5201,7 @@ typedef unsigned __int64   uintmax_t;
 #endif
 // Copied from Microsoft Visual Studio 8\VC\PlatformSDK\Include\WinDef.h
 // tcpioctl.h use these definitions. This is the minimal fix already.
-#if VS_VER >= VS_2026
+#if VS_VER >= VS_2022
 typedef unsigned long ulong;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
@@ -5145,17 +5234,26 @@ typedef unsigned short ushort;
 #include <timeapi.h>
 #include <timezoneapi.h>
 #endif
-#if VS_VER < VS_2026
+#if VS_VER <= VS_2026
 // Lack Messaging Application Programming Interface / MAPI in Visual Studio 2026
 // todo check in older SDK, like Windows Server 2003 Platform SDK
+#ifndef MAPI_DIM
+#define MAPI_DIM    1
+#endif
+#ifndef DECLARE_MAPI_INTERFACE_PTR
+#define DECLARE_MAPI_INTERFACE_PTR(iface,piface) typedef struct iface##Vtbl iface##Vtbl,*iface,**piface;
+#endif
+#else
 #include "tnef.h"
 #endif
+#if SDK_VER > SDK_8_1
 #include "tokenbinding.h"
+#endif
 #if VS_VER > VS_2005
 #include "tpcerror.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "tpmvscattestation.h"
 #endif
 #include "tpmvscmgr.h"
@@ -5188,7 +5286,10 @@ typedef unsigned short ushort;
 #if VS_VER > VC_5
 #include "Transact.h"
 #endif
+#include <atlcomcli.h>
+#if SDK_VER != SDK_8_1
 #include "Tune.h"
+#endif
 #if VS_VER > VC_6
 #include "traffic.h"
 #endif
@@ -5266,17 +5367,17 @@ typedef unsigned short ushort;
 #include "usb4dbgioctl.h"
 #endif
 #include "usbdi.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "usbfnbase.h"
 #endif
 #include "usbioctl.h"
 #include "usbprint.h"
 #include "usbscan.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "useractivityinterop.h"
 #endif
 #include "usbuser.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "UserConsentVerifierInterop.h"
 #endif
 #endif	  
@@ -5357,7 +5458,9 @@ typedef unsigned short ushort;
 #if VS_VER > VS_2005
 #include "vidcap.h"
 #endif
+#if SDK_VER > SDK_8_1
 #include <netcx/shared/1.0/net/virtualaddresstypes.h>
+#endif
 //#include "virtualaddress.h"
 #if VS_VER > VS_2005
 #include "vsserror.h"
@@ -5920,13 +6023,15 @@ enum Gender {
 #endif
 #include <wbcl.h>
 #if VS_VER > VC_6
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "WbemAds.h"
 #endif
+#endif
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include <wbemcli.h>
 #if VS_VER > VC_6
 #include "wbemdisp.h"
 #endif
-
 #include "wbemglue.h"
 #if VS_VER > VC_6
 #include "WbemIdl.h"
@@ -5934,6 +6039,7 @@ enum Gender {
 #include "WbemTime.h"
 #include "WbemTran.h"
 #endif          
+#endif
 #if VS_VER > VC_1
 #include <wchar.h>
 #endif
@@ -5976,14 +6082,21 @@ enum Gender {
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include <weakreference.h>
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "webapplication.h"
 #endif
+#endif
+#if SDK_VER > SDK_8_1
 #include "webauthn.h"
+#endif
 //#include "webauthnplugin.h"
+#if (!defined _MSVC_NON_PERMISSIVE_MODE)
+typedef LPVOID* PPVOID;
+#endif
 #include "webhost.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "websocket.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "WebAuthenticationCoreManagerInterop.h"
 #endif
 #endif
@@ -6051,7 +6164,7 @@ enum Gender {
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "Windows.ApplicationModel.Infrastructure.h"
 #include "Windows.ApplicationModel.resources.management.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "Windows.ApplicationModel.store.preview.installcontrol.h"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "Windows.Graphics.Display.DisplayEnhancementOverride.Interop.h"
@@ -6062,12 +6175,12 @@ enum Gender {
 #if MSVC_VER > 2012
 #include "Windows.Media.Streaming.Devices.h"
 #endif
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "Windows.Media.Streaming.Internal.h"
 #include "Windows.Services.TargetedContent.h"
 #endif
 #include "WindowsCeip.h"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "windowscontracts.h"
 #endif
 #endif
@@ -6235,7 +6348,7 @@ typedef void* HCERTSTORE;
 #include "xmldsodid.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include "accountssettingspaneinterop.h"
 #endif
 #include "activation.h"
@@ -6361,7 +6474,9 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_1
 #include <winspool.h>
 #endif
+#if SDK_VER > SDK_8_1
 #include <winsqlite/winsqlite3ext.h>
+#endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "winstring.h"
 #endif                 
@@ -6395,7 +6510,7 @@ typedef void* HCERTSTORE;
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "wkspbkax.h"
 #include "wkspbkax_i.c"
-#if VS_VER > VS_2015
+#if SDK_VER > SDK_8_1
 #include <wldp.h>
 #endif
 #endif
@@ -6479,7 +6594,9 @@ typedef void* HCERTSTORE;
 #include "wpframework.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "wrl.h"
+#endif
 #endif
 #if VS_VER > VS_2005
 #include "ws2bth.h"
@@ -6502,10 +6619,12 @@ typedef void* HCERTSTORE;
 #include "wsman.h"
 #endif
 #if TOOLSET > 90
+#if defined _MSVC_NON_PERMISSIVE_MODE
 #include "wsmandisp.h"
 #include "wsmandisp_i.c"
 #endif
-#if VS_VER > VS_2015
+#endif
+#if SDK_VER > SDK_8_1
 #include "wsrm.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
@@ -6520,13 +6639,17 @@ typedef void* HCERTSTORE;
 #if VS_VER > VS_2003
 #include <wsipv6ok.h>
 #endif
-#include <wspiapi.h>    
+#if SDK_VER > SDK_8_1
+#include <wspiapi.h> 
+#endif
 #if VS_VER > VC_1
 #include <wtypes.h>
 #endif
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
 #include "x3daudio.h"
+#if SDK_VER > SDK_8_1
 #include "xamlOM.h"
+#endif
 #include "xapo.h"
 #include "xapobase.h"
 #include "xapofx.h"
@@ -6816,7 +6939,7 @@ typedef void* HCERTSTORE;
 #endif
 // a test avoidation
 // LPCOMPONENT was defined in shlobj_core.h already.
-#if VS_VER < VS_2026
+#if VS_VER < VS_2022
 #include "mmc.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -6892,7 +7015,9 @@ typedef UCHAR KIRQL;
 #include "d3d11.h"
 #include "d3d11_1.h"
 #include "d3d11_2.h"
+#if SDK_VER > SDK_8_1
 #include "d3d11_3.h"
+#endif
 #include "dciddi.h"         // interface to the DCI provider
 #include "msi.h"  // INSTALLSTATE
 
