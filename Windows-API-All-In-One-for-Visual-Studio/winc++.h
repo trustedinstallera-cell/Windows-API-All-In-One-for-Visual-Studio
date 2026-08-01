@@ -200,8 +200,6 @@ int main(){
 #endif
 
 #ifdef NOWARNINGS
-#pragma warning(push)
-#pragma warning(disable: 4251) 
 #if VS_VER == VC_6
 // #pragma push_macro : '_MP' is not currently defined as a macro
 #pragma warning(disable: 4601)
@@ -268,12 +266,14 @@ int main(){
 #pragma warning(disable: 4467) // warning C4467: deprecated ATL attribute
 #pragma warning(disable: 4100) // warning C4100: unreferenced parameter. Occurs after included FwCommon.h, throw by wbemglue.h directly
 #pragma warning(disable: 4099) 
+#pragma warning(disable: 4251) 
 #if cppver >= 2020
 #pragma warning(disable: 5054) // VS 2026, warning C5054: operator '|': deprecated between enumerations of different types
 #endif
 #if (defined _MANAGED)
 #pragma warning(disable: 4561)
 #endif
+#pragma warning(push)
 #endif
 #endif
 
@@ -3879,9 +3879,9 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #endif
 //#include "prcomoem.h"
 #if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
-//#if SDK_VER <= SDK_8_1
+#if SDK_VER <= SDK_8_1 || VS_VER < VS_2026
 interface IXMLDOMDocument2;
-//#endif
+#endif
 #include "prdrvcom.h"
 #include "printoem.h"
 #if SDK_VER > SDK_8_1
@@ -7062,7 +7062,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 
 #if (defined ARCH_X64) || (defined ARCH_X86)
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"IsolatedWindowsEnvironmentUtils.lib")
+#endif
 #pragma comment(lib,"d3dcsx.lib")
 #pragma comment(lib,"d3dcsxd.lib")
 #pragma comment(lib,"dciman32.lib")
@@ -7093,7 +7095,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"AclUI.Lib")
 #pragma comment(lib,"ActiveDS.Lib")
 #pragma comment(lib,"AdvAPI32.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"AudioBaseProcessingObjectV140.lib")
+#endif
 #pragma comment(lib,"AuthZ.Lib")
 #pragma comment(lib,"Bits.Lib")
 #pragma comment(lib,"BluetoothApis.lib")
@@ -7102,13 +7106,17 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"Cabinet.Lib")
 #pragma comment(lib,"CertIdl.Lib")
 #pragma comment(lib,"CertPolEng.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"Chakrart.lib")
+#endif
 #pragma comment(lib,"ClusApi.Lib")
 #pragma comment(lib,"ComCtl32.Lib")
 #pragma comment(lib,"ComDlg32.Lib")
 #pragma comment(lib,"ComSvcs.Lib")
 #pragma comment(lib,"CompPkgSup.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"CoreMessaging.lib")
+#endif
 #pragma comment(lib,"Credui.lib")
 #pragma comment(lib,"Crypt32.Lib")
 #pragma comment(lib,"CryptNet.Lib")
@@ -7116,10 +7124,14 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"DSUIExt.Lib")
 #pragma comment(lib,"DbgEng.Lib")
 #pragma comment(lib,"DbgHelp.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"DbgModel.Lib")
+#endif
 #pragma comment(lib,"DhcpCSvc.Lib")
 #pragma comment(lib,"DhcpCSvc6.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"DiagnosticDataQuery.Lib")
+#endif
 #pragma comment(lib,"DnsAPI.Lib")
 #pragma comment(lib,"DtcHelp.Lib")
 #pragma comment(lib,"ElsCore.lib")
@@ -7163,7 +7175,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"Mprapi.Lib")
 #pragma comment(lib,"MqOA.Lib")
 #pragma comment(lib,"MqRt.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"MrmSupport.lib")
+#endif
 #pragma comment(lib,"MsCtfMonitor.lib")
 #pragma comment(lib,"MsWSock.Lib")
 #pragma comment(lib,"MsXml2.Lib")
@@ -7179,18 +7193,22 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"OleAcc.Lib")
 #pragma comment(lib,"OleAut32.Lib")
 #pragma comment(lib,"OleDlg.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"OneCore.Lib")
 #pragma comment(lib,"OneCoreUAP.Lib")
 #pragma comment(lib,"OneCoreUAP_apiset.Lib")
 #pragma comment(lib,"OneCoreUAP_downlevel.Lib")
 #pragma comment(lib,"OneCore_apiset.Lib")
 #pragma comment(lib,"OneCore_downlevel.Lib")
+#endif
 #pragma comment(lib,"OpenGL32.Lib")
 #pragma comment(lib,"Pdh.Lib")
 #pragma comment(lib,"PeerDist.lib")
 #pragma comment(lib,"PhotoAcquireUID.lib")
 #pragma comment(lib,"PortableDeviceGuids.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"ProjectedFSLib.lib")
+#endif
 #pragma comment(lib,"RASAPI32.Lib")
 #pragma comment(lib,"RASDlg.Lib")
 #pragma comment(lib,"RTWorkQ.lib")
@@ -7204,7 +7222,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"SearchSDK.lib")
 #pragma comment(lib,"Secur32.Lib")
 #pragma comment(lib,"SensAPI.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"SensorsUtils.lib")
+#endif
 #pragma comment(lib,"SetupAPI.Lib")
 #pragma comment(lib,"Sfc.Lib")
 #pragma comment(lib,"ShFolder.Lib")
@@ -7238,15 +7258,21 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"WinSpool.Lib")
 #pragma comment(lib,"WinStrm.Lib")
 #pragma comment(lib,"WinTrust.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"WindowsApp.lib")
 #pragma comment(lib,"WindowsApp_downlevel.lib")
+#endif
 #pragma comment(lib,"Wldap32.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"Wldp.Lib")
+#endif
 #pragma comment(lib,"WtsApi32.Lib")
 #pragma comment(lib,"Xinput9_1_0.lib")
 #pragma comment(lib,"advpack.Lib")
 #pragma comment(lib,"ahadmin.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"amsi.lib")
+#endif
 #pragma comment(lib,"amstrmid.lib")
 #pragma comment(lib,"appmgmts.lib")
 #pragma comment(lib,"appmgr.lib")
@@ -7270,8 +7296,10 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"certca.lib")
 #pragma comment(lib,"certcli.lib")
 #pragma comment(lib,"cfgmgr32.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"cimfs.lib")
 #pragma comment(lib,"cldapi.lib")
+#endif
 #pragma comment(lib,"clfsw32.lib")
 #pragma comment(lib,"compstui.lib")
 #pragma comment(lib,"corrEngine.lib")
@@ -7284,7 +7312,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"d3d10.lib")
 #pragma comment(lib,"d3d10_1.lib")
 #pragma comment(lib,"d3d11.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"d3d12.lib")
+#endif
 #pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib,"davclnt.lib")
@@ -7296,10 +7326,14 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"dflayout.lib")
 #pragma comment(lib,"dhcpsapi.lib")
 #pragma comment(lib,"dinput8.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"directml.lib")
+#endif
 #pragma comment(lib,"dloadhelper.lib")
 #pragma comment(lib,"dmoguids.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"dmprocessxmlfiltered.lib")
+#endif
 #pragma comment(lib,"dnscrcli.lib")
 #pragma comment(lib,"dnslib.lib")
 #pragma comment(lib,"dnsperf.lib")
@@ -7311,8 +7345,10 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"dststlog.lib")
 #pragma comment(lib,"dwmapi.lib")
 #pragma comment(lib,"dwrite.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"dxcompiler.lib")
 #pragma comment(lib,"dxcore.lib")
+#endif
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"dxguid.lib")
 #pragma comment(lib,"dxtmsft.lib")
@@ -7339,23 +7375,30 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"hbaapi.lib")
 #pragma comment(lib,"hhsetup.lib")
 #pragma comment(lib,"hid.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"hrtfapo.lib")
+#endif
 #pragma comment(lib,"httpapi.lib")
 #pragma comment(lib,"iashlpr.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"icu.lib")
 #pragma comment(lib,"icuin.Lib")
 #pragma comment(lib,"icuuc.lib")
+#endif
 #pragma comment(lib,"iesetup.lib")
-
 #pragma comment(lib,"imgutil.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"inkobjcore.lib")
+#endif
 #pragma comment(lib,"inseng.lib")
 #pragma comment(lib,"iphlpapi.lib")
 #pragma comment(lib,"iscsidsc.lib")
 #pragma comment(lib,"jsrt.lib")
 #pragma comment(lib,"kerbcli.lib")
 #pragma comment(lib,"kernel32.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"keycredmgr.lib")
+#endif
 #pragma comment(lib,"ksuser.lib")
 #pragma comment(lib,"ktmw32.lib")
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
@@ -7365,10 +7408,14 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"magnification.lib")
 #pragma comment(lib,"mbnapi_uuid.lib")
 #pragma comment(lib,"mciole32.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"mdmlocalmanagement.lib")
+#endif
 #pragma comment(lib,"mfplay.lib")
 #pragma comment(lib,"mfreadwrite.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"mfsensorgroup.lib")
+#endif
 #pragma comment(lib,"mfuuid.lib")
 #pragma comment(lib,"mi.lib")
 #pragma comment(lib,"mincore.lib")
@@ -7453,20 +7500,26 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"softintrin.lib")
 #endif
 #pragma comment(lib,"spoolss.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"srpapi.lib")
+#endif
 #pragma comment(lib,"ssdpapi.lib")
 #pragma comment(lib,"strmbase.lib")
 #pragma comment(lib,"strmiids.lib")
 #pragma comment(lib,"strsafe.lib")
 #pragma comment(lib,"structuredquery.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"swdevice.lib")
+#endif
 #pragma comment(lib,"synchronization.lib")
 #pragma comment(lib,"t2embed.lib")
 #pragma comment(lib,"tapi32l.lib")
 #pragma comment(lib,"taskschd.lib")
 #pragma comment(lib,"tbs.lib")
 #pragma comment(lib,"tdh.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"tokenbinding.lib")
+#endif
 #pragma comment(lib,"tsec.lib")
 #pragma comment(lib,"tspubplugincom.lib")
 #pragma comment(lib,"twinapi.lib")
@@ -7490,27 +7543,39 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"wdsmc.lib")
 #pragma comment(lib,"wdspxe.lib")
 #pragma comment(lib,"wdstptc.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"webauthn.lib")
+#endif
 #pragma comment(lib,"websocket.lib")
 #pragma comment(lib,"wecapi.lib")
 #pragma comment(lib,"wevtapi.lib")
 #pragma comment(lib,"wiaservc.lib")
 #pragma comment(lib,"wiautil.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"windows.ai.machinelearning.lib")
+#endif
 #pragma comment(lib,"windows.data.pdf.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"windows.media.mediacontrol.lib")
+#endif
 #pragma comment(lib,"windows.networking.lib")
 #pragma comment(lib,"windows.ui.lib")
 #pragma comment(lib,"windowscodecs.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"windowscoreheadless.Lib")
 #pragma comment(lib,"windowscoreheadless_apiset.Lib")
+#endif
 #pragma comment(lib,"windowssideshowguids.lib")
 #pragma comment(lib,"winhttp.lib")
 #pragma comment(lib,"wininet.Lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"winml.lib")
+#endif
 #pragma comment(lib,"winsatapi.lib")
 #pragma comment(lib,"winscard.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"winsqlite3.lib")
+#endif
 #pragma comment(lib,"winsta.lib")
 #pragma comment(lib,"winusb.lib")
 #pragma comment(lib,"wlanapi.lib")
@@ -7519,7 +7584,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"wmip.lib")
 #pragma comment(lib,"wmiutils.lib")
 #pragma comment(lib,"wmvcore.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"wofutil.lib")
+#endif
 #pragma comment(lib,"workspaceax.lib")
 #pragma comment(lib,"wscapi.lib")
 #pragma comment(lib,"wsclient.lib")
@@ -7527,15 +7594,23 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"wsmsvc.lib")
 #pragma comment(lib,"wuguid.lib")
 #pragma comment(lib,"xapobase.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"xapobase2_8.lib")
+#endif
 #pragma comment(lib,"xaswitch.lib")
 #pragma comment(lib,"xaudio2.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"xaudio2_8.lib")
+#endif
 #pragma comment(lib,"xinput.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"xinputuap.lib")
+#endif
 #pragma comment(lib,"xmllite.lib")
 #pragma comment(lib,"xolehlp.lib")
+#if SDK_VER > SDK_8_1
 #pragma comment(lib,"xpsdocumenttargetprint.lib")
+#endif
 #pragma comment(lib,"xpsprint.lib")
 #endif
 
