@@ -35,19 +35,18 @@
 #include <con/unexist.hppx>
 #endif
 
-#define ALLOW_CLR_EXPERIMENTAL
+//#define ALLOW_CLR_EXPERIMENTAL
 #ifndef ALLOW_CLR_EXPERIMENTAL
 #ifdef _MANAGED
-#if VS_VER > VS_2022
+#if SDK_VER > TOOLSET_VS_2022
 #error Fatal error: /clr is intentionally blocked by def.h.
 #include <con/unexist.hppx>
-//#else
-#endif
 #else
 #pragma warning(disable: 5308)
 #undef _MANAGED
 #pragma message("Note: Limited testing indicates that some native C++ code can compile and run correctly under /clr after bypassing the _MANAGED check, but they are blocked by the #error directive in def.h.")
 #pragma message("Use at your own risk in a managed C++/CLI environment. This configuration has not been fully validated in managed C++/CLI projects.")
+#endif
 #endif
 #endif
 
@@ -141,11 +140,39 @@
 #define MSVC_VER VS_VERSION
 #define MSVC_VERSION VS_VERSION
 
+#if VS_VER <= VS_2005
+#ifndef _WIN32_WINNT
+#define TIP "Note: _WIN32_WINNT is not defined. Assuming to default operation system "
+#if VS_VER == VS_2005
+#pragma message(TIP"Windows 2000 (0x0500)")
+#endif
+#endif
+#define NTDDI_VERSION_FROM_WIN32_WINNT2(ver)    ver##0000
+#define NTDDI_VERSION_FROM_WIN32_WINNT(ver)     NTDDI_VERSION_FROM_WIN32_WINNT2(ver)
+#define NTDDI_VERSION   NTDDI_VERSION_FROM_WIN32_WINNT(_WIN32_WINNT)
+#else
 #include <sdkddkver.h>
+#endif
+#define TOOLSET_90 0x06000000
+#define TOOLSET_100 0x06010000
+#define TOOLSET_110 0x06020000
+#define TOOLSET_120 0x06030000
+#define TOOLSET_141 0x0A00000C
+#define TOOLSET_142 0x0A00000C
 #define SDK_8_1 0x06030000
+#define SDK_10_0_10240_0 0x0A000000
 #define SDK_10_0_15086_0 0x0A000000
 #define SDK_10_0_19041_0 0x0A000008
 #define SDK_10_0_22621_0 0x0A00000C
+#define TOOLSET_VS_2008 TOOLSET_90
+#define TOOLSET_VS_2010 TOOLSET_100
+#define TOOLSET_VS_2012 TOOLSET_110
+#define TOOLSET_VS_2013 TOOLSET_120
+#define TOOLSET_VS_2015 TOOLSET_120
+#define TOOLSET_VS_2017 TOOLSET_141
+#define TOOLSET_VS_2019 TOOLSET_141
+#define TOOLSET_VS_2022 0x0A000012
+#define TOOLSET_VS_2026 0x0A000014
 #define SDK_VERSION NTDDI_VERSION
 #define SDK_VER SDK_VERSION
 
@@ -155,9 +182,9 @@
 #define CURRENT_SDK_VERSION NTDDI_VERSION
 
 int main(){
-	printf("Current SDK Version: 0x%08X\n", CURRENT_SDK_VERSION);
-	system("pause");
-	return 0;
+printf("Current SDK Version: 0x%08X\n", CURRENT_SDK_VERSION);
+system("pause");
+return 0;
 }
 */
 
@@ -288,7 +315,7 @@ typedef struct IUnknown IUnknown;
 #endif
 #include <tchar.h>
 #include "WinSock2.h"
-#if (defined _USING_V110_SDK71_ /*XP support*/) || (MSVC_VER <= 2015)
+#if (defined _USING_V110_SDK71_ /*XP support*/) || (SDK_VERSION <= SDK_10_0_10240_0)
 typedef struct IUnknown IUnknown;
 #endif
 #if (defined SE_WIN_ENCLAVE)
@@ -305,11 +332,11 @@ typedef struct IUnknown IUnknown;
 #if VS_VERSION > VC_2
 #include <Shlobj.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if MSVC_VER > 2015
 #include <ShlObj_core.h>
 #endif
-#if VS_VER > VS_2010
+#if SDK_VER > TOOLSET_100
 #include <dcompanimation.h> // for IDirectCompositionAnimation interface"
 #include <dcomptypes.h>     // for CompositionSurfaceType"
 #endif
@@ -317,7 +344,7 @@ typedef struct IUnknown IUnknown;
 #if TOOLSET > 90
 #include <wincodec.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #ifndef _MANAGED
 #if SDK_VER != SDK_8_1
 #include <wrl.h>
@@ -342,7 +369,7 @@ typedef struct IUnknown IUnknown;
 #include <wia_lh.h>
 #endif*/
 // wia.h has been included, but not determined in previous compilers
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include <wiamindr_lh.h>
 #endif
 // todo: check in XP system or toolset
@@ -418,7 +445,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VER > VC_6
 #include "msxml2did.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #define __MIDL_itf_msxml6_0000_0000_v0_0_c_ifspec
 #if (defined _MSVC_NON_PERMISSIVE_MODE)
 #include "msxml6.h"
@@ -430,7 +457,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if TOOLSET > 90
 #include "nserror.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "ntverp.ver"
 #endif
 #if VS_VERSION > VC_2
@@ -462,7 +489,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VER > VC_5
 #include "transact.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "transportsettingcommon.h"
 #endif
 #if VS_VER > VC_5
@@ -476,7 +503,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if NTDDI_VERSION >= 0x0A00000C // 10.0.22621.0
 #include "ActivityCoordinator.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "AppxPackaging.h"
 #endif
 #if VS_VER > VS_2005
@@ -488,7 +515,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "CDOSys.h"
 #endif
 //#include "CDOSys_I.c"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "CameraUIControl.h"
 #if MSVC_VER > 2015
 #include "CastingInterop.h"
@@ -528,7 +555,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "ExtensionValidation.h"
 #endif
 #ifdef NOWARNINGS
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "FhCfg.h"
 #endif
 #endif
@@ -596,7 +623,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VER > VS_2003
 #include "InputScope.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "InteractionContext.h"
 #endif
 #if TOOLSET > 90
@@ -653,7 +680,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "Presentation.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "PrintPreview.h"
 #if MSVC_VER > 2012
 #include "ProofOfPossessionCookieInfo.h"
@@ -725,7 +752,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VER > VC_6
 #include "UserEnv.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "WRdsGraphicsChannels.h"
 #if SDK_VER > SDK_8_1
 #include "WaaSApi.h"
@@ -778,7 +805,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if TOOLSET > 90
 #include "activaut.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "activdbg100.h"
 #endif
 #if VS_VER > VS_2005
@@ -1008,7 +1035,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <IMessageDispatcher.h>
 #include <IVectorChangedEventArgs.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "Inspectable.h"
 #endif
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
@@ -1017,7 +1044,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <Inspectable.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "MFMediaEngine.h"
 #include "MFSharingEngine.h"
 #endif
@@ -1232,7 +1259,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "amxmlgraphbuilder.h"
 #endif
 //#include "anchorsyncdeviceservice.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if MSVC_VER > 2012
 #include "animationcoordinator.h"
 #endif
@@ -1316,7 +1343,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "azroles.h"
 #endif
 //#include "base.h" // no such files
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include <dvp.h>
 #include "baseaudioprocessingobject.h"
 #endif
@@ -1360,7 +1387,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VS_2005
 #include "bthdef.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "bthioctl.h"
 #include "bthledef.h"
 #endif
@@ -1424,7 +1451,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VS_2002
 #include <winternl.h> // define _UNICODE_STRING
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include <ntlsa.h>
 #endif
 #if TOOLSET > 90
@@ -1486,7 +1513,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "clfsw32.h"
 #endif
 //#include "client.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "cloneviewhelper.h"
 #endif
 #if VS_VER > VC_5
@@ -1508,7 +1535,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VC_6
 #include "comadmin.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "combaseapi.h"
 #if SDK_VER > SDK_8_1
 #include "coml2api.h"
@@ -1517,7 +1544,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VS_2005
 #include "comlite.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "commapi.h"
 #endif
 #include "commctrl.inl"
@@ -1526,7 +1553,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VC_6
 #include "commoncontrols.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "compressapi.h"
 #include "compstui.h"
 #if SDK_VER > SDK_8_1
@@ -1658,7 +1685,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if NTDDI_VERSION > 0x0A000C00 // v143
 #include <corhdr.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "CoreWindow.h"
 #endif
 #ifdef _JSRT_
@@ -1718,7 +1745,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if _MSC_VER > 1500
 #include <d2d1.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include <d2d1effectauthor.h>
 #include <d2d1effects.h>
 #if MSVC_VER > 2012
@@ -1765,7 +1792,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <d3d9.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if SDK_VER > SDK_8_1
 #include "d3d11_4.h"
 #endif
@@ -1788,7 +1815,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <d3dcommon.h>
 #endif
 #include "d3dcompiler.inl"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "d3dcsx.h"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <d3dhal.h>
@@ -1841,13 +1868,13 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if _MSC_VER > 1500
 #include <dcommon.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "dcomp.h"
 #endif
 #if VS_VERSION > VC_2
 #include <unknwn.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include <dcomptypes.h>     // for CompositionSurfaceType"
 #endif
 #include <dde.h>
@@ -1861,7 +1888,7 @@ DECLARE_HANDLE(HSZ);
 #ifdef _JSRT_
 #include "ddkmapi.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "ddpbackup.h"
 #if SDK_VER > SDK_8_1
 #include "ddpchunk.h"
@@ -1899,7 +1926,7 @@ DECLARE_HANDLE(HSZ);
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <devfiltertypes.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "deviceaccess.h"
 #endif
 //#include "deviceservices.h"
@@ -1939,7 +1966,7 @@ DECLARE_HANDLE(HSZ);
 #include "dinputd.h"
 #endif
 #include "direct.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "directmanipulation.h"
 #include "DirectXCollision.h"
 #include "DirectXColors.h"
@@ -1984,7 +2011,7 @@ DECLARE_HANDLE(HSZ);
 #if TOOLSET > 90
 #include "dmusics.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "dontuse.h"
 #endif
 #include "dos.h"
@@ -2019,7 +2046,7 @@ DECLARE_HANDLE(HSZ);
 #if VS_VER > VS_2005
 #include "dshowasf.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "dsparse.h"
 #endif
 #if VS_VER > VS_2005
@@ -2081,18 +2108,18 @@ DECLARE_HANDLE(HSZ);
 #endif
 #if TOOLSET > 90
 #include "ehstorapi.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "ehstorbandmgmt.h"
 #endif
 #include "ehstorextensions.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "ehstorioctl.h"
 #endif
 #include "ElsCore.h"
 #include "ElsSrvc.h"
 #include "encdec_enums.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if SDK_VER > SDK_8_1
 #include "enclaveapi.h"
 #endif
@@ -2114,7 +2141,7 @@ DECLARE_HANDLE(HSZ);
 #include "evntcons.h"
 #if VS_VER > VS_2005
 #include "evntprov.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "evntrace.h"
 #endif
 #include "evr9.h"
@@ -2153,7 +2180,7 @@ DECLARE_HANDLE(HSZ);
 #if MSVC_VER > 2012
 #include "fenv.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "FhStatus.h"
 #include "FhSvcCtl.h"
 #include "fileapi.h"
@@ -2169,14 +2196,14 @@ DECLARE_HANDLE(HSZ);
 #if VS_VER > VC_5
 #include "Filter.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "filterpipeline.h"
 #include "filterpipelineutil.h"
 #endif
 #if VS_VER > VC_6
 #include "fltdefs.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "fltUser.h"
 #include "fltUserStructures.h"
 #endif
@@ -2197,7 +2224,7 @@ DECLARE_HANDLE(HSZ);
 #include "fsrmtlb.h"
 #endif
 //#include "ftm.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "fttypes.h"
 #endif
 #include "ftpext.h"
@@ -2216,7 +2243,7 @@ DECLARE_HANDLE(HSZ);
 #include "functiondiscoveryproviderhelper.h"
 #include "functiondiscoveryserviceids.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "fwpmu.h"
 #include "fwpsu.h"
 #endif
@@ -2246,7 +2273,7 @@ DECLARE_HANDLE(HSZ);
 #include "gpmgmt.h"
 #endif
 //#include "gso.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "handleapi.h"
 //#include "hashtypes.h"
 #if SDK_VER > SDK_8_1
@@ -2267,7 +2294,7 @@ DECLARE_HANDLE(HSZ);
 #if VS_VER > VC_4
 #include "HlIface.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if SDK_VER > SDK_8_1
 #include "HolographicSpaceInterop.h"
 #endif
@@ -2462,7 +2489,7 @@ DECLARE_HANDLE(HSZ);
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <ime_cmodes.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "imepad.h"
 #endif
 #if VS_VERSION > VC_2
@@ -2482,7 +2509,7 @@ DECLARE_HANDLE(HSZ);
 #endif
 //#include "infocard.h"
 //#include "infotech.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "infstr.h"
 #endif
 #include <initguid.h>   
@@ -2490,7 +2517,7 @@ DECLARE_HANDLE(HSZ);
 #include "inked.h"
 #endif
 //#include "inked_i.c"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if SDK_VER > SDK_8_1
 #include "inkrenderer.h"
 #include "inkrenderer_i.c"
@@ -2535,7 +2562,7 @@ DECLARE_HANDLE(HSZ);
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "ioringapi.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "ip2string.h"
 #endif
 #if VS_VER > VC_6
@@ -2589,7 +2616,7 @@ DECLARE_HANDLE(HSZ);
 #if VS_VER > VC_4
 #include <iterator>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include <ivectorchangedeventargs.h>
 #include "iwscapi.h"
 #endif
@@ -2708,7 +2735,7 @@ DECLARE_HANDLE(HSZ);
 #if VS_VER > VC_6
 #include <lmjoin.h>     // NetJoinDomain class"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "lmon.h"
 #endif          
 #if VS_VER > VC_1
@@ -2787,6 +2814,7 @@ typedef struct _UNICODE_STRING {
 	USHORT MaximumLength;
 	PWSTR  Buffer;
 } UNICODE_STRING, * PUNICODE_STRING;
+#endif
 #if VS_VER > VC_6
 #include "madcapcl.h"
 #endif
@@ -2817,7 +2845,7 @@ typedef struct _UNICODE_STRING {
 #if VS_VERSION > VC_2
 #include "MAPI.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "MapiUnicodeHelp.h"
 #endif
 #ifdef FLAGS_UNDEFINED
@@ -2840,7 +2868,7 @@ typedef struct _UNICODE_STRING {
 #endif
 #if VS_VER > VC_5
 #pragma pop_macro("_MP")
-#endif          
+#endif      
 #if VS_VER > VC_1
 #include <mbstring.h>
 #endif
@@ -2854,7 +2882,9 @@ typedef struct _UNICODE_STRING {
 #include <mdcommsg.h>
 #include "Mddefw.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2022
 #include "mdl.h"
+#endif
 #if VS_VER > VC_5
 #include <mdmsg.h>
 #endif
@@ -2875,15 +2905,20 @@ typedef struct _UNICODE_STRING {
 #if VS_VER > VC_6
 #include "mergemod.h"
 #endif
+
+#ifdef _MSVC_NON_PERMISSIVE_MODE
+#if VS_VER > VS_2013
 #include "messagedeviceservice.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "MessageDispatcherApi.h"
 #endif
 #include "metadatadeviceservice.h"
+#endif
+#endif
 #if VS_VER > VS_2005
 #include "mfapi.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "mfcaptureengine.h"
 #if SDK_VER > SDK_8_1
 #include "mfcontentdecryptionmodule.h"
@@ -2898,7 +2933,7 @@ typedef struct _UNICODE_STRING {
 #include "mfplay.h"
 #include "mfreadwrite.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "mfsharingengine.h"
 #if SDK_VER > SDK_8_1
 #include "mfspatialaudio.h"
@@ -2913,7 +2948,7 @@ typedef struct _UNICODE_STRING {
 #if VS_VER > VC_1
 #include "MgmtAPI.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "mi.h"
 #endif
 #if TOOLSET > 90
@@ -2951,14 +2986,16 @@ typedef struct _UNICODE_STRING {
 #include "minmax.h"
 #endif
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "minwindef.h"
 #endif
 #if VS_VER > VS_2005
 #include "mixerocx.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2022
 #include "mmddk.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#endif
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "mmeapi.h"
 #include "mmiscapi.h"
 #include "mmiscapi2.h"
@@ -2973,7 +3010,9 @@ typedef struct _UNICODE_STRING {
 #include <mmsyscom.h> // mm common definitions"
 #endif
 #include <mmsystem.h>
+#if SDK_VER > TOOLSET_VS_2022
 #include "module.h"
+#endif
 #if VS_VER > VS_2005
 #include "Mpeg2Error.h"
 #include "mpconfig.h"
@@ -2996,7 +3035,7 @@ typedef struct _UNICODE_STRING {
 #if VS_VER > VC_1
 #include <msacm.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "msacmdrv.h"
 #endif           
 #if VS_VER > VC_1
@@ -3007,7 +3046,7 @@ typedef struct _UNICODE_STRING {
 // VS 2026 ok
 #include "msado15.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 // todo recheck
 // VS 2026 ok
 #include "msado15_Backcompat.h"
@@ -3065,7 +3104,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if VS_VER > VS_2005
 #include "msdelta.h"
 #include "msdrmerror.h"
+#if VS_VER < VS_2022
 #include "msdrmgetinfo.h"
+#endif
 #endif
 #if VS_VER > VC_6
 #include "msdshape.h"
@@ -3073,8 +3114,10 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if VS_VER > VS_2005
 #include "msfeeds.h"
 #endif
+#if VS_VER < VS_2022
 #if VS_VER > VC_5
 #include "MsHTML.h"
+#endif
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "mshtmldiagnostics.h"
@@ -3085,7 +3128,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if VS_VER > VS_2005
 #include "msiltcfg.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "msime.h"
 #include "msimeapi.h"
 #endif
@@ -3094,8 +3137,10 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #endif
 #include "msinkaut15_i.c"
 #include "msinkaut_i.c"
+#if (VS_VER < VS_2022) && (VS_VER != VS_2013)
 #include "msoav.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#endif
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "msports.h"
 #endif
 #if VS_VER > VS_2005
@@ -3122,14 +3167,18 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if VS_VER > VC_6
 #include "mstcpip.h"
 #endif
+#if VS_VER < VS_2022
 #include "msvidctl.h"
+#endif
 #if VS_VER > VS_2005
 #include "mswsockdef.h"
 #endif
+#if VS_VER < VS_2022
 #if VS_VER > VC_6
 #include "MsXml2.h"
 #include "MsXml2DId.h"
 #include <mstcpip.h>
+#endif
 #endif
 #include "MSWSock.h"
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -3144,7 +3193,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "MsXmlDId.h"
 #endif
 #if VS_VER > VC_6
+#if VS_VER < VS_2022
 #include "Mshtmlc.h"
+#endif
 #endif
 #if VS_VER > VC_5
 #include "Msi.h"
@@ -3156,6 +3207,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "MsiQuery.h"
 #include <msxml.h>
 #endif
+#if VS_VER < VS_2022 && VS_VER != VS_2013
 #include "MspAddr.h"
 #include "MspCall.h"
 #include "MspEnum.h"
@@ -3189,13 +3241,15 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if VS_VER > VC_4
 #include "MtxAttr.h"
 #endif
+#endif
 #if VS_VER > VC_5
 #include "Mtxdm.h"
 #include "MultiMon.h"
 #include "NTMSAPI.h"
 #include "NTMSMli.h"
 #endif
-#endif
+//#endif
+
 #if VS_VER > VC_5
 #if VS_VER == VC_6
 // cannot find cmdtree
@@ -3507,7 +3561,7 @@ interface ICommandTree
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <namedpipeapi.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "namespaceapi.h"
 #endif
 #include "napmicrosoftvendorids.h"
@@ -3523,7 +3577,7 @@ interface ICommandTree
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <ncrypt.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "ncryptprotect.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -3537,7 +3591,7 @@ interface ICommandTree
 #endif
 #endif
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "ndisguid.h"
 #endif
 //#include "ndisport.h"
@@ -3560,7 +3614,7 @@ interface ICommandTree
 #include "ndr64types.h"
 #endif
 #include <netioapi.h>
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "netcfgn.h"
 #endif
 #if VS_VER > VS_2005
@@ -3584,7 +3638,7 @@ interface ICommandTree
 #if VS_VER > VC_4
 #include <new>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if SDK_VER > SDK_8_1
 #include "nfcradiodev.h"
 #endif
@@ -3604,7 +3658,7 @@ interface ICommandTree
 #if VS_VER > VC_1
 #include <NspAPI.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "nspapip.h"
 #endif                   
 #if VS_VER > VC_1
@@ -3613,7 +3667,7 @@ interface ICommandTree
 #if VS_VER > VS_2002
 #include "Npapi.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "ntdd1394.h"
 #include "ntddbeep.h"
 #include "ntddcdrm.h"
@@ -3628,7 +3682,7 @@ interface ICommandTree
 #if VS_VER > VC_6
 #include "ntddndis.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "ntddpar.h"
 #endif
 #if VS_VER > VC_6
@@ -3658,7 +3712,7 @@ interface ICommandTree
 #if VS_VER > VC_6
 #include "NtLdap.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "ntlsa.h"
 #endif  
 #if VS_VER > VC_1
@@ -3682,7 +3736,7 @@ interface ICommandTree
 #if VS_VER > VC_1
 #include <objerror.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "objidlbase.h"
 #endif
 #if VS_VERSION > VC_2
@@ -3695,7 +3749,7 @@ interface ICommandTree
 #if VS_VER > VC_5
 #include "odbcss.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "oemupgex.h"
 #endif
 //#include "offloadtypes.h"
@@ -3741,7 +3795,7 @@ interface ICommandTree
 #define MAX_NAME_SIZE (32) // netmon.h, but only MINGW could find that value.
 #include "parser.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "pbdaerrors.h"
 #endif
 #if VS_VER > VC_6
@@ -3749,7 +3803,7 @@ interface ICommandTree
 #endif
 #if VS_VER > VS_2005
 #include "pciprop.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "pdrvver.h"
 #endif
 #include "peninputpanel.h"
@@ -3831,7 +3885,7 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 // reason: pdh.h(50) : error C2040: 'HLOG' : 'void *' differs in levels of indirection from 'struct _HLOG' 
 #include "Pdh.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "PeerDist.h"
 #endif
 #if VS_VER > VC_5
@@ -3848,7 +3902,7 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if TOOLSET > 90
 #include "playlist.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "playsoundapi.h"
 #include "playto.h"
 #include "PlayToManagerInterop.h"
@@ -3867,18 +3921,18 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #include "PortableDevice.h"
 #include "PortableDeviceApi.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "powerbase.h"
 #include "powersetting.h"
 #endif
 #if VS_VER > VC_6
 #include "powrprof.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include <WinDDIUI.h>
 #endif
 //#include "prcomoem.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if SDK_VER <= SDK_8_1 || VS_VER < VS_2026
 interface IXMLDOMDocument2;
 #endif
@@ -3892,7 +3946,7 @@ interface IXMLDOMDocument2;
 #if VS_VER > VS_2005
 #include "prnasnot.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "prnasntp.h"
 #endif
 // todo test in previous compilers
@@ -3914,7 +3968,7 @@ interface IXMLDOMDocument2;
 #endif
 //#include "PrnSetup.Dlg"
 #include "process.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "processenv.h"
 #include "processthreadsapi.h"
 #include "processtopologyapi.h"
@@ -4164,7 +4218,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if VS_VER > VC_5
 #include "Ratings.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "rdpappcontainerclient.h"
 #endif
 #if VS_VER > VS_2005
@@ -4178,7 +4232,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include <reason.h>             // get the public reasons"
 #endif
 // failed in VS2026. Redefinition at ComSvcs.h, line 17835
-#if VS_VER < VS_2022
+#if VS_VER < VS_2022 && VS_VER != VS_2013
 #include "recapis.h"
 #endif
 #if VS_VER > VS_2005
@@ -4188,7 +4242,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if VS_VERSION > VC_2
 #include "RegStr.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "relogger.h"
 #if SDK_VER > SDK_8_1
 #include "RemoteSystemsInterop.h"
@@ -4199,7 +4253,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #endif
 #include "rendezvoussession_i.c"
 //#include "Resapi.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "reshub.h"
 #if SDK_VER > SDK_8_1
 #include "ResourceIndexer.h"
@@ -4208,7 +4262,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if VS_VER > VS_2005
 #include "RestartManager.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include <restrictedErrorInfo.h>
 #endif
 //#include "returncontext.h"
@@ -4219,7 +4273,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <roapi.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #ifdef __cplusplus_winrt
 #include "robuffer.h"
 #endif
@@ -4277,7 +4331,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #endif
 #if VS_VER > VC_6
 #include <Sti.h>
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "stiusd.h"
 #endif
 #if VS_VER > VS_2005
@@ -4320,7 +4374,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if TOOLSET > 90
 #include "scserver.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "scsi.h"
 #include "scsiscan.h"
 #endif
@@ -4371,13 +4425,13 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "sharewindowcommandsourceinterop.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "shcore.h"
 #endif
 #if VS_VER > VS_2005
 #include "shdeprecated.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "ShellScalingApi.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -4401,7 +4455,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "sliddefs.h"
 #include "slpublic.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "smbclnt.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -4413,7 +4467,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if VS_VER > VC_1
 #include <snmp.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "socketapi.h"
 #endif
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
@@ -4432,7 +4486,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 //#include <specstrings_undef.h>
 #endif
 //#include "SpOrder.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if VS_VER > 2015
 #include "SpatialInteractionManagerInterop.h"
 #endif
@@ -4452,7 +4506,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "spcollec.h"
 #endif
 #include "specstrings_strict.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "spellcheck.h"
 #include "spellcheck_i.c"
 #include "spellcheckprovider.h"
@@ -4492,7 +4546,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #endif
 #endif
 //#endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "sqlspi.h"
 #if SDK_VER > SDK_8_1
 #include "srpapi.h"
@@ -4743,7 +4797,7 @@ typedef unsigned __int64   uintmax_t;
 #if TOOLSET > 90
 #include "syncregistration.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "sysinfoapi.h"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "systemmanagementcontract.h"
@@ -5124,7 +5178,7 @@ typedef unsigned __int64   uintmax_t;
 #include "windows.web.ui.h"
 #include "windows.web.ui.interop.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "windowssideshowdriverevents.h"
 #endif
 #include "windowsx.h"
@@ -5201,13 +5255,13 @@ typedef unsigned __int64   uintmax_t;
 #endif
 // Copied from Microsoft Visual Studio 8\VC\PlatformSDK\Include\WinDef.h
 // tcpioctl.h use these definitions. This is the minimal fix already.
-#if VS_VER >= VS_2022
+#if SDK_VER >= SDK_8_1
 typedef unsigned long ulong;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 #endif
 #include "tcpioctl.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "tcpxcv.h"
 #include "tdh.h"
 #include "tdi.h"
@@ -5252,7 +5306,7 @@ typedef unsigned short ushort;
 #if VS_VER > VS_2005
 #include "tpcerror.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if SDK_VER > SDK_8_1
 #include "tpmvscattestation.h"
 #endif
@@ -5286,14 +5340,16 @@ typedef unsigned short ushort;
 #if VS_VER > VC_5
 #include "Transact.h"
 #endif
+#if (defined NOWARNINGS) || (VS_VER != VS_2013)
 #include <atlcomcli.h>
+#endif
 #if SDK_VER != SDK_8_1
 #include "Tune.h"
 #endif
 #if VS_VER > VC_6
 #include "traffic.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "transportsettings.h"
 #if MSVC_VER > 2012
 #include "tspubplugin2com.h"
@@ -5360,7 +5416,7 @@ typedef unsigned short ushort;
 #if VS_VER > VS_2005
 #include "upnphost.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "usb.h"
 #include "usb100.h"
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
@@ -5402,7 +5458,7 @@ typedef unsigned short ushort;
 #include <utilapiset.h>
 #endif
 #include "usp10.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "utilapiset.h"
 #endif
 #if VS_VER > VC_4
@@ -5422,7 +5478,7 @@ typedef unsigned short ushort;
 #if VS_VER > VS_2005
 #include "vbinterf.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "vdmctxt.h"
 #endif
 #if VS_VER > VS_2005
@@ -5435,7 +5491,7 @@ typedef unsigned short ushort;
 #include <vcruntime_startup.h>
 #include <vcruntime_string.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "VDDSVC.H"
 #endif           
 #if VS_VER > VC_1
@@ -5452,7 +5508,7 @@ typedef unsigned short ushort;
 #include "VersionHelpers.h"
 #endif
 //#include "Vfw.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "vfwext.h"
 #endif
 #if VS_VER > VS_2005
@@ -5508,55 +5564,55 @@ typedef unsigned short ushort;
 // Mismatch	 #if/#endif in VS2003/2005 because solved */ as ?/
 #if VS_VER <= VS_2005
 /*
- *  WABTAGS.H
- *
- *  Property tag definitions for standard properties of WAB
- *  objects.
- *
- *  The following ranges should be used for all property IDs. Note that
- *  property IDs for objects other than messages and recipients should
- *  all fall in the range 0x3000 to 0x3FFF:
- *
- *  From    To      Kind of property
- *  --------------------------------
- *  0001    0BFF    MAPI_defined envelope property
- *  0C00    0DFF    MAPI_defined per-recipient property
- *  0E00    0FFF    MAPI_defined non-transmittable property
- *  1000    2FFF    MAPI_defined message content property
- *
- *  3000    3FFF    MAPI_defined property (usually not message or recipient)
- *
- *  4000    57FF    Transport-defined envelope property
- *  5800    5FFF    Transport-defined per-recipient property
- *  6000    65FF    User-defined non-transmittable property
- *  6600    67FF    Provider-defined internal non-transmittable property
- *  6800    7BFF    Message class-defined content property
- *  7C00    7FFF    Message class-defined non-transmittable
- *                  property
- *
- *  8000    FFFE    User-defined Name-to-id mapped property
- *
- *  The 3000-3FFF range is further subdivided as follows:
- *
- *  From    To      Kind of property
- *  --------------------------------
- *  3000    33FF    Common property such as display name, entry ID
- *  3400    35FF    Message store object
- *  3600    36FF    Folder or AB container
- *  3700    38FF    Attachment
- *  3900    39FF    Address book object
- *  3A00    3BFF    Mail user
- *  3C00    3CFF    Distribution list
- *  3D00    3DFF    Profile section
- *  3E00    3FFF    Status object
- *
- *  Copyright 1993-1998 Microsoft Corporation. All Rights Reserved.
- */
+*  WABTAGS.H
+*
+*  Property tag definitions for standard properties of WAB
+*  objects.
+*
+*  The following ranges should be used for all property IDs. Note that
+*  property IDs for objects other than messages and recipients should
+*  all fall in the range 0x3000 to 0x3FFF:
+*
+*  From    To      Kind of property
+*  --------------------------------
+*  0001    0BFF    MAPI_defined envelope property
+*  0C00    0DFF    MAPI_defined per-recipient property
+*  0E00    0FFF    MAPI_defined non-transmittable property
+*  1000    2FFF    MAPI_defined message content property
+*
+*  3000    3FFF    MAPI_defined property (usually not message or recipient)
+*
+*  4000    57FF    Transport-defined envelope property
+*  5800    5FFF    Transport-defined per-recipient property
+*  6000    65FF    User-defined non-transmittable property
+*  6600    67FF    Provider-defined internal non-transmittable property
+*  6800    7BFF    Message class-defined content property
+*  7C00    7FFF    Message class-defined non-transmittable
+*                  property
+*
+*  8000    FFFE    User-defined Name-to-id mapped property
+*
+*  The 3000-3FFF range is further subdivided as follows:
+*
+*  From    To      Kind of property
+*  --------------------------------
+*  3000    33FF    Common property such as display name, entry ID
+*  3400    35FF    Message store object
+*  3600    36FF    Folder or AB container
+*  3700    38FF    Attachment
+*  3900    39FF    Address book object
+*  3A00    3BFF    Mail user
+*  3C00    3CFF    Distribution list
+*  3D00    3DFF    Profile section
+*  3E00    3FFF    Status object
+*
+*  Copyright 1993-1998 Microsoft Corporation. All Rights Reserved.
+*/
 
 #if !defined(MAPITAGS_H) && !defined(WABTAGS_H)
 #define WABTAGS_H
 
- /* Determine if a property is transmittable. */
+/* Determine if a property is transmittable. */
 
 #define FIsTransmittable(ulPropTag) \
 	((PROP_ID (ulPropTag) <  (ULONG)0x0E00) || \
@@ -5566,39 +5622,39 @@ typedef unsigned short ushort;
 
 
 /*
- * The range of non-message and non-recipient property IDs (0x3000 - 0x3FFF) is
- * further broken down into ranges to make assigning new property IDs easier.
- *
- *  From    To      Kind of property
- *  --------------------------------
- *  3000    32FF    MAPI_defined common property
- *  3200    33FF    MAPI_defined form property
- *  3400    35FF    MAPI_defined message store property
- *  3600    36FF    MAPI_defined Folder or AB Container property
- *  3700    38FF    MAPI_defined attachment property
- *  3900    39FF    MAPI_defined address book property
- *  3A00    3BFF    MAPI_defined mailuser property
- *  3C00    3CFF    MAPI_defined DistList property
- *  3D00    3DFF    MAPI_defined Profile Section property
- *  3E00    3EFF    MAPI_defined Status property
- *  3F00    3FFF    MAPI_defined display table property
- */
+* The range of non-message and non-recipient property IDs (0x3000 - 0x3FFF) is
+* further broken down into ranges to make assigning new property IDs easier.
+*
+*  From    To      Kind of property
+*  --------------------------------
+*  3000    32FF    MAPI_defined common property
+*  3200    33FF    MAPI_defined form property
+*  3400    35FF    MAPI_defined message store property
+*  3600    36FF    MAPI_defined Folder or AB Container property
+*  3700    38FF    MAPI_defined attachment property
+*  3900    39FF    MAPI_defined address book property
+*  3A00    3BFF    MAPI_defined mailuser property
+*  3C00    3CFF    MAPI_defined DistList property
+*  3D00    3DFF    MAPI_defined Profile Section property
+*  3E00    3EFF    MAPI_defined Status property
+*  3F00    3FFF    MAPI_defined display table property
+*/
 
- /*
-  *  Properties common to numerous MAPI objects.
-  *
-  *  Those properties that can appear on messages are in the
-  *  non-transmittable range for messages. They start at the high
-  *  end of that range and work down.
-  *
-  *  Properties that never appear on messages are defined in the common
-  *  property range (see above).
-  */
+/*
+*  Properties common to numerous MAPI objects.
+*
+*  Those properties that can appear on messages are in the
+*  non-transmittable range for messages. They start at the high
+*  end of that range and work down.
+*
+*  Properties that never appear on messages are defined in the common
+*  property range (see above).
+*/
 
-  /*
-   * properties that are common to multiple objects (including message objects)
-   * -- these ids are in the non-transmittable range
-   */
+/*
+* properties that are common to multiple objects (including message objects)
+* -- these ids are in the non-transmittable range
+*/
 
 #define PR_ENTRYID                                  PROP_TAG( PT_BINARY,    0x0FFF)
 #define PR_OBJECT_TYPE                              PROP_TAG( PT_LONG,      0x0FFE)
@@ -5613,10 +5669,10 @@ typedef unsigned short ushort;
 #define PR_ROW_TYPE                                 PROP_TAG( PT_LONG,      0x0FF5)
 #define PR_ACCESS                                   PROP_TAG( PT_LONG,      0x0FF4)
 
-   /*
-	* properties that are common to multiple objects (usually not including message objects)
-	* -- these ids are in the transmittable range
-	*/
+/*
+* properties that are common to multiple objects (usually not including message objects)
+* -- these ids are in the transmittable range
+*/
 
 #define PR_ROWID                                    PROP_TAG( PT_LONG,      0x3000)
 #define PR_DISPLAY_NAME                             PROP_TAG( PT_TSTRING,   0x3001)
@@ -5646,12 +5702,12 @@ typedef unsigned short ushort;
 #define PR_PROVIDER_ORDINAL                         PROP_TAG( PT_LONG,      0x300D)
 
 
-	/* Proptags 35E8-35FF reserved for folders "guaranteed" by PR_VALID_FOLDER_MASK */
+/* Proptags 35E8-35FF reserved for folders "guaranteed" by PR_VALID_FOLDER_MASK */
 
 
-	/*
-	 *  Folder and AB Container properties
-	 */
+/*
+*  Folder and AB Container properties
+*/
 
 #define PR_CONTAINER_FLAGS                          PROP_TAG( PT_LONG,      0x3600)
 #define PR_FOLDER_TYPE                              PROP_TAG( PT_LONG,      0x3601)
@@ -5679,21 +5735,21 @@ typedef unsigned short ushort;
 #define PR_AB_PROVIDER_ID                           PROP_TAG( PT_BINARY,    0x3615)
 #define PR_DEFAULT_VIEW_ENTRYID                     PROP_TAG( PT_BINARY,    0x3616)
 #define PR_ASSOC_CONTENT_COUNT                      PROP_TAG( PT_LONG,      0x3617)
-	 /* Don't use 36FE and 36FF */
+/* Don't use 36FE and 36FF */
 
 
-	 /*
-	  *  AB Object properties
-	  */
+/*
+*  AB Object properties
+*/
 
 #define PR_DISPLAY_TYPE                             PROP_TAG( PT_LONG,      0x3900)
 #define PR_TEMPLATEID                               PROP_TAG( PT_BINARY,    0x3902)
 #define PR_PRIMARY_CAPABILITY                       PROP_TAG( PT_BINARY,    0x3904)
 #define PR_7BIT_DISPLAY_NAME                        PROP_TAG( PT_STRING8,   0x39FF)
 
-	  /*
-	   *  Mail user properties
-	   */
+/*
+*  Mail user properties
+*/
 
 #define PR_ACCOUNT                                  PROP_TAG( PT_TSTRING,   0x3A00)
 #define PR_ACCOUNT_W                                PROP_TAG( PT_UNICODE,   0x3A00)
@@ -5952,52 +6008,52 @@ typedef unsigned short ushort;
 #define PR_BUSINESS_ADDRESS_STREET                  PR_STREET_ADDRESS
 
 
-	   /*
-		*	Message recipient properties
-		*/
+/*
+*	Message recipient properties
+*/
 
 #define PR_RECIPIENT_TYPE                           PROP_TAG( PT_LONG,      0x0C15)
 
-		/*
-		 * Secure property id range
-		 */
+/*
+* Secure property id range
+*/
 
 #define PROP_ID_SECURE_MIN                          0x67F0
 #define PROP_ID_SECURE_MAX                          0x67FF
 
 
-		 /* These are the bits that show up in PR_SEND_INTERNET_ENCODING */
+/* These are the bits that show up in PR_SEND_INTERNET_ENCODING */
 
-		 /* whether or not an encoding preference is specified
-		 1 - pay attention to the rest of the bits for the encoding preferences
-		 0 - let the mail system choose what's best for it
-		 */
+/* whether or not an encoding preference is specified
+1 - pay attention to the rest of the bits for the encoding preferences
+0 - let the mail system choose what's best for it
+*/
 #define ENCODING_PREFERENCE                     ((ULONG) 0x00020000)
 
-		 /*
-		 1 - message in MIME;
-		 0 - plain text/uuencode attachments
-		 */
+/*
+1 - message in MIME;
+0 - plain text/uuencode attachments
+*/
 #define ENCODING_TEXT                           ((ULONG) 0x00000000)
 #define ENCODING_MIME                           ((ULONG) 0x00040000)
 
 
-		 /*Specifies how the body of the message is encoded.
-		 00 - Body encoded as text
-		 01 - body encoded as HTML (only valid if message in MIME)
-		 10 - (actualy 1X) Text and HTML as multipart alternative (only valid if message in MIME)
-		 */
+/*Specifies how the body of the message is encoded.
+00 - Body encoded as text
+01 - body encoded as HTML (only valid if message in MIME)
+10 - (actualy 1X) Text and HTML as multipart alternative (only valid if message in MIME)
+*/
 #define BODY_ENCODING_MASK                      ((ULONG) 0x00180000)
 #define BODY_ENCODING_TEXT                      ((ULONG) 0x00000000) /* for completeness */
 #define BODY_ENCODING_HTML                      ((ULONG) 0x00080000)
 #define BODY_ENCODING_TEXT_AND_HTML             ((ULONG) 0x00100000)
 
-		 /*Specifies how to handle Mac attachments
-		 00 - BinHex
-		 01 - UUENCODED (not valid if message in MIME - will be ignored, BinHex used instead)
-		 10 - Apple Single (only valid if message in MIME)
-		 11 - Apple Double (only valid if message in MIME)
-		 */
+/*Specifies how to handle Mac attachments
+00 - BinHex
+01 - UUENCODED (not valid if message in MIME - will be ignored, BinHex used instead)
+10 - Apple Single (only valid if message in MIME)
+11 - Apple Double (only valid if message in MIME)
+*/
 #define MAC_ATTACH_ENCODING_MASK                ((ULONG) 0x00600000)
 #define MAC_ATTACH_ENCODING_BINHEX              ((ULONG) 0x00000000)
 #define MAC_ATTACH_ENCODING_UUENCODE            ((ULONG) 0x00200000)
@@ -6005,7 +6061,7 @@ typedef unsigned short ushort;
 #define MAC_ATTACH_ENCODING_APPLEDOUBLE         ((ULONG) 0x00600000)
 
 
-		 // Values for PR_GENDER property
+// Values for PR_GENDER property
 enum Gender {
 	genderUnspecified = 0,
 	genderFemale,
@@ -6018,7 +6074,7 @@ enum Gender {
 #include <wabtags.h>
 #endif
 //#include <wabutil.h>
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "warning.h"
 #endif
 #include <wbcl.h>
@@ -6063,13 +6119,13 @@ enum Gender {
 #if VS_VER > VC_4
 #include "wctype.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "WDBGEXTS.H"
 #endif
 #if VS_VER > VS_2005
 #include "wdigest.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "wdmguid.h"
 #endif
 #include "wdspxe.h"
@@ -6080,7 +6136,7 @@ enum Gender {
 #include "WdsTptMgmt.h"
 #include "WdsTptMgmt_i.c"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include <weakreference.h>
 #if defined _MSVC_NON_PERMISSIVE_MODE
 #include "webapplication.h"
@@ -6094,7 +6150,7 @@ enum Gender {
 typedef LPVOID* PPVOID;
 #endif
 #include "webhost.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "websocket.h"
 #if SDK_VER > SDK_8_1
 #include "WebAuthenticationCoreManagerInterop.h"
@@ -6105,7 +6161,7 @@ typedef LPVOID* PPVOID;
 #include "wia.h"
 #include "wiadef.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "wiaintfc.h"
 #include "wiamicro.h"
 #include "wiamindr.h"
@@ -6161,7 +6217,7 @@ typedef LPVOID* PPVOID;
 #if VS_VER > VS_2005
 #include "windot11.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "Windows.ApplicationModel.Infrastructure.h"
 #include "Windows.ApplicationModel.resources.management.h"
 #if SDK_VER > SDK_8_1
@@ -6193,7 +6249,7 @@ typedef LPVOID* PPVOID;
 #if VS_VER > VS_2005
 #include "WindowsSideShow.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if 0
 typedef VOID* WHV_EMULATOR_HANDLE;
 #include "WinHvEmulation.h"
@@ -6311,7 +6367,7 @@ typedef void* HCERTSTORE;
 #include "Wsdattachment.h"
 #include "Wsdbase.h"
 #include "Wsdclient.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "Wsdevlicensing.h"
 #endif
 #include "Wsddisco.h"
@@ -6335,7 +6391,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_4
 #include "WSvns.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "wtypesbase.h"
 #endif
 #if VS_VER > VS_2005
@@ -6347,7 +6403,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include "xmldsodid.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if SDK_VER > SDK_8_1
 #include "accountssettingspaneinterop.h"
 #endif
@@ -6393,7 +6449,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_5
 #include "AviFmt.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "DLNADeviceInterfaceIds.h"
 #include "DLNAMetadataProviderProperties.h"
 #endif
@@ -6442,7 +6498,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_1
 #include <winperf.h>    // necessary for the Detail Level definitions"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "winppi.h"
 #endif           
 #if VS_VER > VC_1
@@ -6468,7 +6524,7 @@ typedef void* HCERTSTORE;
 #include "winsdkver.h"
 #endif
 #include <winsock.h>
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "winsplp.h"
 #endif    
 #if VS_VER > VC_1
@@ -6477,7 +6533,7 @@ typedef void* HCERTSTORE;
 #if SDK_VER > SDK_8_1
 #include <winsqlite/winsqlite3ext.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "winstring.h"
 #endif                 
 #if VS_VER > VC_1
@@ -6489,7 +6545,7 @@ typedef void* HCERTSTORE;
 #if TOOLSET > 90
 #include "winsync.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "winusb.h"
 #include "winusbio.h"
 #endif
@@ -6507,7 +6563,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_1
 #include <winver.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "wkspbkax.h"
 #include "wkspbkax_i.c"
 #if SDK_VER > SDK_8_1
@@ -6560,7 +6616,7 @@ typedef void* HCERTSTORE;
 #include "wmprealestate.h"
 #include "wmpservices.h"
 #include "wmsdk.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "wmsdkvalidate.h"
 #endif
 #if TOOLSET > 90
@@ -6579,7 +6635,7 @@ typedef void* HCERTSTORE;
 #if TOOLSET > 90
 #include "workspaceax.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "workspaceruntime.h"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -6593,7 +6649,7 @@ typedef void* HCERTSTORE;
 #include "wpcevent.h"
 #include "wpframework.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #if defined _MSVC_NON_PERMISSIVE_MODE
 #include "wrl.h"
 #endif
@@ -6605,7 +6661,7 @@ typedef void* HCERTSTORE;
 #if TOOLSET > 90
 #include "wsbapp.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "wsbonline.h"
 #include "wsdemolicensing.h"
 #endif
@@ -6627,7 +6683,7 @@ typedef void* HCERTSTORE;
 #if SDK_VER > SDK_8_1
 #include "wsrm.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "wtshintapi.h"
 #endif
 #if TOOLSET > 90
@@ -6645,7 +6701,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_1
 #include <wtypes.h>
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "x3daudio.h"
 #if SDK_VER > SDK_8_1
 #include "xamlOM.h"
@@ -6677,7 +6733,7 @@ typedef void* HCERTSTORE;
 #endif
 #include "xpsprint.h"
 #endif
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "xpsrassvc.h"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -6699,7 +6755,7 @@ typedef void* HCERTSTORE;
 #include "ahadmin.h"
 #endif
 //#include "adojet.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "AsyncInfo.h"
 #endif
 #include "ahadmin_i.c"
@@ -6939,7 +6995,7 @@ typedef void* HCERTSTORE;
 #endif
 // a test avoidation
 // LPCOMPONENT was defined in shlobj_core.h already.
-#if VS_VER < VS_2022
+#if SDK_VER < SDK_8_1
 #include "mmc.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -6980,7 +7036,7 @@ typedef void* HCERTSTORE;
 #include "exdisp.h"
 #endif
 //#include "guids.h"
-#if (!defined _USING_V110_SDK71_) && (VS_VER > VS_2010)
+#if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "hidusage.h"
 #endif
 #if VS_VER > VC_5
