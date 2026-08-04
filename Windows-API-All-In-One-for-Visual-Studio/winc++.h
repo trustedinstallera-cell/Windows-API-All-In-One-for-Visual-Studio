@@ -177,14 +177,6 @@
 #define SDK_VER SDK_VERSION
 #define IS_XP_TOOLSET_SUPPORT ((defined _USING_V110_SDK71_) && (VS_VER <= VS_2019)) // Current SDK Version: 0x06010000
 
-#if SDK_VER > TOOLSET_VS_2010
-#define MPR60 1
-#elif SDK_VER > TOOLSET_90
-#define MPR50 1
-#else
-#define MPR40 1
-#endif
-
 #if _MSC_VER >= 1950
 #define TOOLSET 145  // VS 2026 and later
 #elif _MSC_VER >= 1930
@@ -304,6 +296,12 @@
 #if ((defined(_WIN32_WINNT) && _WIN32_WINNT == 0x0603) || (defined(NTDDI_VERSION) && NTDDI_VERSION == 0x06030000)) && (defined(_MSC_VER) && _MSC_VER >= 1951) // VS 2026, SDK 8.1
 #error Cannot use this SDK 8.1 on VS 2026
 #include <con/unexist.hppx>
+#endif
+
+#if !defined MPR60 && !defined MPR50 && !defined MPR40
+#define MPR60 1
+#define MPR50 1
+#define MPR40 1
 #endif
 
 #if SDK_VER == SDK_8_1
@@ -2472,7 +2470,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "dxgidebug.h"
 #include "dxmini.h"
 #endif
-#if ((MSVC_VER != VS_2013) || (defined NOWARNINGS)) && (VS_VER > VS_2003) 
+#if ((MSVC_VER != VS_2013) && (SDK_VER != TOOLSET_VS_2012) || (defined NOWARNINGS)) && (VS_VER > VS_2003) 
 #include "dxtmpl.h"
 #endif
 #if VS_VER > VS_2005
@@ -3185,12 +3183,8 @@ class CInstance;
 #include "IpxConst.h"
 #include "Ipxrip.h"
 #endif
-// todo extend this fix to adapt different Windows version.
-// currently not tested at all in highest definition
-#define MPR60 1
-//#define MPR50 1
-//#define MPR40 1
-// these only could be found in Stm.h ,the final invocation in Ipxrtdef.h
+
+// MPR40, MPR50 and MPR60 only could be found in Stm.h ,the final invocation in Ipxrtdef.h
 // no definition found in the whole inclusion files.
 #include "Ipxrtdef.h"
 #if VS_VER > VC_5
@@ -3542,7 +3536,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #endif
 #include "msinkaut15_i.c"
 #include "msinkaut_i.c"
-#if (VS_VER < VS_2022) && (VS_VER != VS_2013)
+#if (VS_VER < VS_2022) && (VS_VER != VS_2013) && (SDK_VER != TOOLSET_VS_2012)
 #include "msoav.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -3612,11 +3606,16 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "MsiQuery.h"
 #include <msxml.h>
 #endif
-#if VS_VER < VS_2022 && VS_VER != VS_2013
+#if 0
+//#if VS_VER < VS_2022 && VS_VER != VS_2013
 #include "MspAddr.h"
+#include <atldef.h>
+#include <atlbase.h>
+#include <atlcom.h>
 #include "MspCall.h"
 #include "MspEnum.h"
 #include "MspStrm.h"
+#include <Tapi3.h>
 #include "Mspcoll.h"
 #if VS_VER > VS_2005
 #include "mtpext.h"
@@ -4639,7 +4638,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include <reason.h>             // get the public reasons"
 #endif
 // failed in VS2026. Redefinition at ComSvcs.h, line 17835
-#if VS_VER < VS_2022 && VS_VER != VS_2013
+#if VS_VER < VS_2022 && VS_VER != VS_2013 && SDK_VER != TOOLSET_VS_2012
 #include "recapis.h"
 #endif
 #if VS_VER > VS_2005
@@ -5662,7 +5661,7 @@ typedef unsigned __int64   uintmax_t;
 #endif
 // Copied from Microsoft Visual Studio 8\VC\PlatformSDK\Include\WinDef.h
 // tcpioctl.h use these definitions. This is the minimal fix already.
-#if SDK_VER >= SDK_8_1 || IS_XP_TOOLSET_SUPPORT
+#if SDK_VER >= TOOLSET_VS_2012 || IS_XP_TOOLSET_SUPPORT
 typedef unsigned long ulong;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
@@ -5747,10 +5746,10 @@ typedef unsigned short ushort;
 #if VS_VER > VC_5
 #include "Transact.h"
 #endif
-#if (defined NOWARNINGS) || (VS_VER != VS_2013)
+#if (defined NOWARNINGS) || (VS_VER != VS_2013 && SDK_VER != TOOLSET_VS_2012)
 #include <atlcomcli.h>
 #endif
-#if SDK_VER != SDK_8_1
+#if SDK_VER != SDK_8_1 && SDK_VER != TOOLSET_VS_2012
 #include "Tune.h"
 #endif
 #if VS_VER > VC_6
@@ -7418,7 +7417,7 @@ typedef void* HCERTSTORE;
 #endif
 // a test avoidation
 // LPCOMPONENT was defined in shlobj_core.h already.
-#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT
+#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT	&& SDK_VER != TOOLSET_VS_2012
 #include "mmc.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -7494,7 +7493,9 @@ typedef UCHAR KIRQL;
 #include "d3d11.h"
 #if !IS_XP_TOOLSET_SUPPORT
 #include "d3d11_1.h"
+#if SDK_VER > TOOLSET_VS_2012
 #include "d3d11_2.h"
+#endif
 #endif
 #if SDK_VER > SDK_8_1
 #include "d3d11_3.h"
