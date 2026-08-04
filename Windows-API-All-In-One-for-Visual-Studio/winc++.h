@@ -175,18 +175,15 @@
 #define TOOLSET_VS_2026 0x0A000014
 #define SDK_VERSION NTDDI_VERSION
 #define SDK_VER SDK_VERSION
+#define IS_XP_TOOLSET_SUPPORT ((defined _USING_V110_SDK71_) && (VS_VER <= VS_2019)) // Current SDK Version: 0x06010000
 
-/*
-#include <iostream>
-#include <sdkddkver.h>
-#define CURRENT_SDK_VERSION NTDDI_VERSION
-
-int main(){
-printf("Current SDK Version: 0x%08X\n", CURRENT_SDK_VERSION);
-system("pause");
-return 0;
-}
-*/
+#if SDK_VER > TOOLSET_VS_2010
+#define MPR60 1
+#elif SDK_VER > TOOLSET_90
+#define MPR50 1
+#else
+#define MPR40 1
+#endif
 
 #if _MSC_VER >= 1950
 #define TOOLSET 145  // VS 2026 and later
@@ -1198,7 +1195,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_6
 #include "adodef.h"
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include "adoint_backcompat.h"
+#endif
 #if VS_VER > VC_5
 #include "adsdb.h"
 // #include <adogpool.h> // Cannot be used directly
@@ -1814,7 +1813,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if _MSC_VER > 1500
 #include <d3dcommon.h>
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include "d3dcompiler.inl"
+#endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "d3dcsx.h"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -1898,9 +1899,409 @@ DECLARE_HANDLE(HSZ);
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <ddraw.h>
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include <dx95type.h>
+#endif
+#if IS_XP_TOOLSET_SUPPORT || SDK_VER < TOOLSET_VS_2013
+// Copied from C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ddrawi.h. Line number has been reserved.
+// dmemmgr.h from the same directory.
+// Copied from ddrawi.h by default if no file name mentioned.
+
+// line 10
+#ifndef __DDRAWI_INCLUDED__
+// line 375
+/*
+* pointer to video meory
+*/
+typedef ULONG_PTR FLATPTR;
+// line 42, dmmemgr.h
+/*
+* Structure for querying extended heap alignment requirements
+*/
+
+typedef struct _SURFACEALIGNMENT
+{
+	union
+	{
+		struct
+		{
+			DWORD       dwStartAlignment;
+			DWORD       dwPitchAlignment;
+			DWORD       dwFlags;
+			DWORD       dwReserved2;
+		} Linear;
+		struct
+		{
+			DWORD       dwXAlignment;
+			DWORD       dwYAlignment;
+			DWORD       dwFlags;
+			DWORD       dwReserved2;
+		} Rectangular;
+	};
+} SURFACEALIGNMENT;
+// line 72, dmemmgr.h
+typedef struct _HEAPALIGNMENT
+{
+	DWORD                dwSize;
+	DDSCAPS              ddsCaps;       /* Indicates which alignment fields are valid.*/
+	DWORD                dwReserved;
+	SURFACEALIGNMENT     ExecuteBuffer; /* Surfaces tagged with DDSCAPS_EXECUTEBUFFER */
+	SURFACEALIGNMENT     Overlay;       /* Surfaces tagged with DDSCAPS_OVERLAY       */
+	SURFACEALIGNMENT     Texture;       /* Surfaces tagged with DDSCAPS_TEXTURE       */
+	SURFACEALIGNMENT     ZBuffer;       /* Surfaces tagged with DDSCAPS_ZBUFFER       */
+	SURFACEALIGNMENT     AlphaBuffer;   /* Surfaces tagged with DDSCAPS_ALPHA         */
+	SURFACEALIGNMENT     Offscreen;     /* Surfaces tagged with DDSCAPS_OFFSCREENPLAIN*/
+	SURFACEALIGNMENT     FlipTarget;    /* Surfaces whose bits are potential primaries i.e. back buffers*/
+} HEAPALIGNMENT;
+typedef struct _HEAPALIGNMENT FAR* LPHEAPALIGNMENT;
+// line 130, dmemmgr.h
+typedef struct _VMEMHEAP
+{
+	DWORD		        dwFlags;
+	DWORD                       stride;
+	LPVOID		        freeList;
+	LPVOID		        allocList;
+	DWORD                       dwTotalSize;
+	FLATPTR                     fpGARTLin;      /* AGP: GART linear base of heap (app. visible)   */
+	FLATPTR                     fpGARTDev;      /* AGP: GART device base of heap (driver visible) */
+	DWORD                       dwCommitedSize; /* AGP: Number of bytes commited to heap          */
+	/*
+	* Extended alignment data:
+	* Filled in by DirectDraw in response to a GetHeapAlignment HAL call.
+	*/
+	DWORD                       dwCoalesceCount;
+	HEAPALIGNMENT               Alignment;
+	/*
+	* These are analogous to VIDMEM.ddsCaps and VIDMEM.ddsCapsAlt. These values are queried from the
+	* driver by a GetDriverInfo call. See the documentation for GUID_DDMoreSurfaceCaps
+	*/
+	DDSCAPSEX                   ddsCapsEx;
+	DDSCAPSEX                   ddsCapsExAlt;
+#ifndef IS_16
+	// Full physical address of heap base for NT AGP heaps.
+	LARGE_INTEGER               liPhysAGPBase;
+#endif
+	// hdev for use with VidMemAllocAligned on NT.  Set by the system at
+	// initialization time.
+	HANDLE                      hdevAGP;
+	// Physical reservation handle for NT heaps.
+	LPVOID                      pvPhysRsrv;
+#if (NTDDI_VERSION >= NTDDI_WINXP)
+	BYTE* pAgpCommitMask;
+	DWORD                       dwAgpCommitMaskSize;
+#endif
+} VMEMHEAP;
+
+typedef VMEMHEAP FAR* LPVMEMHEAP;
+
+// line 474
+/*
+* pre-declare pointers to structs containing data for DDHAL fns
+*/
+typedef struct _DDHAL_CREATEPALETTEDATA FAR* LPDDHAL_CREATEPALETTEDATA;
+typedef struct _DDHAL_CREATESURFACEDATA FAR* LPDDHAL_CREATESURFACEDATA;
+typedef struct _DDHAL_CANCREATESURFACEDATA FAR* LPDDHAL_CANCREATESURFACEDATA;
+typedef struct _DDHAL_WAITFORVERTICALBLANKDATA FAR* LPDDHAL_WAITFORVERTICALBLANKDATA;
+typedef struct _DDHAL_DESTROYDRIVERDATA FAR* LPDDHAL_DESTROYDRIVERDATA;
+typedef struct _DDHAL_SETMODEDATA FAR* LPDDHAL_SETMODEDATA;
+typedef struct _DDHAL_DRVSETCOLORKEYDATA FAR* LPDDHAL_DRVSETCOLORKEYDATA;
+typedef struct _DDHAL_GETSCANLINEDATA FAR* LPDDHAL_GETSCANLINEDATA;
+// line 486
+typedef struct _DDHAL_DESTROYPALETTEDATA FAR* LPDDHAL_DESTROYPALETTEDATA;
+typedef struct _DDHAL_SETENTRIESDATA FAR* LPDDHAL_SETENTRIESDATA;
+// line 489
+typedef struct _DDHAL_BLTDATA FAR* LPDDHAL_BLTDATA;
+typedef struct _DDHAL_LOCKDATA FAR* LPDDHAL_LOCKDATA;
+typedef struct _DDHAL_UNLOCKDATA FAR* LPDDHAL_UNLOCKDATA;
+typedef struct _DDHAL_UPDATEOVERLAYDATA FAR* LPDDHAL_UPDATEOVERLAYDATA;
+typedef struct _DDHAL_SETOVERLAYPOSITIONDATA FAR* LPDDHAL_SETOVERLAYPOSITIONDATA;
+typedef struct _DDHAL_SETPALETTEDATA FAR* LPDDHAL_SETPALETTEDATA;
+typedef struct _DDHAL_FLIPDATA FAR* LPDDHAL_FLIPDATA;
+typedef struct _DDHAL_DESTROYSURFACEDATA FAR* LPDDHAL_DESTROYSURFACEDATA;
+typedef struct _DDHAL_SETCLIPLISTDATA FAR* LPDDHAL_SETCLIPLISTDATA;
+typedef struct _DDHAL_ADDATTACHEDSURFACEDATA FAR* LPDDHAL_ADDATTACHEDSURFACEDATA;
+typedef struct _DDHAL_SETCOLORKEYDATA FAR* LPDDHAL_SETCOLORKEYDATA;
+typedef struct _DDHAL_GETBLTSTATUSDATA FAR* LPDDHAL_GETBLTSTATUSDATA;
+typedef struct _DDHAL_GETFLIPSTATUSDATA FAR* LPDDHAL_GETFLIPSTATUSDATA;
+typedef struct _DDHAL_SETEXCLUSIVEMODEDATA FAR* LPDDHAL_SETEXCLUSIVEMODEDATA;
+typedef struct _DDHAL_FLIPTOGDISURFACEDATA FAR* LPDDHAL_FLIPTOGDISURFACEDATA;
+// line 527
+typedef struct _DDHAL_GETDRIVERINFODATA FAR* LPDDHAL_GETDRIVERINFODATA;
+// line 574
+/*
+* video memory data structures (passed in DDHALINFO)
+*/
+typedef struct _VIDMEM
+{
+	DWORD       dwFlags;    // flags
+	FLATPTR     fpStart;    // start of memory chunk
+	union
+	{
+		FLATPTR     fpEnd;      // end of memory chunk
+		DWORD       dwWidth;    // width of chunk (rectanglar memory)
+	};
+	DDSCAPS     ddsCaps;        // what this memory CANNOT be used for
+	DDSCAPS     ddsCapsAlt; // what this memory CANNOT be used for if it must
+	union
+	{
+		LPVMEMHEAP  lpHeap;     // heap pointer, used by DDRAW
+		DWORD       dwHeight;   // height of chunk (rectanguler memory)
+	};
+} VIDMEM;
+typedef VIDMEM FAR* LPVIDMEM;
+// line 645
+typedef struct _DDRAWI_DIRECTDRAW_LCL FAR* LPDDRAWI_DIRECTDRAW_LCL;
+typedef struct _DDRAWI_DIRECTDRAW_GBL FAR* LPDDRAWI_DIRECTDRAW_GBL;
+// line 654
+typedef struct _DDRAWI_DDRAWSURFACE_LCL FAR* LPDDRAWI_DDRAWSURFACE_LCL;
+// line 685
+/*
+* DIRECTDRAW object callbacks
+*/
+typedef DWORD(FAR PASCAL* LPDDHAL_SETCOLORKEY)(LPDDHAL_DRVSETCOLORKEYDATA);
+typedef DWORD(FAR PASCAL* LPDDHAL_CANCREATESURFACE)(LPDDHAL_CANCREATESURFACEDATA);
+typedef DWORD(FAR PASCAL* LPDDHAL_WAITFORVERTICALBLANK)(LPDDHAL_WAITFORVERTICALBLANKDATA);
+typedef DWORD(FAR PASCAL* LPDDHAL_CREATESURFACE)(LPDDHAL_CREATESURFACEDATA);
+typedef DWORD(FAR PASCAL* LPDDHAL_DESTROYDRIVER)(LPDDHAL_DESTROYDRIVERDATA);
+typedef DWORD(FAR PASCAL* LPDDHAL_SETMODE)(LPDDHAL_SETMODEDATA);
+typedef DWORD(FAR PASCAL* LPDDHAL_CREATEPALETTE)(LPDDHAL_CREATEPALETTEDATA);
+typedef DWORD(FAR PASCAL* LPDDHAL_GETSCANLINE)(LPDDHAL_GETSCANLINEDATA);
+typedef DWORD(FAR PASCAL* LPDDHAL_SETEXCLUSIVEMODE)(LPDDHAL_SETEXCLUSIVEMODEDATA);
+typedef DWORD(FAR PASCAL* LPDDHAL_FLIPTOGDISURFACE)(LPDDHAL_FLIPTOGDISURFACEDATA);
+// line 606
+typedef struct _VIDMEMINFO
+{
+	/* 0*/ FLATPTR      fpPrimary;      // pointer to primary surface
+	/* 4*/ DWORD        dwFlags;        // flags
+	/* 8*/ DWORD        dwDisplayWidth;     // current display width
+	/* c*/ DWORD        dwDisplayHeight;    // current display height
+	/*10*/ LONG     lDisplayPitch;      // current display pitch
+	/*14*/ DDPIXELFORMAT    ddpfDisplay;        // pixel format of display
+	/*34*/ DWORD        dwOffscreenAlign;   // byte alignment for offscreen surfaces
+	/*38*/ DWORD        dwOverlayAlign;     // byte alignment for overlays
+	/*3c*/ DWORD        dwTextureAlign;     // byte alignment for textures
+	/*40*/ DWORD        dwZBufferAlign;     // byte alignment for z buffers
+	/*44*/ DWORD        dwAlphaAlign;       // byte alignment for alpha
+	/*48*/ DWORD        dwNumHeaps;     // number of memory heaps in vmList
+	/*4c*/ LPVIDMEM     pvmList;        // array of heaps
+} VIDMEMINFO;
+typedef VIDMEMINFO FAR* LPVIDMEMINFO;
+// line 699
+typedef DWORD(FAR PASCAL* LPDDHAL_GETDRIVERINFO)(LPDDHAL_GETDRIVERINFODATA);
+// line 701
+typedef struct _DDHAL_DDCALLBACKS
+{
+	DWORD            dwSize;
+	DWORD            dwFlags;
+	LPDDHAL_DESTROYDRIVER    DestroyDriver;
+	LPDDHAL_CREATESURFACE    CreateSurface;
+	LPDDHAL_SETCOLORKEY      SetColorKey;
+	LPDDHAL_SETMODE      SetMode;
+	LPDDHAL_WAITFORVERTICALBLANK WaitForVerticalBlank;
+	LPDDHAL_CANCREATESURFACE     CanCreateSurface;
+	LPDDHAL_CREATEPALETTE    CreatePalette;
+	LPDDHAL_GETSCANLINE      GetScanLine;
+	// *** New fields for DX2 *** //
+	LPDDHAL_SETEXCLUSIVEMODE     SetExclusiveMode;
+	LPDDHAL_FLIPTOGDISURFACE     FlipToGDISurface;
+} DDHAL_DDCALLBACKS;
+typedef DDHAL_DDCALLBACKS FAR* LPDDHAL_DDCALLBACKS;
+// line 733
+/*
+* DIRECTDRAWPALETTE object callbacks
+*/
+typedef DWORD(FAR PASCAL* LPDDHALPALCB_DESTROYPALETTE)(LPDDHAL_DESTROYPALETTEDATA);
+typedef DWORD(FAR PASCAL* LPDDHALPALCB_SETENTRIES)(LPDDHAL_SETENTRIESDATA);
+// line 739
+typedef struct _DDHAL_DDPALETTECALLBACKS
+{
+	DWORD           dwSize;
+	DWORD           dwFlags;
+	LPDDHALPALCB_DESTROYPALETTE DestroyPalette;
+	LPDDHALPALCB_SETENTRIES SetEntries;
+} DDHAL_DDPALETTECALLBACKS;
+typedef DDHAL_DDPALETTECALLBACKS FAR* LPDDHAL_DDPALETTECALLBACKS;
+// line 753
+/*
+* DIRECTDRAWSURFACE object callbacks
+*/
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_LOCK)(LPDDHAL_LOCKDATA);
+// line 757
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_UNLOCK)(LPDDHAL_UNLOCKDATA);
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_BLT)(LPDDHAL_BLTDATA);
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_UPDATEOVERLAY)(LPDDHAL_UPDATEOVERLAYDATA);
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_SETOVERLAYPOSITION)(LPDDHAL_SETOVERLAYPOSITIONDATA);
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_SETPALETTE)(LPDDHAL_SETPALETTEDATA);
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_FLIP)(LPDDHAL_FLIPDATA);
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_DESTROYSURFACE)(LPDDHAL_DESTROYSURFACEDATA);
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_SETCLIPLIST)(LPDDHAL_SETCLIPLISTDATA);
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_ADDATTACHEDSURFACE)(LPDDHAL_ADDATTACHEDSURFACEDATA);
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_SETCOLORKEY)(LPDDHAL_SETCOLORKEYDATA);
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_GETBLTSTATUS)(LPDDHAL_GETBLTSTATUSDATA);
+typedef DWORD(FAR PASCAL* LPDDHALSURFCB_GETFLIPSTATUS)(LPDDHAL_GETFLIPSTATUSDATA);
+// line 771
+typedef struct _DDHAL_DDSURFACECALLBACKS
+{
+	DWORD               dwSize;
+	DWORD               dwFlags;
+	LPDDHALSURFCB_DESTROYSURFACE    DestroySurface;
+	LPDDHALSURFCB_FLIP          Flip;
+	LPDDHALSURFCB_SETCLIPLIST       SetClipList;
+	LPDDHALSURFCB_LOCK          Lock;
+	LPDDHALSURFCB_UNLOCK        Unlock;
+	LPDDHALSURFCB_BLT           Blt;
+	LPDDHALSURFCB_SETCOLORKEY       SetColorKey;
+	LPDDHALSURFCB_ADDATTACHEDSURFACE    AddAttachedSurface;
+	LPDDHALSURFCB_GETBLTSTATUS      GetBltStatus;
+	LPDDHALSURFCB_GETFLIPSTATUS     GetFlipStatus;
+	LPDDHALSURFCB_UPDATEOVERLAY     UpdateOverlay;
+	LPDDHALSURFCB_SETOVERLAYPOSITION    SetOverlayPosition;
+	LPVOID              reserved4;
+	LPDDHALSURFCB_SETPALETTE        SetPalette;
+} DDHAL_DDSURFACECALLBACKS;
+typedef DDHAL_DDSURFACECALLBACKS FAR* LPDDHAL_DDSURFACECALLBACKS;
+// line 865
+/*
+* DIRECTDRAWEXEBUF pseudo object callbacks
+*
+* NOTE: Execute buffers are not a distinct object type, they piggy back off
+* the surface data structures and high level API. However, they have their
+* own HAL callbacks as they may have different driver semantics from "normal"
+* surfaces. They also piggy back off the HAL data structures.
+*
+* !!! NOTE: Need to resolve whether we export execute buffer copying as a
+* blit or some other from of copy instruction.
+*/
+typedef DWORD(FAR PASCAL* LPDDHALEXEBUFCB_CANCREATEEXEBUF)(LPDDHAL_CANCREATESURFACEDATA);
+typedef DWORD(FAR PASCAL* LPDDHALEXEBUFCB_CREATEEXEBUF)(LPDDHAL_CREATESURFACEDATA);
+typedef DWORD(FAR PASCAL* LPDDHALEXEBUFCB_DESTROYEXEBUF)(LPDDHAL_DESTROYSURFACEDATA);
+typedef DWORD(FAR PASCAL* LPDDHALEXEBUFCB_LOCKEXEBUF)(LPDDHAL_LOCKDATA);
+typedef DWORD(FAR PASCAL* LPDDHALEXEBUFCB_UNLOCKEXEBUF)(LPDDHAL_UNLOCKDATA);
+// line 882
+typedef struct _DDHAL_DDEXEBUFCALLBACKS
+{
+	DWORD               dwSize;
+	DWORD               dwFlags;
+	LPDDHALEXEBUFCB_CANCREATEEXEBUF CanCreateExecuteBuffer;
+	LPDDHALEXEBUFCB_CREATEEXEBUF    CreateExecuteBuffer;
+	LPDDHALEXEBUFCB_DESTROYEXEBUF   DestroyExecuteBuffer;
+	LPDDHALEXEBUFCB_LOCKEXEBUF      LockExecuteBuffer;
+	LPDDHALEXEBUFCB_UNLOCKEXEBUF    UnlockExecuteBuffer;
+} DDHAL_DDEXEBUFCALLBACKS;
+typedef DDHAL_DDEXEBUFCALLBACKS FAR* LPDDHAL_DDEXEBUFCALLBACKS;
+// line 1617
+/*
+* mode information
+*/
+typedef struct _DDHALMODEINFO
+{
+	DWORD   dwWidth;        // width (in pixels) of mode
+	DWORD   dwHeight;       // height (in pixels) of mode
+	LONG    lPitch;         // pitch (in bytes) of mode
+	DWORD   dwBPP;          // bits per pixel
+	WORD    wFlags;         // flags
+	WORD    wRefreshRate;       // refresh rate
+	DWORD   dwRBitMask;     // red bit mask
+	DWORD   dwGBitMask;     // green bit mask
+	DWORD   dwBBitMask;     // blue bit mask
+	DWORD   dwAlphaBitMask;     // alpha bit mask
+} DDHALMODEINFO;
+typedef DDHALMODEINFO FAR* LPDDHALMODEINFO;
+// line 1691
+/*
+* This structure mirrors the first entries of the DDCAPS but is of a fixed
+* size and will not grow as DDCAPS grows. This is the structure your driver
+* returns in DDCOREINFO. Additional caps will be requested via a GetDriverInfo
+* call.
+*/
+typedef struct _DDCORECAPS
+{
+	DWORD   dwSize;         // size of the DDDRIVERCAPS structure
+	DWORD   dwCaps;         // driver specific capabilities
+	DWORD   dwCaps2;        // more driver specific capabilites
+	DWORD   dwCKeyCaps;     // color key capabilities of the surface
+	DWORD   dwFXCaps;       // driver specific stretching and effects capabilites
+	DWORD   dwFXAlphaCaps;      // alpha driver specific capabilities
+	DWORD   dwPalCaps;      // palette capabilities
+	DWORD   dwSVCaps;       // stereo vision capabilities
+	DWORD   dwAlphaBltConstBitDepths;   // DDBD_2,4,8
+	DWORD   dwAlphaBltPixelBitDepths;   // DDBD_1,2,4,8
+	DWORD   dwAlphaBltSurfaceBitDepths; // DDBD_1,2,4,8
+	DWORD   dwAlphaOverlayConstBitDepths;   // DDBD_2,4,8
+	DWORD   dwAlphaOverlayPixelBitDepths;   // DDBD_1,2,4,8
+	DWORD   dwAlphaOverlaySurfaceBitDepths; // DDBD_1,2,4,8
+	DWORD   dwZBufferBitDepths;     // DDBD_8,16,24,32
+	DWORD   dwVidMemTotal;      // total amount of video memory
+	DWORD   dwVidMemFree;       // amount of free video memory
+	DWORD   dwMaxVisibleOverlays;   // maximum number of visible overlays
+	DWORD   dwCurrVisibleOverlays;  // current number of visible overlays
+	DWORD   dwNumFourCCCodes;   // number of four cc codes
+	DWORD   dwAlignBoundarySrc; // source rectangle alignment
+	DWORD   dwAlignSizeSrc;     // source rectangle byte size
+	DWORD   dwAlignBoundaryDest;    // dest rectangle alignment
+	DWORD   dwAlignSizeDest;    // dest rectangle byte size
+	DWORD   dwAlignStrideAlign; // stride alignment
+	DWORD   dwRops[DD_ROP_SPACE];   // ROPS supported
+	DDSCAPS ddsCaps;        // DDSCAPS structure has all the general capabilities
+	DWORD   dwMinOverlayStretch;    // minimum overlay stretch factor multiplied by 1000, eg 1000 == 1.0, 1300 == 1.3
+	DWORD   dwMaxOverlayStretch;    // maximum overlay stretch factor multiplied by 1000, eg 1000 == 1.0, 1300 == 1.3
+	DWORD   dwMinLiveVideoStretch;  // minimum live video stretch factor multiplied by 1000, eg 1000 == 1.0, 1300 == 1.3
+	DWORD   dwMaxLiveVideoStretch;  // maximum live video stretch factor multiplied by 1000, eg 1000 == 1.0, 1300 == 1.3
+	DWORD   dwMinHwCodecStretch;    // minimum hardware codec stretch factor multiplied by 1000, eg 1000 == 1.0, 1300 == 1.3
+	DWORD   dwMaxHwCodecStretch;    // maximum hardware codec stretch factor multiplied by 1000, eg 1000 == 1.0, 1300 == 1.3
+	DWORD   dwReserved1;        // reserved
+	DWORD   dwReserved2;        // reserved
+	DWORD   dwReserved3;        // reserved
+	DWORD   dwSVBCaps;      // driver specific capabilities for System->Vmem blts
+	DWORD   dwSVBCKeyCaps;      // driver color key capabilities for System->Vmem blts
+	DWORD   dwSVBFXCaps;        // driver FX capabilities for System->Vmem blts
+	DWORD   dwSVBRops[DD_ROP_SPACE];// ROPS supported for System->Vmem blts
+	DWORD   dwVSBCaps;      // driver specific capabilities for Vmem->System blts
+	DWORD   dwVSBCKeyCaps;      // driver color key capabilities for Vmem->System blts
+	DWORD   dwVSBFXCaps;        // driver FX capabilities for Vmem->System blts
+	DWORD   dwVSBRops[DD_ROP_SPACE];// ROPS supported for Vmem->System blts
+	DWORD   dwSSBCaps;      // driver specific capabilities for System->System blts
+	DWORD   dwSSBCKeyCaps;      // driver color key capabilities for System->System blts
+	DWORD   dwSSBFXCaps;        // driver FX capabilities for System->System blts
+	DWORD   dwSSBRops[DD_ROP_SPACE];// ROPS supported for System->System blts
+	DWORD   dwMaxVideoPorts;    // maximum number of usable video ports
+	DWORD   dwCurrVideoPorts;   // current number of video ports used
+	DWORD   dwSVBCaps2;     // more driver specific capabilities for System->Vmem blts
+} DDCORECAPS;
+// line 2001
+/*
+* structure for display driver to call DDHAL_Create with
+*/
+typedef struct _DDHALINFO
+{
+	DWORD                       dwSize;
+	LPDDHAL_DDCALLBACKS         lpDDCallbacks;      // direct draw object callbacks
+	LPDDHAL_DDSURFACECALLBACKS  lpDDSurfaceCallbacks;   // surface object callbacks
+	LPDDHAL_DDPALETTECALLBACKS  lpDDPaletteCallbacks;   // palette object callbacks
+	VIDMEMINFO                  vmiData;        // video memory info
+	DDCORECAPS                  ddCaps;         // core hw specific caps
+	DWORD                       dwMonitorFrequency; // monitor frequency in current mode
+	LPDDHAL_GETDRIVERINFO       GetDriverInfo;          // callback to get arbitrary vtable from driver
+	DWORD                       dwModeIndex;        // current mode: index into array
+	LPDWORD                     lpdwFourCC;     // fourcc codes supported
+	DWORD                       dwNumModes;     // number of modes supported
+	LPDDHALMODEINFO             lpModeInfo;     // mode information
+	DWORD                       dwFlags;        // create flags
+	LPVOID                      lpPDevice;      // physical device ptr
+	DWORD                       hInstance;      // instance handle of driver
+	//------- Fields added in Version 2.0 -------
+	ULONG_PTR                    lpD3DGlobalDriverData;  // D3D global Data
+	ULONG_PTR                   lpD3DHALCallbacks;  // D3D callbacks
+	LPDDHAL_DDEXEBUFCALLBACKS   lpDDExeBufCallbacks;    // Execute buffer pseudo object callbacks
+} DDHALINFO;
+typedef DDHALINFO FAR* LPDDHALINFO;
+// line 2987
+#endif
+#endif
 #include "ddrawgdi.h"
+#if !IS_XP_TOOLSET_SUPPORT
 #include <ddrawi.h>
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <ddrawint.h>
 #endif
@@ -1971,6 +2372,7 @@ DECLARE_HANDLE(HSZ);
 #include "DirectXCollision.h"
 #include "DirectXColors.h"
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #ifdef I
 #pragma push_macro("I")
 #undef I
@@ -1978,6 +2380,7 @@ DECLARE_HANDLE(HSZ);
 #pragma pop_macro("I")
 #else
 #include "DirectXPackedVector.h"
+#endif
 #endif
 #if VS_VER > VC_6
 #include <diskguid.h>
@@ -2365,7 +2768,9 @@ DECLARE_HANDLE(HSZ);
 #if VS_VER > VC_4
 #include "IDispIds.h"
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include "ieautomation.h"
+#endif
 //#include "ieee8021q.h"
 #if SDK_VER > SDK_8_1
 #include "iewebdriver.h"
@@ -4029,7 +4434,9 @@ interface IXMLDOMDocument2;
 #include <powerbase.h>
 #include <powersetting.h>
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include <printoem.h>
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <processenv.h>
 #include <processthreadsapi.h>
@@ -5255,7 +5662,7 @@ typedef unsigned __int64   uintmax_t;
 #endif
 // Copied from Microsoft Visual Studio 8\VC\PlatformSDK\Include\WinDef.h
 // tcpioctl.h use these definitions. This is the minimal fix already.
-#if SDK_VER >= SDK_8_1
+#if SDK_VER >= SDK_8_1 || IS_XP_TOOLSET_SUPPORT
 typedef unsigned long ulong;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
@@ -5385,7 +5792,9 @@ typedef unsigned short ushort;
 #if cppver >= 2011
 #include <type_traits>
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include "ual.h"
+#endif
 #if MSVC_VER > VS_2013
 #include "uchar.h"
 #endif
@@ -6077,7 +6486,9 @@ enum Gender {
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "warning.h"
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include <wbcl.h>
+#endif
 #if VS_VER > VC_6
 #if defined _MSVC_NON_PERMISSIVE_MODE
 #include "WbemAds.h"
@@ -6102,7 +6513,9 @@ enum Gender {
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <widemath.h>                // 64-bit and 128-bit math helper functions"
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include "wcmapi.h"
+#endif
 #include "wcmconfig.h"
 #if VS_VER > VS_2005
 #include "wcmerrors.h"
@@ -6172,7 +6585,9 @@ typedef LPVOID* PPVOID;
 #endif
 #include "wiatwcmp.h"
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include "wiautil.h"
+#endif
 #if VS_VER > VS_2005
 #include "wiawsdsc.h"
 #endif
@@ -6186,8 +6601,10 @@ typedef LPVOID* PPVOID;
 #define ARGUMENT_PRESENT(ArgumentPointer) \
   ((CHAR*)((ULONG_PTR)(ArgumentPointer)) != (CHAR*)NULL)
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include "winbio_adapter.h"
 #include "winbio_ioctl.h"
+#endif
 #if VS_VER > VS_2005
 #include "wincodecsdk.h"
 #include "WinFax.h"
@@ -6763,7 +7180,9 @@ typedef void* HCERTSTORE;
 #include "BdaTypes.h"
 #endif
 //#include "CodeAnalysis/sourceannotations.h"
+#if !IS_XP_TOOLSET_SUPPORT
 #include "DirectXCollision.inl"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include "DirectXMathConvert.inl"
 #include "DirectXMathMatrix.inl"
@@ -6786,7 +7205,9 @@ typedef void* HCERTSTORE;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include "SessdirPublicTypes.h"
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include "SpellCheck.h"
+#endif
 #include "StructuredQuery.h"
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include "TpmVscAttestation.h"
@@ -6944,7 +7365,9 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include "adodef.h"
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #include "adoint_backcompat.h"
+#endif
 #if VS_VER > VC_5
 #include "adsdb.h"
 #include "adserr.h"
@@ -6995,7 +7418,7 @@ typedef void* HCERTSTORE;
 #endif
 // a test avoidation
 // LPCOMPONENT was defined in shlobj_core.h already.
-#if SDK_VER < SDK_8_1
+#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT
 #include "mmc.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -7069,8 +7492,10 @@ typedef UCHAR KIRQL;
 #endif
 #include "d3d10.h"
 #include "d3d11.h"
+#if !IS_XP_TOOLSET_SUPPORT
 #include "d3d11_1.h"
 #include "d3d11_2.h"
+#endif
 #if SDK_VER > SDK_8_1
 #include "d3d11_3.h"
 #endif
@@ -7097,12 +7522,16 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"Thunk32.Lib")
 #pragma comment(lib,"VdmDbg.Lib")
 #pragma comment(lib,"Wow32.Lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"apidll.lib")
 #pragma comment(lib,"int64.lib")
 #pragma comment(lib,"jetoledb.lib")
 #pragma comment(lib,"ntvdm.lib")
+#endif
 #pragma comment(lib,"patchwiz.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"twain_32.lib")
+#endif
 #pragma comment(lib,"unicows.lib")
 #endif
 
@@ -7121,15 +7550,21 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"IsolatedWindowsEnvironmentUtils.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"d3dcsx.lib")
 #pragma comment(lib,"d3dcsxd.lib")
+#endif
 #pragma comment(lib,"dciman32.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"easregprov.lib")
+#endif
 #pragma comment(lib,"fxsutility.lib")
 #pragma comment(lib,"infocardapi.Lib")
 #pragma comment(lib,"winfax.lib")
 #pragma comment(lib,"wsbapp_uuid.Lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"wsbonline.lib")
+#endif
 #endif
 
 #if (defined ARCH_X86) || (defined ARCH_ARM)
@@ -7156,9 +7591,11 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"AuthZ.Lib")
 #pragma comment(lib,"Bits.Lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"BluetoothApis.lib")
 #pragma comment(lib,"BufferOverflow.lib")
 #pragma comment(lib,"BufferOverflowU.lib")
+#endif
 #pragma comment(lib,"Cabinet.Lib")
 #pragma comment(lib,"CertIdl.Lib")
 #pragma comment(lib,"CertPolEng.Lib")
@@ -7169,7 +7606,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"ComCtl32.Lib")
 #pragma comment(lib,"ComDlg32.Lib")
 #pragma comment(lib,"ComSvcs.Lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"CompPkgSup.lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"CoreMessaging.lib")
 #endif
@@ -7192,7 +7631,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"DtcHelp.Lib")
 #pragma comment(lib,"ElsCore.lib")
 #pragma comment(lib,"FaultRep.Lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"FhSvcCtl.lib")
+#endif
 #pragma comment(lib,"FrameDyd.Lib")
 #pragma comment(lib,"FrameDyn.Lib")
 #pragma comment(lib,"GPEdit.lib")
@@ -7216,16 +7657,22 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"LoadPerf.Lib")
 #pragma comment(lib,"Lz32.Lib")
 #pragma comment(lib,"MAPI32.Lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"MDMRegistration.lib")
+#endif
 #pragma comment(lib,"MMC.Lib")
 #pragma comment(lib,"MSAcm32.Lib")
 #pragma comment(lib,"MSImg32.Lib")
 #pragma comment(lib,"MSRating.Lib")
 #pragma comment(lib,"MSTask.Lib")
 #pragma comment(lib,"Mf.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"Mfcore.lib")
+#endif
 #pragma comment(lib,"Mfplat.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"Mfsrcsnk.lib")
+#endif
 #pragma comment(lib,"MgmtAPI.Lib")
 #pragma comment(lib,"Mpr.Lib")
 #pragma comment(lib,"Mprapi.Lib")
@@ -7244,7 +7691,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"NetSh.Lib")
 #pragma comment(lib,"NtDsAPI.Lib")
 #pragma comment(lib,"NtQuery.Lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"OemLicense.lib")
+#endif
 #pragma comment(lib,"Ole32.Lib")
 #pragma comment(lib,"OleAcc.Lib")
 #pragma comment(lib,"OleAut32.Lib")
@@ -7259,7 +7708,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"OpenGL32.Lib")
 #pragma comment(lib,"Pdh.Lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"PeerDist.lib")
+#endif
 #pragma comment(lib,"PhotoAcquireUID.lib")
 #pragma comment(lib,"PortableDeviceGuids.lib")
 #if SDK_VER > SDK_8_1
@@ -7267,7 +7718,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"RASAPI32.Lib")
 #pragma comment(lib,"RASDlg.Lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"RTWorkQ.lib")
+#endif
 #pragma comment(lib,"RpcRT4.Lib")
 #pragma comment(lib,"Rpcns4.Lib")
 #pragma comment(lib,"Rtm.Lib")
@@ -7323,23 +7776,29 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"Wldp.Lib")
 #endif
 #pragma comment(lib,"WtsApi32.Lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"Xinput9_1_0.lib")
+#endif
 #pragma comment(lib,"advpack.Lib")
 #pragma comment(lib,"ahadmin.lib")
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"amsi.lib")
 #endif
 #pragma comment(lib,"amstrmid.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"appmgmts.lib")
 #pragma comment(lib,"appmgr.lib")
 #pragma comment(lib,"appnotify.lib")
 #pragma comment(lib,"audiobaseprocessingobject.lib")
 #pragma comment(lib,"audioeng.lib")
 #pragma comment(lib,"audiomediatypecrt.lib")
+#endif
 #pragma comment(lib,"aux_ulib.lib")
 #pragma comment(lib,"avifil32.Lib")
 #pragma comment(lib,"avrt.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"basesrv.lib")
+#endif
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"bcp47mrm.Lib")
 #endif
@@ -7349,21 +7808,29 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"bthprops.lib")
 #pragma comment(lib,"certadm.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"certca.lib")
 #pragma comment(lib,"certcli.lib")
 #pragma comment(lib,"cfgmgr32.lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"cimfs.lib")
 #pragma comment(lib,"cldapi.lib")
 #endif
 #pragma comment(lib,"clfsw32.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"compstui.lib")
+#endif
 #pragma comment(lib,"corrEngine.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"cryptdll.lib")
+#endif
 #pragma comment(lib,"cryptui.lib")
 #pragma comment(lib,"cryptxml.lib")
 #pragma comment(lib,"cscapi.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"cscdll.lib")
+#endif
 #pragma comment(lib,"d2d1.lib")
 #pragma comment(lib,"d3d10.lib")
 #pragma comment(lib,"d3d10_1.lib")
@@ -7372,33 +7839,41 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"d3d12.lib")
 #endif
 #pragma comment(lib,"d3d9.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"d3dcompiler.lib")
+#endif
 #pragma comment(lib,"davclnt.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"dcomp.lib")
 #pragma comment(lib,"ddraw.lib")
 #pragma comment(lib,"devenum.lib")
 #pragma comment(lib,"deviceaccess.lib")
 #pragma comment(lib,"devmgr.lib")
 #pragma comment(lib,"dflayout.lib")
+#endif
 #pragma comment(lib,"dhcpsapi.lib")
 #pragma comment(lib,"dinput8.lib")
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"directml.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"dloadhelper.lib")
+#endif
 #pragma comment(lib,"dmoguids.lib")
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"dmprocessxmlfiltered.lib")
-#endif
 #pragma comment(lib,"dnscrcli.lib")
 #pragma comment(lib,"dnslib.lib")
 #pragma comment(lib,"dnsperf.lib")
 #pragma comment(lib,"dnsrpc.lib")
 #pragma comment(lib,"dnsrslvr.lib")
+#endif
 #pragma comment(lib,"dpx.lib")
 #pragma comment(lib,"dsound.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"dssec.lib")
 #pragma comment(lib,"dststlog.lib")
+#endif
 #pragma comment(lib,"dwmapi.lib")
 #pragma comment(lib,"dwrite.lib")
 #if SDK_VER > SDK_8_1
@@ -7406,51 +7881,73 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"dxcore.lib")
 #endif
 #pragma comment(lib,"dxgi.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"dxguid.lib")
 #pragma comment(lib,"dxtmsft.lib")
 #pragma comment(lib,"dxtrans.lib")
+#endif
 #pragma comment(lib,"dxva2.lib")
 #pragma comment(lib,"eappcfg.lib")
 #pragma comment(lib,"eappprxy.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"efswrt.lib")
+#endif
 #pragma comment(lib,"ehstorguids.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"els.lib")
+#endif
 #pragma comment(lib,"esent.lib")
 #pragma comment(lib,"evr.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"feclient.lib")
+#endif
 #pragma comment(lib,"fileextd.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"fltLib.lib")
+#endif
 #pragma comment(lib,"fontsub.lib")
 #pragma comment(lib,"fwpuclnt.lib")
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"gameinput.lib")
 #endif
 #pragma comment(lib,"gdiplus.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"glmf32.lib")
+#endif
 #pragma comment(lib,"gpmuuid.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"hbaapi.lib")
 #pragma comment(lib,"hhsetup.lib")
 #pragma comment(lib,"hid.lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"hrtfapo.lib")
 #endif
 #pragma comment(lib,"httpapi.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"iashlpr.lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"icu.lib")
 #pragma comment(lib,"icuin.Lib")
 #pragma comment(lib,"icuuc.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"iesetup.lib")
+#endif
 #pragma comment(lib,"imgutil.Lib")
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"inkobjcore.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"inseng.lib")
+#endif
 #pragma comment(lib,"iphlpapi.lib")
 #pragma comment(lib,"iscsidsc.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"jsrt.lib")
 #pragma comment(lib,"kerbcli.lib")
+#endif
 #pragma comment(lib,"kernel32.Lib")
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"keycredmgr.lib")
@@ -7463,7 +7960,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"locationapi.lib")
 #pragma comment(lib,"magnification.lib")
 #pragma comment(lib,"mbnapi_uuid.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"mciole32.lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"mdmlocalmanagement.lib")
 #endif
@@ -7473,33 +7972,46 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"mfsensorgroup.lib")
 #endif
 #pragma comment(lib,"mfuuid.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"mi.lib")
 #pragma comment(lib,"mincore.lib")
 #pragma comment(lib,"mincore_downlevel.lib")
 #pragma comment(lib,"mmdevapi.lib")
 #pragma comment(lib,"mprsnap.lib")
 #pragma comment(lib,"msaatext.lib")
+#endif
 #pragma comment(lib,"msdasc.lib")
 #pragma comment(lib,"msdelta.lib")
 #pragma comment(lib,"msdmo.lib")
 #pragma comment(lib,"msdrm.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"mspatcha.lib")
+#endif
 #pragma comment(lib,"mspatchc.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"mspbase.lib")
 #pragma comment(lib,"msports.lib")
 #pragma comment(lib,"msv1_0.lib")
+#endif
 #pragma comment(lib,"msvfw32.Lib")
 #pragma comment(lib,"msxml6.lib")
 #pragma comment(lib,"mtxdm.lib")
 #pragma comment(lib,"muiload.lib")
 #pragma comment(lib,"ncrypt.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"nddeapi.lib")
+#endif
 #pragma comment(lib,"ndfapi.lib")
 #pragma comment(lib,"ndproxystub.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"netlib.lib")
+#endif
 #pragma comment(lib,"newdev.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"ninput.lib")
+#endif
 #pragma comment(lib,"normaliz.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"nt.lib")
 #pragma comment(lib,"ntdll.lib")
 #pragma comment(lib,"ntdsa.lib")
@@ -7508,45 +8020,66 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"ntfrsapi.lib")
 #pragma comment(lib,"ntlanman.lib")
 #pragma comment(lib,"ntmarta.lib")
+#endif
 //#pragma comment(lib,"ntstc_libcmt.lib")
 //#pragma comment(lib,"ntstc_msvcrt.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"objsel.lib")
+#endif
 #pragma comment(lib,"odbc32.lib")
 #pragma comment(lib,"odbcbcp.lib")
 #pragma comment(lib,"odbccp32.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"olecli32.lib")
+#endif
 #pragma comment(lib,"oledb.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"olesvr32.lib")
 #pragma comment(lib,"ondemandconnroutehelper.lib")
+#endif
 #pragma comment(lib,"osptk.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"pathcch.lib")
+#endif
 #pragma comment(lib,"powrprof.lib")
 #pragma comment(lib,"prntvpt.lib")
 #pragma comment(lib,"propsys.lib")
 #pragma comment(lib,"psapi.lib")
 #pragma comment(lib,"quartz.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"query.lib")
+#endif
 #pragma comment(lib,"qwave.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"rasuser.lib")
+#endif
 #pragma comment(lib,"resutils.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"rometadata.lib")
 #pragma comment(lib,"rpcexts.lib")
 #pragma comment(lib,"rpcproxy.lib")
 #pragma comment(lib,"rpcutil.lib")
+#endif
 #pragma comment(lib,"rstrtmgr.lib")
 #pragma comment(lib,"rtutils.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"runtimeobject.lib")
 #pragma comment(lib,"samlib.lib")
 #pragma comment(lib,"samsrv.lib")
+#endif
 #pragma comment(lib,"sas.lib")
 #pragma comment(lib,"sbtsv.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"scecli.lib")
 #pragma comment(lib,"scesrv.lib")
 #pragma comment(lib,"schannel.lib")
 #pragma comment(lib,"security.lib")
 #pragma comment(lib,"sens.lib")
+#endif
 #pragma comment(lib,"sensorsapi.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"shcore.lib")
+#endif
 #pragma comment(lib,"shdocvw.lib")
 #pragma comment(lib,"shell32.lib")
 #pragma comment(lib,"slc.lib")
@@ -7555,44 +8088,62 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"softintrin.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"spoolss.lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"srpapi.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"ssdpapi.lib")
 #pragma comment(lib,"strmbase.lib")
+#endif
 #pragma comment(lib,"strmiids.lib")
 #pragma comment(lib,"strsafe.lib")
 #pragma comment(lib,"structuredquery.lib")
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"swdevice.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"synchronization.lib")
+#endif
 #pragma comment(lib,"t2embed.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"tapi32l.lib")
+#endif
 #pragma comment(lib,"taskschd.lib")
 #pragma comment(lib,"tbs.lib")
 #pragma comment(lib,"tdh.lib")
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"tokenbinding.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"tsec.lib")
+#endif
 #pragma comment(lib,"tspubplugincom.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"twinapi.lib")
+#endif
 #pragma comment(lib,"txfw32.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"ualapi.lib")
 #pragma comment(lib,"umpdddi.lib")
 #pragma comment(lib,"vccomsup.lib")
+#endif
 #pragma comment(lib,"vds_uuid.lib")
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"volatileaccessu.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"vscmgr.lib")
+#endif
 #pragma comment(lib,"vss_uuid.lib")
 #pragma comment(lib,"vssapi.lib")
 #pragma comment(lib,"vstorinterface.lib")
 #pragma comment(lib,"wbemuuid.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"wcmapi.lib")
+#endif
 #pragma comment(lib,"wcmguid.lib")
 #pragma comment(lib,"wdsClientAPI.LIB")
 #pragma comment(lib,"wdsbp.lib")
@@ -7602,20 +8153,30 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"webauthn.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"websocket.lib")
+#endif
 #pragma comment(lib,"wecapi.lib")
 #pragma comment(lib,"wevtapi.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"wiaservc.lib")
+#endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"wiautil.lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"windows.ai.machinelearning.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"windows.data.pdf.lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"windows.media.mediacontrol.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"windows.networking.lib")
 #pragma comment(lib,"windows.ui.lib")
+#endif
 #pragma comment(lib,"windowscodecs.lib")
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"windowscoreheadless.Lib")
@@ -7632,12 +8193,16 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"winsqlite3.lib")
 #endif
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"winsta.lib")
 #pragma comment(lib,"winusb.lib")
+#endif
 #pragma comment(lib,"wlanapi.lib")
 #pragma comment(lib,"wlanui.lib")
 #pragma comment(lib,"wmcodecdspuuid.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"wmip.lib")
+#endif
 #pragma comment(lib,"wmiutils.lib")
 #pragma comment(lib,"wmvcore.lib")
 #if SDK_VER > SDK_8_1
@@ -7645,16 +8210,22 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"workspaceax.lib")
 #pragma comment(lib,"wscapi.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"wsclient.lib")
+#endif
 #pragma comment(lib,"wsdapi.lib")
 #pragma comment(lib,"wsmsvc.lib")
 #pragma comment(lib,"wuguid.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"xapobase.lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"xapobase2_8.lib")
 #endif
 #pragma comment(lib,"xaswitch.lib")
+#if !IS_XP_TOOLSET_SUPPORT
 #pragma comment(lib,"xaudio2.lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"xaudio2_8.lib")
 #endif
