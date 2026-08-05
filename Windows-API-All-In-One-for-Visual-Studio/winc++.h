@@ -671,7 +671,9 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "PhotoAcquire.h"
 #endif
 #include <Devpropdef.h>
+#if SDK_VER > TOOLSET_90
 #include "PortableDeviceConnectApi.h"
+#endif
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "Presentation.h"
 #endif
@@ -1688,7 +1690,9 @@ typedef enum _SECURITY_LOGON_TYPE {
 #ifdef _JSRT_
 #include "cper.h"
 #endif
+#if SDK_VER > TOOLSET_90
 #include "cperguid.h"
+#endif
 #include "Cpl.h"
 #if VS_VERSION > VC_2
 #include <crtdbg.h>
@@ -2400,7 +2404,9 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if SDK_VER > SDK_8_1
 #include "dpa_dsa.inl"
 #endif
+#if SDK_VER > TOOLSET_90
 #include "dmksctrl.h"
+#endif
 #if VS_VER > VS_2005
 #include "dmo.h"
 #include "dmodshow.h"
@@ -2439,7 +2445,9 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if TOOLSET > 90
 #include "dsconf.h"
 #endif
+#if SDK_VER > TOOLSET_90
 #include "drt.h"
+#endif
 #if VS_VER > VC_6
 #include "DsGetDC.h"
 #endif
@@ -4638,7 +4646,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include <reason.h>             // get the public reasons"
 #endif
 // failed in VS2026. Redefinition at ComSvcs.h, line 17835
-#if VS_VER < VS_2022 && VS_VER != VS_2013 && SDK_VER != TOOLSET_VS_2012	&& SDK_VER != TOOLSET_100
+#if VS_VER < VS_2022 && VS_VER != VS_2013 && SDK_VER != TOOLSET_VS_2012	&& SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
 #include "recapis.h"
 #endif
 #if VS_VER > VS_2005
@@ -5661,7 +5669,7 @@ typedef unsigned __int64   uintmax_t;
 #endif
 // Copied from Microsoft Visual Studio 8\VC\PlatformSDK\Include\WinDef.h
 // tcpioctl.h use these definitions. This is the minimal fix already.
-#if SDK_VER >= TOOLSET_100 || IS_XP_TOOLSET_SUPPORT
+#if SDK_VER >= TOOLSET_90 || IS_XP_TOOLSET_SUPPORT
 typedef unsigned long ulong;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
@@ -6512,7 +6520,7 @@ enum Gender {
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <widemath.h>                // 64-bit and 128-bit math helper functions"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
 #include "wcmapi.h"
 #endif
 #include "wcmconfig.h"
@@ -6584,7 +6592,7 @@ typedef LPVOID* PPVOID;
 #endif
 #include "wiatwcmp.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
 #include "wiautil.h"
 #endif
 #if VS_VER > VS_2005
@@ -6600,7 +6608,7 @@ typedef LPVOID* PPVOID;
 #define ARGUMENT_PRESENT(ArgumentPointer) \
   ((CHAR*)((ULONG_PTR)(ArgumentPointer)) != (CHAR*)NULL)
 #endif
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
 #include "winbio_adapter.h"
 #include "winbio_ioctl.h"
 #endif
@@ -7179,7 +7187,7 @@ typedef void* HCERTSTORE;
 #include "BdaTypes.h"
 #endif
 //#include "CodeAnalysis/sourceannotations.h"
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
 #include "DirectXCollision.inl"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -7199,12 +7207,14 @@ typedef void* HCERTSTORE;
 #include "FunctionDiscoveryError.h"
 #include "FunctionDiscoveryKeys.h"
 #endif
+#if SDK_VER != TOOLSET_90 // redefinition of CFunctionDiscoveryNotificationWrapper
 #include "FunctionDiscoveryNotification.h"
+#endif
 #include "FunctionDiscoveryServiceIDs.h"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include "SessdirPublicTypes.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
 #include "SpellCheck.h"
 #endif
 #include "StructuredQuery.h"
@@ -7364,7 +7374,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include "adodef.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
 #include "adoint_backcompat.h"
 #endif
 #if VS_VER > VC_5
@@ -7417,7 +7427,7 @@ typedef void* HCERTSTORE;
 #endif
 // a test avoidation
 // LPCOMPONENT was defined in shlobj_core.h already.
-#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT	&& SDK_VER != TOOLSET_VS_2012 && SDK_VER != TOOLSET_100
+#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT	&& SDK_VER != TOOLSET_VS_2012 && SDK_VER != TOOLSET_100	&& SDK_VER != TOOLSET_90
 #include "mmc.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -7489,9 +7499,14 @@ typedef UCHAR KIRQL;
 #if defined(__clang__)
 #include "cpuid.h"
 #endif
+#if !defined D3D10_IGNORE_SDK_LAYERS && SDK_VER == TOOLSET_90
+#define D3D10_IGNORE_SDK_LAYERS
+#endif
 #include "d3d10.h"
+#if SDK_VER != TOOLSET_90
 #include "d3d11.h"
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
+#endif
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
 #include "d3d11_1.h"
 #if SDK_VER > TOOLSET_VS_2012
 #include "d3d11_2.h"
