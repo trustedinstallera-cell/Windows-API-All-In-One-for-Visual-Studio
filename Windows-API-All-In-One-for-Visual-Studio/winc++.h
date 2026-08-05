@@ -1193,7 +1193,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_6
 #include "adodef.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_VS_2010
 #include "adoint_backcompat.h"
 #endif
 #if VS_VER > VC_5
@@ -1811,7 +1811,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if _MSC_VER > 1500
 #include <d3dcommon.h>
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include "d3dcompiler.inl"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -1897,7 +1897,7 @@ DECLARE_HANDLE(HSZ);
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <ddraw.h>
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include <dx95type.h>
 #endif
 #if IS_XP_TOOLSET_SUPPORT || SDK_VER < TOOLSET_VS_2013
@@ -2297,7 +2297,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #endif
 #endif
 #include "ddrawgdi.h"
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include <ddrawi.h>
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -2370,7 +2370,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "DirectXCollision.h"
 #include "DirectXColors.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #ifdef I
 #pragma push_macro("I")
 #undef I
@@ -2766,7 +2766,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if VS_VER > VC_4
 #include "IDispIds.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include "ieautomation.h"
 #endif
 //#include "ieee8021q.h"
@@ -3536,7 +3536,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #endif
 #include "msinkaut15_i.c"
 #include "msinkaut_i.c"
-#if (VS_VER < VS_2022) && (VS_VER != VS_2013) && (SDK_VER != TOOLSET_VS_2012)
+#if (VS_VER < VS_2022) && (VS_VER != VS_2013) && (SDK_VER != TOOLSET_VS_2012) && SDK_VER > TOOLSET_100
 #include "msoav.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -4433,7 +4433,7 @@ interface IXMLDOMDocument2;
 #include <powerbase.h>
 #include <powersetting.h>
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include <printoem.h>
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -4638,7 +4638,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include <reason.h>             // get the public reasons"
 #endif
 // failed in VS2026. Redefinition at ComSvcs.h, line 17835
-#if VS_VER < VS_2022 && VS_VER != VS_2013 && SDK_VER != TOOLSET_VS_2012
+#if VS_VER < VS_2022 && VS_VER != VS_2013 && SDK_VER != TOOLSET_VS_2012	&& SDK_VER != TOOLSET_100
 #include "recapis.h"
 #endif
 #if VS_VER > VS_2005
@@ -5661,7 +5661,7 @@ typedef unsigned __int64   uintmax_t;
 #endif
 // Copied from Microsoft Visual Studio 8\VC\PlatformSDK\Include\WinDef.h
 // tcpioctl.h use these definitions. This is the minimal fix already.
-#if SDK_VER >= TOOLSET_VS_2012 || IS_XP_TOOLSET_SUPPORT
+#if SDK_VER >= TOOLSET_100 || IS_XP_TOOLSET_SUPPORT
 typedef unsigned long ulong;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
@@ -5791,7 +5791,7 @@ typedef unsigned short ushort;
 #if cppver >= 2011
 #include <type_traits>
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include "ual.h"
 #endif
 #if MSVC_VER > VS_2013
@@ -6485,7 +6485,7 @@ enum Gender {
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "warning.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include <wbcl.h>
 #endif
 #if VS_VER > VC_6
@@ -6512,7 +6512,7 @@ enum Gender {
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <widemath.h>                // 64-bit and 128-bit math helper functions"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
 #include "wcmapi.h"
 #endif
 #include "wcmconfig.h"
@@ -6584,7 +6584,7 @@ typedef LPVOID* PPVOID;
 #endif
 #include "wiatwcmp.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
 #include "wiautil.h"
 #endif
 #if VS_VER > VS_2005
@@ -6600,7 +6600,7 @@ typedef LPVOID* PPVOID;
 #define ARGUMENT_PRESENT(ArgumentPointer) \
   ((CHAR*)((ULONG_PTR)(ArgumentPointer)) != (CHAR*)NULL)
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
 #include "winbio_adapter.h"
 #include "winbio_ioctl.h"
 #endif
@@ -7179,7 +7179,7 @@ typedef void* HCERTSTORE;
 #include "BdaTypes.h"
 #endif
 //#include "CodeAnalysis/sourceannotations.h"
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
 #include "DirectXCollision.inl"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -7204,7 +7204,7 @@ typedef void* HCERTSTORE;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include "SessdirPublicTypes.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
 #include "SpellCheck.h"
 #endif
 #include "StructuredQuery.h"
@@ -7364,7 +7364,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include "adodef.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
 #include "adoint_backcompat.h"
 #endif
 #if VS_VER > VC_5
@@ -7417,7 +7417,7 @@ typedef void* HCERTSTORE;
 #endif
 // a test avoidation
 // LPCOMPONENT was defined in shlobj_core.h already.
-#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT	&& SDK_VER != TOOLSET_VS_2012
+#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT	&& SDK_VER != TOOLSET_VS_2012 && SDK_VER != TOOLSET_100
 #include "mmc.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -7491,7 +7491,7 @@ typedef UCHAR KIRQL;
 #endif
 #include "d3d10.h"
 #include "d3d11.h"
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100
 #include "d3d11_1.h"
 #if SDK_VER > TOOLSET_VS_2012
 #include "d3d11_2.h"
