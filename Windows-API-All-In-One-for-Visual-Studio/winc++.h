@@ -140,6 +140,10 @@
 #define MSVC_VER VS_VERSION
 #define MSVC_VERSION VS_VERSION
 
+#ifdef _WIN32_WINNT
+#define __WIN32_WINNT WIN32_WINNT
+#endif
+
 #if VS_VER <= VS_2005
 #ifndef _WIN32_WINNT
 #define TIP "Note: _WIN32_WINNT is not defined. Assuming to default operation system "
@@ -164,6 +168,7 @@
 #define SDK_10_0_15086_0 0x0A000000
 #define SDK_10_0_19041_0 0x0A000008
 #define SDK_10_0_22621_0 0x0A00000C
+#define SDK_10_0_26100_0 0x0A000010
 #define TOOLSET_VS_2008 TOOLSET_90
 #define TOOLSET_VS_2010 TOOLSET_100
 #define TOOLSET_VS_2012 TOOLSET_110
@@ -173,7 +178,34 @@
 #define TOOLSET_VS_2019 TOOLSET_141
 #define TOOLSET_VS_2022 0x0A000012
 #define TOOLSET_VS_2026 0x0A000014
+
+#ifndef __WIN32_WINNT
+#if defined NTDDI_WIN11_DT
+#define SDK_VERSION TOOLSET_VS_2026
+//#elif defined NTDDI_WIN11_GE
+//#define SDK_VWESION SDK_10_0_26100_0
+#elif defined NTDDI_WIN10_NI
+#define SDK_VERSION SDK_10_0_22621_0
+#elif defined NTDDI_WIN10_VB
+#define SDK_VERSION SDK_10_0_19041_0
+#elif defined NTDDI_WIN10_RS2
+#define SDK_VERSION SDK_10_0_15086_0
+#elif defined NTDDI_WIN10 || defined NTDDI_WINTHRESHOLD
+#define SDK_VERSION SDK_10_0_10240_0
+#elif defined NTDDI_WINBLUE
+#define SDK_VERSION SDK_8_1
+#elif defined NTDDI_WIN7
+#define SDK_VERSION TOOLSET_100
+#elif defined NTDDI_LONGHORN
+#define SDK_VERSION TOOLSET_90
+#else
+#define SDK_VERSION /*TOOLSET_90*/ \
+0
+#endif
+#else
+#undef __WIN32_WINNT
 #define SDK_VERSION NTDDI_VERSION
+#endif
 #define SDK_VER SDK_VERSION
 #define IS_XP_TOOLSET_SUPPORT ((defined _USING_V110_SDK71_) && (VS_VER <= VS_2019)) // Current SDK Version: 0x06010000
 
@@ -3290,7 +3322,7 @@ typedef struct _UNICODE_STRING {
 #include "Mddefw.h"
 #endif
 #if SDK_VER > TOOLSET_VS_2022
-#include "mdl.h"
+//#include "mdl.h"
 #endif
 #if VS_VER > VC_5
 #include <mdmsg.h>
@@ -3400,7 +3432,7 @@ typedef struct _UNICODE_STRING {
 #include "mixerocx.h"
 #endif
 #if SDK_VER > TOOLSET_VS_2022
-#include "mmddk.h"
+//#include "mmddk.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "mmeapi.h"
@@ -3418,7 +3450,7 @@ typedef struct _UNICODE_STRING {
 #endif
 #include <mmsystem.h>
 #if SDK_VER > TOOLSET_VS_2022
-#include "module.h"
+//#include "module.h"
 #endif
 #if VS_VER > VS_2005
 #include "Mpeg2Error.h"
@@ -4687,14 +4719,14 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
 #include <roapi.h>
 #endif
+#ifndef MAX_ROUTING_DOMAIN_NAME_LEN
+#define MAX_ROUTING_DOMAIN_NAME_LEN 255
+#endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #ifdef __cplusplus_winrt
 #include "robuffer.h"
 #endif
 //#define MPR60 1
-#ifndef MAX_ROUTING_DOMAIN_NAME_LEN
-#define MAX_ROUTING_DOMAIN_NAME_LEN 255
-#endif
 #include "Routprot.h"
 #include "roparameterizediid.h"
 #include "roregistrationapi.h"
