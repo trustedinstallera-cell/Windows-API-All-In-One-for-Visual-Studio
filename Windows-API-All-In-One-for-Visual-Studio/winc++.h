@@ -7561,6 +7561,7 @@ typedef UCHAR KIRQL;
 extern "C" HWND WINAPI GetConsoleWindow(VOID);
 extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwProcessCount);
 #endif
+#endif
 
 // libraries
 #if defined LINK_ALL
@@ -7570,14 +7571,14 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"Thunk32.Lib")
 #pragma comment(lib,"VdmDbg.Lib")
 #pragma comment(lib,"Wow32.Lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"apidll.lib")
 #pragma comment(lib,"int64.lib")
 #pragma comment(lib,"jetoledb.lib")
 #pragma comment(lib,"ntvdm.lib")
 #endif
 #pragma comment(lib,"patchwiz.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"twain_32.lib")
 #endif
 #pragma comment(lib,"unicows.lib")
@@ -7598,19 +7599,19 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"IsolatedWindowsEnvironmentUtils.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"d3dcsx.lib")
 #pragma comment(lib,"d3dcsxd.lib")
 #endif
 #pragma comment(lib,"dciman32.lib")
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_VS_2012
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100 && SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"easregprov.lib")
 #endif
 #pragma comment(lib,"fxsutility.lib")
 #pragma comment(lib,"infocardapi.Lib")
 #pragma comment(lib,"winfax.lib")
 #pragma comment(lib,"wsbapp_uuid.Lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"wsbonline.lib")
 #endif
 #endif
@@ -7639,7 +7640,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"AuthZ.Lib")
 #pragma comment(lib,"Bits.Lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"BluetoothApis.lib")
 #pragma comment(lib,"BufferOverflow.lib")
 #pragma comment(lib,"BufferOverflowU.lib")
@@ -7654,7 +7655,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"ComCtl32.Lib")
 #pragma comment(lib,"ComDlg32.Lib")
 #pragma comment(lib,"ComSvcs.Lib")
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_VS_2012
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100 && SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"CompPkgSup.lib")
 #endif
 #if SDK_VER > SDK_8_1
@@ -7679,7 +7680,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"DtcHelp.Lib")
 #pragma comment(lib,"ElsCore.lib")
 #pragma comment(lib,"FaultRep.Lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"FhSvcCtl.lib")
 #endif
 #pragma comment(lib,"FrameDyd.Lib")
@@ -7705,7 +7706,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"LoadPerf.Lib")
 #pragma comment(lib,"Lz32.Lib")
 #pragma comment(lib,"MAPI32.Lib")
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_VS_2012
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100 && SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"MDMRegistration.lib")
 #endif
 #pragma comment(lib,"MMC.Lib")
@@ -7714,11 +7715,11 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"MSRating.Lib")
 #pragma comment(lib,"MSTask.Lib")
 #pragma comment(lib,"Mf.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"Mfcore.lib")
 #endif
 #pragma comment(lib,"Mfplat.lib")
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_VS_2012
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100 && SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"Mfsrcsnk.lib")
 #endif
 #pragma comment(lib,"MgmtAPI.Lib")
@@ -7739,7 +7740,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"NetSh.Lib")
 #pragma comment(lib,"NtDsAPI.Lib")
 #pragma comment(lib,"NtQuery.Lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"OemLicense.lib")
 #endif
 #pragma comment(lib,"Ole32.Lib")
@@ -7756,7 +7757,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"OpenGL32.Lib")
 #pragma comment(lib,"Pdh.Lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"PeerDist.lib")
 #endif
 #pragma comment(lib,"PhotoAcquireUID.lib")
@@ -7766,7 +7767,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"RASAPI32.Lib")
 #pragma comment(lib,"RASDlg.Lib")
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_VS_2012
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100 && SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"RTWorkQ.lib")
 #endif
 #pragma comment(lib,"RpcRT4.Lib")
@@ -7824,7 +7825,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"Wldp.Lib")
 #endif
 #pragma comment(lib,"WtsApi32.Lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"Xinput9_1_0.lib")
 #endif
 #pragma comment(lib,"advpack.Lib")
@@ -7833,7 +7834,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"amsi.lib")
 #endif
 #pragma comment(lib,"amstrmid.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"appmgmts.lib")
 #pragma comment(lib,"appmgr.lib")
 #if SDK_VER > TOOLSET_VS_2012
@@ -7846,7 +7847,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"aux_ulib.lib")
 #pragma comment(lib,"avifil32.Lib")
 #pragma comment(lib,"avrt.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"basesrv.lib")
 #endif
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
@@ -7858,7 +7859,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"bthprops.lib")
 #pragma comment(lib,"certadm.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"certca.lib")
 #pragma comment(lib,"certcli.lib")
 #pragma comment(lib,"cfgmgr32.lib")
@@ -7868,17 +7869,17 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"cldapi.lib")
 #endif
 #pragma comment(lib,"clfsw32.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"compstui.lib")
 #endif
 #pragma comment(lib,"corrEngine.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"cryptdll.lib")
 #endif
 #pragma comment(lib,"cryptui.lib")
 #pragma comment(lib,"cryptxml.lib")
 #pragma comment(lib,"cscapi.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"cscdll.lib")
 #endif
 #pragma comment(lib,"d2d1.lib")
@@ -7889,11 +7890,11 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"d3d12.lib")
 #endif
 #pragma comment(lib,"d3d9.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"d3dcompiler.lib")
 #endif
 #pragma comment(lib,"davclnt.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"dcomp.lib")
 #pragma comment(lib,"ddraw.lib")
 #pragma comment(lib,"devenum.lib")
@@ -7906,7 +7907,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"directml.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"dloadhelper.lib")
 #endif
 #pragma comment(lib,"dmoguids.lib")
@@ -7920,7 +7921,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"dpx.lib")
 #pragma comment(lib,"dsound.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"dssec.lib")
 #pragma comment(lib,"dststlog.lib")
 #endif
@@ -7931,7 +7932,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"dxcore.lib")
 #endif
 #pragma comment(lib,"dxgi.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"dxguid.lib")
 #pragma comment(lib,"dxtmsft.lib")
 #pragma comment(lib,"dxtrans.lib")
@@ -7939,20 +7940,20 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"dxva2.lib")
 #pragma comment(lib,"eappcfg.lib")
 #pragma comment(lib,"eappprxy.lib")
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_VS_2012
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100 && SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"efswrt.lib")
 #endif
 #pragma comment(lib,"ehstorguids.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"els.lib")
 #endif
 #pragma comment(lib,"esent.lib")
 #pragma comment(lib,"evr.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"feclient.lib")
 #endif
 #pragma comment(lib,"fileextd.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"fltLib.lib")
 #endif
 #pragma comment(lib,"fontsub.lib")
@@ -7961,11 +7962,11 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"gameinput.lib")
 #endif
 #pragma comment(lib,"gdiplus.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"glmf32.lib")
 #endif
 #pragma comment(lib,"gpmuuid.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"hbaapi.lib")
 #pragma comment(lib,"hhsetup.lib")
 #pragma comment(lib,"hid.lib")
@@ -7974,7 +7975,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"hrtfapo.lib")
 #endif
 #pragma comment(lib,"httpapi.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"iashlpr.lib")
 #endif
 #if SDK_VER > SDK_8_1
@@ -7982,19 +7983,19 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"icuin.Lib")
 #pragma comment(lib,"icuuc.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"iesetup.lib")
 #endif
 #pragma comment(lib,"imgutil.Lib")
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"inkobjcore.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"inseng.lib")
 #endif
 #pragma comment(lib,"iphlpapi.lib")
 #pragma comment(lib,"iscsidsc.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #if SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"jsrt.lib")
 #endif
@@ -8012,7 +8013,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"locationapi.lib")
 #pragma comment(lib,"magnification.lib")
 #pragma comment(lib,"mbnapi_uuid.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"mciole32.lib")
 #endif
 #if SDK_VER > SDK_8_1
@@ -8024,7 +8025,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"mfsensorgroup.lib")
 #endif
 #pragma comment(lib,"mfuuid.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"mi.lib")
 #pragma comment(lib,"mincore.lib")
 #pragma comment(lib,"mincore_downlevel.lib")
@@ -8036,11 +8037,11 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"msdelta.lib")
 #pragma comment(lib,"msdmo.lib")
 #pragma comment(lib,"msdrm.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"mspatcha.lib")
 #endif
 #pragma comment(lib,"mspatchc.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"mspbase.lib")
 #pragma comment(lib,"msports.lib")
 #pragma comment(lib,"msv1_0.lib")
@@ -8050,20 +8051,20 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"mtxdm.lib")
 #pragma comment(lib,"muiload.lib")
 #pragma comment(lib,"ncrypt.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"nddeapi.lib")
 #endif
 #pragma comment(lib,"ndfapi.lib")
 #pragma comment(lib,"ndproxystub.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"netlib.lib")
 #endif
 #pragma comment(lib,"newdev.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"ninput.lib")
 #endif
 #pragma comment(lib,"normaliz.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"nt.lib")
 #pragma comment(lib,"ntdll.lib")
 #pragma comment(lib,"ntdsa.lib")
@@ -8075,24 +8076,24 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 //#pragma comment(lib,"ntstc_libcmt.lib")
 //#pragma comment(lib,"ntstc_msvcrt.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"objsel.lib")
 #endif
 #pragma comment(lib,"odbc32.lib")
 #pragma comment(lib,"odbcbcp.lib")
 #pragma comment(lib,"odbccp32.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"olecli32.lib")
 #endif
 #pragma comment(lib,"oledb.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"olesvr32.lib")
 #if SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"ondemandconnroutehelper.lib")
 #endif
 #endif
 #pragma comment(lib,"osptk.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"pathcch.lib")
 #endif
 #pragma comment(lib,"powrprof.lib")
@@ -8100,15 +8101,15 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"propsys.lib")
 #pragma comment(lib,"psapi.lib")
 #pragma comment(lib,"quartz.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"query.lib")
 #endif
 #pragma comment(lib,"qwave.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"rasuser.lib")
 #endif
 #pragma comment(lib,"resutils.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"rometadata.lib")
 #pragma comment(lib,"rpcexts.lib")
 #pragma comment(lib,"rpcproxy.lib")
@@ -8116,14 +8117,14 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"rstrtmgr.lib")
 #pragma comment(lib,"rtutils.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"runtimeobject.lib")
 #pragma comment(lib,"samlib.lib")
 #pragma comment(lib,"samsrv.lib")
 #endif
 #pragma comment(lib,"sas.lib")
 #pragma comment(lib,"sbtsv.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"scecli.lib")
 #pragma comment(lib,"scesrv.lib")
 #pragma comment(lib,"schannel.lib")
@@ -8131,7 +8132,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"sens.lib")
 #endif
 #pragma comment(lib,"sensorsapi.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"shcore.lib")
 #endif
 #pragma comment(lib,"shdocvw.lib")
@@ -8142,13 +8143,13 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"softintrin.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"spoolss.lib")
 #endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"srpapi.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"ssdpapi.lib")
 #pragma comment(lib,"strmbase.lib")
 #endif
@@ -8158,11 +8159,11 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"swdevice.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"synchronization.lib")
 #endif
 #pragma comment(lib,"t2embed.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"tapi32l.lib")
 #endif
 #pragma comment(lib,"taskschd.lib")
@@ -8171,15 +8172,15 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"tokenbinding.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"tsec.lib")
 #endif
 #pragma comment(lib,"tspubplugincom.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"twinapi.lib")
 #endif
 #pragma comment(lib,"txfw32.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"ualapi.lib")
 #pragma comment(lib,"umpdddi.lib")
 #pragma comment(lib,"vccomsup.lib")
@@ -8188,14 +8189,14 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"volatileaccessu.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"vscmgr.lib")
 #endif
 #pragma comment(lib,"vss_uuid.lib")
 #pragma comment(lib,"vssapi.lib")
 #pragma comment(lib,"vstorinterface.lib")
 #pragma comment(lib,"wbemuuid.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"wcmapi.lib")
 #endif
 #pragma comment(lib,"wcmguid.lib")
@@ -8207,21 +8208,21 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"webauthn.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"websocket.lib")
 #endif
 #pragma comment(lib,"wecapi.lib")
 #pragma comment(lib,"wevtapi.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"wiaservc.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"wiautil.lib")
 #endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"windows.ai.machinelearning.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #if SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"windows.data.pdf.lib")
 #endif
@@ -8229,7 +8230,7 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"windows.media.mediacontrol.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"windows.networking.lib")
 #pragma comment(lib,"windows.ui.lib")
 #endif
@@ -8249,14 +8250,14 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"winsqlite3.lib")
 #endif
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"winsta.lib")
 #pragma comment(lib,"winusb.lib")
 #endif
 #pragma comment(lib,"wlanapi.lib")
 #pragma comment(lib,"wlanui.lib")
 #pragma comment(lib,"wmcodecdspuuid.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"wmip.lib")
 #endif
 #pragma comment(lib,"wmiutils.lib")
@@ -8266,20 +8267,20 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"workspaceax.lib")
 #pragma comment(lib,"wscapi.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"wsclient.lib")
 #endif
 #pragma comment(lib,"wsdapi.lib")
 #pragma comment(lib,"wsmsvc.lib")
 #pragma comment(lib,"wuguid.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"xapobase.lib")
 #endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"xapobase2_8.lib")
 #endif
 #pragma comment(lib,"xaswitch.lib")
-#if !IS_XP_TOOLSET_SUPPORT
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"xaudio2.lib")
 #endif
 #if SDK_VER > SDK_8_1
@@ -8295,8 +8296,6 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"xpsdocumenttargetprint.lib")
 #endif
 #pragma comment(lib,"xpsprint.lib")
-#endif
-
 #endif
 
 #ifdef _NOMINMAX
