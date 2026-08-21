@@ -144,11 +144,22 @@
 #define __WIN32_WINNT WIN32_WINNT
 #endif
 
+
 #if VS_VER <= VS_2005
 #ifndef _WIN32_WINNT
 #define TIP "Note: _WIN32_WINNT is not defined. Assuming to default operation system "
+#if VS_VER == VS_2003
+#ifndef WINVER
+#pragma message(TIP"Windows 95 (0x0400)")
+#define WINVER 0x0400
+#define _WIN32_WINNT 0x0400
+#else
+#define _WIN32_WINNT WINVER
+#endif
+#endif
 #if VS_VER == VS_2005
 #pragma message(TIP"Windows 2000 (0x0500)")
+#define _WIN32_WINNT 0x0500
 #endif
 #endif
 #define NTDDI_VERSION_FROM_WIN32_WINNT2(ver)    ver##0000
@@ -169,6 +180,8 @@
 #define SDK_10_0_19041_0 0x0A000008
 #define SDK_10_0_22621_0 0x0A00000C
 #define SDK_10_0_26100_0 0x0A000010
+#define TOOLSET_VS_2003 0x04000000
+#define TOOLSET_VS_2005 0x05000000
 #define TOOLSET_VS_2008 TOOLSET_90
 #define TOOLSET_VS_2010 TOOLSET_100
 #define TOOLSET_VS_2012 TOOLSET_110
@@ -199,8 +212,14 @@
 #elif defined NTDDI_LONGHORN
 #define SDK_VERSION TOOLSET_90
 #else
+#if VS_VER == VS_2005
+#define SDK_VERSION TOOLSET_VS_2005
+#elif VS_VER == VS_2003
+#define SDK_VERSION TOOLSET_VS_2003
+#else
 #define SDK_VERSION /*TOOLSET_90*/ \
 0
+#endif
 #endif
 #else
 #undef __WIN32_WINNT
@@ -263,8 +282,8 @@
 #if MSVC_VER == VS_2005
 #pragma warning(disable: 4819)
 #endif
-#if MSVC_VER >= VS_2005
 #define _CRT_SECURE_NO_WARNINGS
+#if MSVC_VER >= VS_2003
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define _SILENCE_ALL_CXX20_DEPRECATION_WARNINGS
 #define _SILENCE_ALL_CXX23_DEPRECATION_WARNINGS
@@ -506,11 +525,11 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "shobjidl_core.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "tapi3ds.h"	 // included ddraw, but No such file or directory
 #include "tapi3if.h"
 #endif
-#if VS_VER > VS_2005 // no such header at all
+#if SDK_VER > TOOLSET_VS_2005 // no such header at all
 #include "textstor.h"
 #endif
 #if VS_VER > VC_5
@@ -533,7 +552,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "AppxPackaging.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "AtscPsipParser.h"
 #include "AudioEngineEndpoint.h"
 #endif
@@ -568,7 +587,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VER > VC_5
 #include "DskQuota.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "DvbSiParser.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -593,7 +612,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VER > VC_5
 #include "IAccess.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "IChannelCredentials.h"
 #include "IContact.h"
 #include "IContactProperties.h"
@@ -607,7 +626,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VER > VC_6
 #include <iedial.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "IEPMapi.h"
 #endif
 #if (TOOLSET > 90) && ((defined _UNICODE) || (defined UNICODE))
@@ -615,7 +634,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #endif
 #include "IImgCtx.h"
 //#include "IMessage.h" // none of <mapix.h>, <mapidefs.h> nor <mapitags.h> has been found
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "ISysmon.h"
 #endif
 #if VS_VER > VC_6
@@ -631,7 +650,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "Ilogobj.Hxx"
 #endif
 //#include "ImageHlp.h" // redefinition
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "ImageTranscode.h"
 #endif
 #if VS_VER > VC_4
@@ -662,13 +681,13 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VER > VC_6
 #include "Iwamreg.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "MDhcp.h"
 #endif
 #if VS_VER > VC_5
 #include "MLang.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "MSAAText.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -687,7 +706,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "Mprapi.h"
 #include "MsHtmHst.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "Msp.h"
 #endif
 #if VS_VER > VC_6
@@ -699,10 +718,12 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "PerceptionDevice.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "PhotoAcquire.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include <Devpropdef.h>
+#endif
 #if SDK_VER > TOOLSET_90
 #include "PortableDeviceConnectApi.h"
 #endif
@@ -728,7 +749,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VER > VC_6
 #include "RrasCfg.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "RTSCOM.h"
 #include "SearchAPI.h"
 #endif
@@ -745,7 +766,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VER > VC_5
 #include "SubsMgr.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "SyncMgr.h"
 #endif
 #if VS_VER > VC_6
@@ -755,14 +776,14 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "TSGAuthenticationEngine.h"
 #include "TSGPolicyEngine.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "Tapi3cc.h"
 #endif
 #if VS_VERSION > VC_2
 #include "Richedit.h"
 #endif
 #include "TextServ.h"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "TipAutoComplete.h"
 #endif
 #if TOOLSET > 90
@@ -772,7 +793,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "UIRibbonPropertyHelpers.h"
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "UPnP.h"
 #endif
 #if VS_VER > VC_5
@@ -787,14 +808,14 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "WaaSApi.h"
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "WdsClientApi.h"
 #endif
 #if TOOLSET > 90
 #include "WebEvnts.h"
 #include "WebServices.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "WerApi.h"
 #endif
 #if VS_VER > VC_6
@@ -812,7 +833,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "Windows.Graphics.Capture.Interop.h"
 #include "Windows.Devices.Display.Core.Interop.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "WindowsSideShowAPI.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "WindowsStorageCOM.h"
@@ -822,7 +843,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VER > VC_5
 #include "Winldap.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "Wscapi.h"
 #endif
 #if VS_VER > VC_6
@@ -837,7 +858,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "activdbg100.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "adhoc.h"
 #include "alg.h"
 #endif
@@ -1002,7 +1023,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_6
 #include "NetCon.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "NetSh.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -1077,7 +1098,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "MFMediaEngine.h"
 #include "MFSharingEngine.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "MFTransform.h"
 #endif
 #if VS_VER > VC_5
@@ -1111,7 +1132,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_6
 #include <ProvExce.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "RecDefs.h"
 #include "RecTypes.h"
 #endif
@@ -1121,7 +1142,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if TOOLSET > 90
 #include "SessdirPublicTypes.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "StructuredQuery.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "TpmVscAttestation.h"
@@ -1132,7 +1153,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "VmSavedStateDumpDefs.h"
 #include "WaaSAPITypes.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "Wincodec.h"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -1156,7 +1177,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VS_2003
 #include <SpecStrings.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include <TPCError.h>
 #endif
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
@@ -1239,7 +1260,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "adsnms.h"
 #include "adssts.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "asferr.h"
 #endif
 #if TOOLSET > 90
@@ -1248,7 +1269,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_6
 #include "DSAdmin.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "DSAttrib.h"
 #endif
 #if VS_VER > VC_6
@@ -1275,7 +1296,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #ifdef DXSDK_DIR // Microsoft DirectX SDK required
 #include <amaudio.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "amparse.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "amsi.h"
@@ -1315,7 +1336,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #endif
 //#include "async.h" // no such file
 #include "assert.h"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "atacct.h"
 #endif
 #if VS_VER > VC_5
@@ -1353,7 +1374,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "audiopolicy.h"
 #include "audiostatemonitorapi.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "austream.h"
 #endif
 #if TOOLSET > 90
@@ -1362,7 +1383,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_6
 #include <authz.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "aviriff.h"
 #include "avrfsdk.h"
 #endif
@@ -1392,7 +1413,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_6
 #include <ksmedia.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "bdamedia.h"
 #include "bdatif.h"
 #include "bdatypes.h"
@@ -1400,7 +1421,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_6
 #include "bits.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "bits3_0.h"
 #endif
 #if VS_VER > VS_2002
@@ -1409,13 +1430,13 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_6
 #include "bitsmsg.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "bluetoothapis.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2012)
 #include "bluetoothleapis.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "bthdef.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -1429,7 +1450,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if TOOLSET > 90
 #include "capi.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "casetup.h"
 #endif
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
@@ -1536,7 +1557,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <charconv>
 #endif
 //#include <../shared/netcx/shared/1.0/net/checksum.h>
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "clfs.h"
 //#include "clfslsn.h"
 #include "clfsmgmt.h"
@@ -1556,7 +1577,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VC_6
 #include "CmnQuery.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "codecapi.h"
 #endif
 #ifdef _JSRT_
@@ -1572,15 +1593,19 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "coml2api.h"
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "comlite.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "commapi.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "commctrl.inl"
+#endif
 #include "commdlg.h"
+#if SDK_VER > TOOLSET_VS_2005
 #include "commdlg.inl"
+#endif
 #if VS_VER > VC_6
 #include "commoncontrols.h"
 #endif
@@ -1675,7 +1700,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <consoleapi3.h>
 #endif
 //#include "contactdeviceservice.h"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "contentpartner.h"
 #endif
 #if VS_VER > VC_5
@@ -1730,11 +1755,11 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <crtdbg.h>
 #endif
 
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "credentialprovider.h"
 #include "credssp.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "cryptdlg.h"
 #endif
 #if VS_VER > VS_2003
@@ -1761,13 +1786,15 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if VS_VER > VC_4
 #include <cstring>
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "ctffunc.h"
+#endif
 #if MSVC_VER > 2012
 #if defined _SILENCE_CXX17_C_HEADER_DEPRECATION_WARNING || defined _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include <ctgmath>
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "ctfspui.h"
 #endif
 #if VS_VER > VS_2002
@@ -1837,7 +1864,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "d3d12video.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "d3d9helper.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -1894,7 +1921,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <dbdaoid.h>
 #include <dbdaoint.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "dbnetlib.h"
 #endif
 #if VS_VER > VS_2003
@@ -1938,10 +1965,56 @@ DECLARE_HANDLE(HSZ);
 #endif
 #if IS_XP_TOOLSET_SUPPORT || SDK_VER < TOOLSET_VS_2013
 // Copied from C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ddrawi.h. Line number has been reserved.
-// dmemmgr.h from the same directory.
+// dmemmgr.h and ddraw.h (Visual Studio 2005 and below) are from the same directory.
 // Copied from ddrawi.h by default if no file name mentioned.
 
-// line 10
+#if SDK_VER == TOOLSET_VS_2005 || SDK_VER == TOOLSET_VS_2003
+// line 60, ddraw.h
+#ifndef DUMMYUNIONNAMEN
+#if defined(__cplusplus) || !defined(NONAMELESSUNION)
+#define DUMMYUNIONNAMEN(n)
+#else
+#define DUMMYUNIONNAMEN(n)      u##n
+#endif
+#endif
+
+// line 137, ddraw.h
+typedef struct _DDSURFACEDESC           FAR* LPDDSURFACEDESC;
+
+// line 331, ddraw.h
+typedef struct _DDSCAPS
+{
+	DWORD       dwCaps;         // capabilities of surface wanted
+} DDSCAPS;
+
+// line 349, ddraw.h
+/*
+ * This structure is used internally by DirectDraw.
+ */
+typedef struct _DDSCAPSEX
+{
+	DWORD       dwCaps2;
+	DWORD       dwCaps3;
+	union
+	{
+		DWORD       dwCaps4;
+		DWORD       dwVolumeDepth;
+	} DUMMYUNIONNAMEN(1);
+} DDSCAPSEX, FAR* LPDDSCAPSEX;
+
+// line 380, ddraw.h
+/*
+ * DDCAPS
+ */
+#define DD_ROP_SPACE            (256/32)        // space required to store ROP array
+ /*
+  * NOTE: Our choosen structure number scheme is to append a single digit to
+  * the end of the structure giving the version that structure is associated
+  * with.
+  */
+#endif
+
+  // line 10
 #ifndef __DDRAWI_INCLUDED__
 // line 375
 /*
@@ -2368,7 +2441,9 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <devioctl.h>
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include <devpkey.h>
+#endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <devpropdef.h>
 #endif
@@ -2386,7 +2461,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "DhcpSSdk.h"
 #include "dimm.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "Dhcpv6cSdk.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -2439,7 +2514,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if SDK_VER > TOOLSET_90
 #include "dmksctrl.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "dmo.h"
 #include "dmodshow.h"
 #include "dmoimpl.h"
@@ -2463,7 +2538,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <dpapi.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "dpx.h"
 #include <dpx1.h>
 #endif
@@ -2483,20 +2558,20 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if VS_VER > VC_6
 #include "DsGetDC.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "dshow.h"
-#if VS_VER > VS_2005
 #include "dshowasf.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "dsparse.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "dssec.h"
 #endif
 #if VS_VER > VC_5
 #include "DtcHelp.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "dv.h"
 #include "dvdevcod.h"
 #include "dvdmedia.h"
@@ -2513,7 +2588,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if ((MSVC_VER != VS_2013) && (SDK_VER != TOOLSET_VS_2012) || (defined NOWARNINGS)) && (VS_VER > VS_2003) 
 #include "dxtmpl.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "dxva.h"
 #include <dxva2api.h>
 #include "dxva2swdev.h"
@@ -2534,13 +2609,13 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "easencryptprov.h"
 #include "easregprov.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "edevdefs.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "edpwin32.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "eaptypes.h"
 #include "effects.h"
 #endif
@@ -2567,7 +2642,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "errhandlingapi.h"
 #endif
 #include "errno.h"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "errors.h"
 #include "esent.h"
 #include "evalcom2.h"
@@ -2579,8 +2654,8 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "ExDispid.h"
 #endif
 //#include "event.h"
+#if SDK_VER > TOOLSET_VS_2005
 #include "evntcons.h"
-#if VS_VER > VS_2005
 #include "evntprov.h"
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "evntrace.h"
@@ -2598,12 +2673,12 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "FaxComEx_i.c"
 //#include "FaxDev.h"
 #else
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "FaxCom.h"
-#endif
 #include "FaxCom_i.c"
 #endif
-#if VS_VER > VS_2005
+#endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "FaxMmc.h"
 #include "FaxRoute.h"
 #endif
@@ -2648,7 +2723,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "fltUser.h"
 #include "fltUserStructures.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "fontsub.h"
 #endif                      
 #if VS_VER > VC_1
@@ -2688,7 +2763,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "fwpmu.h"
 #include "fwpsu.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "fxsutility.h"
 #include "gameux.h"
 #endif
@@ -2722,7 +2797,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #endif
 #include "hidsdi.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "highlevelmonitorconfigurationapi.h"
 #endif
 //#include "hintsdeviceservice.h"
@@ -2757,17 +2832,21 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #ifdef HTTP_VERSION
 #undef HTTP_VERSION
 #endif
+#if SDK_VER > TOOLSET_VS_2003
 #include "http.h"
+#endif
+#if SDK_VER > TOOLSET_VS_2005
 #include <httpserv.h>
 #include "httpcach.h"
+#endif
 #if TOOLSET > 90
 #include "httpcompression.h"
 #endif
 #if VS_VER > VC_4
 #include "HttpExt.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "httpserv.h"
-#if VS_VER > VS_2005
 #include "httptrace.h"
 #if SDK_VER > SDK_8_1
 #include "hvsocket.h"
@@ -2780,7 +2859,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "hwreqchkapi.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "hxhelppaneproxy.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -2797,7 +2876,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "icu.h"
 #include "icui18n.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "icwcfg.h"
 #endif
 #if VS_VER > VC_6
@@ -2813,7 +2892,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if SDK_VER > SDK_8_1
 #include "iewebdriver.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "iextag.h"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -2822,7 +2901,9 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <dvdevcod.h>   // DVD error event codes"
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include <dxgi.h>
+#endif
 #if SDK_VER > SDK_8_1
 #include <dxgi1_5.h>    // for DXGI_ALPHA_MODE, DXGI_HDR_METADATA_TYPE"
 #endif
@@ -2905,7 +2986,9 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include <heapapi.h>
 #include <hstring.h>
 #endif
+#if SDK_VER > TOOLSET_VS_2003
 #include <http.h>
+#endif
 #if VS_VER > VC_4
 #include <idispids.h>
 #endif
@@ -2916,7 +2999,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if VS_VER > VS_2002
 #include "iiisext.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "il21dec.h"
 #include "iisrsta.h"
 #endif
@@ -2924,7 +3007,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if VS_VER > VC_5
 #include "IIScnfg.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "imapi.h"
 #include "imapi2fs.h"
 #include "imapierror.h"
@@ -2956,7 +3039,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "infstr.h"
 #endif
 #include <initguid.h>   
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "inked.h"
 #endif
 //#include "inked_i.c"
@@ -2976,7 +3059,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <interlockedapi.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "intsafe.h"
 #endif
 #if VS_VER > VS_2012
@@ -3063,7 +3146,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include <ivectorchangedeventargs.h>
 #include "iwscapi.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "iwstdec.h"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -3138,7 +3221,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include <ktmtypes.h>
 #include <l2cmn.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "ktmw32.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -3160,7 +3243,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if VS_VER > VC_4
 #include <limits>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "listeneradapter.h"
 #endif                           
 #if VS_VER > VC_1
@@ -3206,7 +3289,7 @@ class CInstance;
 #endif
 #include "sys/locking.h"
 //#include "logicaladdress.h"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "lowlevelmonitorconfigurationapi.h"
 #endif
 #if VS_VER > VC_6
@@ -3240,7 +3323,7 @@ class CInstance;
 #include <lsalookup.h>
 #endif
 #include <lzexpand.h>
-#if VS_VER <= VS_2005 && VS_VER > VC_1
+#if VS_VER < VS_2005 && VS_VER > VC_1
 // this definition is copied from https://learn.microsoft.com/en-us/windows/win32/api/ntdef/ns-ntdef-_unicode_string directly.
 // You could see a copy from https://web.archive.org/web/20230327170135/https://learn.microsoft.com/en-us/windows/win32/api/ntdef/ns-ntdef-_unicode_string.
 // struct _MCAST_SCOPE_ENTRY used this definition as UNICODE_STRING  ScopeDesc; , which is not recognized.
@@ -3257,7 +3340,7 @@ typedef struct _UNICODE_STRING {
 #if VS_VER > VC_6
 #include "madcapcl.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "magnification.h"
 #endif
 #if VS_VER > VC_6
@@ -3331,7 +3414,7 @@ typedef struct _UNICODE_STRING {
 #include "mdmlocalmanagement.h"
 #include "MDMRegistration.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "medparam.h"
 #endif
 #include <memory.h>
@@ -3354,7 +3437,7 @@ typedef struct _UNICODE_STRING {
 #include "metadatadeviceservice.h"
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "mfapi.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -3428,7 +3511,7 @@ typedef struct _UNICODE_STRING {
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "minwindef.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "mixerocx.h"
 #endif
 #if SDK_VER > TOOLSET_VS_2022
@@ -3452,7 +3535,7 @@ typedef struct _UNICODE_STRING {
 #if SDK_VER > TOOLSET_VS_2022
 //#include "module.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "Mpeg2Error.h"
 #include "mpconfig.h"
 #endif
@@ -3468,7 +3551,7 @@ typedef struct _UNICODE_STRING {
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "MrmResourceIndexer.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "MsCtfMonitorApi.h"
 #endif             
 #if VS_VER > VC_1
@@ -3540,7 +3623,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "msdasc.h"
 #include "msdasql.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "msdelta.h"
 #include "msdrmerror.h"
 #if VS_VER < VS_2022
@@ -3550,7 +3633,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if VS_VER > VC_6
 #include "msdshape.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "msfeeds.h"
 #endif
 #if VS_VER < VS_2022
@@ -3564,25 +3647,25 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if TOOLSET > 90
 #include "msiehost.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "msiltcfg.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "msime.h"
 #include "msimeapi.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "msinkaut15.h"
-#endif
 #include "msinkaut15_i.c"
 #include "msinkaut_i.c"
+#endif
 #if (VS_VER < VS_2022) && (VS_VER != VS_2013) && (SDK_VER != TOOLSET_VS_2012) && SDK_VER > TOOLSET_100
 #include "msoav.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "msports.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "msrdc.h"
 #endif
 #if VS_VERSION > VC_2
@@ -3607,9 +3690,11 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "mstcpip.h"
 #endif
 #if VS_VER < VS_2022
+#if SDK_VER > TOOLSET_VS_2005
 #include "msvidctl.h"
 #endif
-#if VS_VER > VS_2005
+#endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "mswsockdef.h"
 #endif
 #if VS_VER < VS_2022
@@ -3623,7 +3708,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <mswsockdef.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #if defined _MSVC_NON_PERMISSIVE_MODE
 #include "MsXml6.h"
 #endif
@@ -3657,7 +3742,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include "MspStrm.h"
 #include <Tapi3.h>
 #include "Mspcoll.h"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "mtpext.h"
 #endif
 #if VS_VER > VC_6
@@ -3999,7 +4084,7 @@ interface ICommandTree
 #endif
 #include "NTQuery.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "muiload.h"
 #include "mxdc.h"
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -4027,7 +4112,7 @@ interface ICommandTree
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <ndattrib.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "ndfapi.h"
 #if VS_VER >= VS_2026
 #ifdef NOWARNINGS
@@ -4057,15 +4142,17 @@ interface ICommandTree
 #if VS_VER > VC_6
 #include "ndr64types.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include <netioapi.h>
+#endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "netcfgn.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "netfw.h"
 #endif
 //#include "netiodef.h"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "netlistmgr.h"
 #endif
 #if VS_VER > VS_2003
@@ -4245,7 +4332,7 @@ interface ICommandTree
 #if VS_VER > VC_6
 #include "pchannel.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "pciprop.h"
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "pdrvver.h"
@@ -4335,7 +4422,7 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if VS_VER > VC_5
 #include "PerHist.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "PhotoAcquireProperties.h"
 #include "physicalmonitorenumerationapi.h"
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -4354,14 +4441,14 @@ extern const PERSISTDECLSPEC wchar_t* PROGID_MSPersist_Version_W = L"MSPersist.1
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "pluginauthenticator.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "pnrpns.h"
 #endif
 //#include "poclass.h"
 #if VS_VER > VC_6
 #include "Polarity.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "PortableDevice.h"
 #include "PortableDeviceApi.h"
 #endif
@@ -4387,7 +4474,7 @@ interface IXMLDOMDocument2;
 #endif
 #include "PrintManagerInterop.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "prnasnot.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -4407,7 +4494,7 @@ interface IXMLDOMDocument2;
 #endif
 #include "prntfont.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "prntvpt.h"
 #endif
 //#include "PrnSetup.Dlg"
@@ -4427,7 +4514,7 @@ interface IXMLDOMDocument2;
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "projectedfslib.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "propapi.h"
 #include "propkey.h"
 #include "propvarutil.h"
@@ -4497,7 +4584,9 @@ interface IXMLDOMDocument2;
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <propkey.h>
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include <propvarutil.h>  
+#endif
 #if VS_VERSION > VC_2
 #include <prsht.h>
 #endif      
@@ -4512,13 +4601,15 @@ interface IXMLDOMDocument2;
 #if VS_VER > VS_2002
 #include "qmgr.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "qnetwork.h"
 #endif
 #if VS_VER > VC_5
 #include <qos.h>
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "qos2.h"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <qosobjs.h>
 #endif
@@ -4667,21 +4758,17 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "rdpappcontainerclient.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "rdpencomapi.h"
-#endif
 #include "rdpencomapi_i.c"
+#endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <realtimeapiset.h>
 #endif
 #if VS_VER > VC_6
 #include <reason.h>             // get the public reasons"
 #endif
-// failed in VS2026. Redefinition at ComSvcs.h, line 17835
-#if VS_VER < VS_2022 && VS_VER != VS_2013 && SDK_VER != TOOLSET_VS_2012	&& SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
-#include "recapis.h"
-#endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "recdefs.h"
 #include "rectypes.h"
 #endif
@@ -4694,10 +4781,10 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "RemoteSystemsInterop.h"
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "rendezvoussession.h"
-#endif
 #include "rendezvoussession_i.c"
+#endif
 //#include "Resapi.h"
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "reshub.h"
@@ -4705,7 +4792,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "ResourceIndexer.h"
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "RestartManager.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -4765,7 +4852,9 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if VS_VER > VC_6
 #include "RtmV2.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "RTSCOM_i.c"
+#endif
 #if VS_VER > VC_5
 #include <rtutils.h>
 #endif
@@ -4780,7 +4869,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "stiusd.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #if (defined _MSVC_NON_PERMISSIVE_MODE) || VS_VER >= VS_2026
 #include <sapi.h>
 #include <sapiddk.h>
@@ -4790,7 +4879,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if TOOLSET > 90
 #include "sas.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "sbe.h"
 #endif
 #if TOOLSET > 90
@@ -4806,7 +4895,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if VS_VER > VC_6
 #include "Schemadef.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include <mswmdm.h>
 #include "scclient.h"
 #endif
@@ -4874,7 +4963,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "shcore.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "shdeprecated.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -4883,7 +4972,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <sherrors.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "shidfact.h"
 #endif
 #include "signal.h"
@@ -4897,7 +4986,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include <shtypes.h>
 #include <sipbase.h> // included mssip.h
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "sliddefs.h"
 #include "slpublic.h"
 #endif
@@ -4948,17 +5037,17 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #endif
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "spcollec.h"
-#endif
 #include "specstrings_strict.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "spellcheck.h"
 #include "spellcheck_i.c"
 #include "spellcheckprovider.h"
 #include "spellcheckprovider_i.c"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "sperror.h"
 #endif
 #if VS_VER >= VS_2026
@@ -5024,7 +5113,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "stdnoreturn.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "StgProp.h"
 #endif
 #if VS_VER > VC_6
@@ -5221,11 +5310,11 @@ typedef unsigned __int64   uintmax_t;
 #include <stringapiset.h>    
 #endif
 //#include <strmif.h>     // Generated IDL header file for streams interfaces"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "structuredquery.h"
 #endif
 //#include "SubAuth.h"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "subscriptionservices.h"
 #endif                
 #if VS_VER > VC_1
@@ -5631,7 +5720,7 @@ typedef unsigned __int64   uintmax_t;
 #if VS_VER > VC_6
 #include "winefs.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "winevt.h"
 #endif   
 #if VS_VER > VC_1
@@ -5677,11 +5766,11 @@ typedef unsigned __int64   uintmax_t;
 #if VS_VER > VC_6
 #include <tapi3err.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "tabflicks.h"
 #endif
 //#include "taskdeviceservice.h"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "taskschd.h"
 #endif
 //#include "tbs.h"
@@ -5706,7 +5795,9 @@ typedef unsigned long ulong;
 typedef unsigned char uchar;
 typedef unsigned short ushort;
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "tcpioctl.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "tcpxcv.h"
 #include "tdh.h"
@@ -5723,7 +5814,7 @@ typedef unsigned short ushort;
 #include <threadpoolapiset.h>
 #include <threadpoollegacyapiset.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "thumbcache.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -5749,7 +5840,7 @@ typedef unsigned short ushort;
 #if SDK_VER > SDK_8_1
 #include "tokenbinding.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "tpcerror.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -5768,15 +5859,15 @@ typedef unsigned short ushort;
 #include "Tapi.h"
 #endif
 //#include "Tapi3.h"
-#if VS_VER > VS_2005 // not found ddraw.h
+#if SDK_VER > TOOLSET_VS_2005 // not found ddraw.h
 #include "Tapi3ds.h"
 #include "Tapi3if.h"
 #include "TimeProv.h"
 #endif
-#if VS_VER > VS_2005 // no such header
+#if SDK_VER > TOOLSET_VS_2005
 #include "TextStor.h"
-#endif
 #include "TipAutoComplete_i.c"
+#endif
 #if VS_VERSION > VC_2
 #include "TlHelp32.h"
 #endif
@@ -5790,7 +5881,9 @@ typedef unsigned short ushort;
 #include <atlcomcli.h>
 #endif
 #if SDK_VER != SDK_8_1 && SDK_VER != TOOLSET_VS_2012
+#if SDK_VER > TOOLSET_VS_2005
 #include "Tune.h"
+#endif
 #endif
 #if VS_VER > VC_6
 #include "traffic.h"
@@ -5806,14 +5899,16 @@ typedef unsigned short ushort;
 #include "tssbx_i.c"
 //#include "tsuserex.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2003
 #include "tsuserex_i.c"
+#endif
 #if TOOLSET > 90
 #include "tsvirtualchannels.h"
 #endif
 #if cppver >= 2011
 #include <tuple>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "txlogpub.h"
 #endif
 #if NTDDI_VERSION > 0x0A000C00 // v143
@@ -5845,11 +5940,11 @@ typedef unsigned short ushort;
 #include "UIAutomation.h"
 #include "UIAutomationClient.h"
 #else
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include <UIAutomationCore.h>
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "UIAutomationCoreApi.h"
 #endif
 #if TOOLSET > 90
@@ -5861,7 +5956,7 @@ typedef unsigned short ushort;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <unknwnbase.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "upnphost.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -5923,13 +6018,13 @@ typedef unsigned short ushort;
 #if VS_VER > VC_6
 #include <uxtheme.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "vbinterf.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "vdmctxt.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "vds.h"
 #endif
 //#include "vdshwprv.h"
@@ -5948,7 +6043,7 @@ typedef unsigned short ushort;
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
 #include <vdmctxt.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "vdserr.h"
 #endif
 //#include "veinterop.h"
@@ -5959,14 +6054,14 @@ typedef unsigned short ushort;
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "vfwext.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "vidcap.h"
 #endif
 #if SDK_VER > SDK_8_1
 #include <netcx/shared/1.0/net/virtualaddresstypes.h>
 #endif
 //#include "virtualaddress.h"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "vsserror.h"
 #endif
 #if VS_VER > VC_4
@@ -5977,22 +6072,20 @@ typedef unsigned short ushort;
 #if cppver > 2017
 #include <version>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "vmr9.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "vmsavedstatedump.h"
 #include "vmsavedstatedumpdefs.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "vptype.h"
 #include "vpconfig.h"
 #include "vpnotify.h"
 #include "vsadmin.h"
-#endif
 #include <vswriter.h>
 #include "vsbackup.h"
-#if VS_VER > VS_2005
 #include "vsmgmt.h"
 #include "vsprov.h"
 #include "vssym32.h"
@@ -6553,10 +6646,12 @@ enum Gender {
 #include <widemath.h>                // 64-bit and 128-bit math helper functions"
 #endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
+#if SDK_VER > TOOLSET_VS_2005
 #include "wcmapi.h"
 #endif
+#endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "wcmconfig.h"
-#if VS_VER > VS_2005
 #include "wcmerrors.h"
 #endif
 #if TOOLSET > 90
@@ -6564,7 +6659,7 @@ enum Gender {
 #include "WcnDevice.h"
 #include "WcnFunctionDiscoveryKeys.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "wcsplugin.h"
 #include "wct.h"
 #endif
@@ -6574,13 +6669,15 @@ enum Gender {
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "WDBGEXTS.H"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "wdigest.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "wdmguid.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "wdspxe.h"
+#endif
 #if TOOLSET > 90
 #include "wdstci.h"
 #include "wdstpdi.h"
@@ -6597,11 +6694,13 @@ enum Gender {
 #if SDK_VER > SDK_8_1
 #include "webauthn.h"
 #endif
-//#include "webauthnplugin.h"
+//#include "webauthnplugin.h"  
+#if SDK_VER > TOOLSET_VS_2005
 #if (!defined _MSVC_NON_PERMISSIVE_MODE)
 typedef LPVOID* PPVOID;
 #endif
 #include "webhost.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "websocket.h"
 #if SDK_VER > SDK_8_1
@@ -6624,10 +6723,10 @@ typedef LPVOID* PPVOID;
 #endif
 #include "wiatwcmp.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include "wiautil.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "wiawsdsc.h"
 #endif
 #include "winbase.inl" 
@@ -6640,11 +6739,11 @@ typedef LPVOID* PPVOID;
 #define ARGUMENT_PRESENT(ArgumentPointer) \
   ((CHAR*)((ULONG_PTR)(ArgumentPointer)) != (CHAR*)NULL)
 #endif
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include "winbio_adapter.h"
 #include "winbio_ioctl.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "wincodecsdk.h"
 #include "WinFax.h"
 #endif
@@ -6670,7 +6769,7 @@ typedef LPVOID* PPVOID;
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "windnsdef.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "windot11.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -6696,13 +6795,13 @@ typedef LPVOID* PPVOID;
 #include "windowscontracts.h"
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "WindowsDefender.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
 #include "WindowsNumerics.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "WindowsSideShow.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -6818,7 +6917,7 @@ typedef void* HCERTSTORE;
 #include "WS2atm.h"
 #include "WS2spi.h"
 #include "WS2tcpip.h"
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "Wsdapi.h"
 #include "Wsdattachment.h"
 #include "Wsdbase.h"
@@ -6850,7 +6949,7 @@ typedef void* HCERTSTORE;
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "wtypesbase.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "Xinput.h"
 #endif
 #if VS_VER > VC_6
@@ -6866,7 +6965,7 @@ typedef void* HCERTSTORE;
 #include "activation.h"
 #include "activationregistration.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "activecf.h"
 #endif
 #if TOOLSET > 90
@@ -6967,7 +7066,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include "winsafer.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "winsatcominterfacei.h"
 #endif
 #if VS_VER == VC_6
@@ -6995,7 +7094,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_1
 #include <winsvc.h>     // SERVICE_STATUS_HANDLE"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "winsxs.h"
 #endif
 #if TOOLSET > 90
@@ -7026,7 +7125,7 @@ typedef void* HCERTSTORE;
 #include <wldp.h>
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "wlanapi.h"
 #include "wlanihv.h"
 #include "wlanihvtypes.h"
@@ -7046,7 +7145,9 @@ typedef void* HCERTSTORE;
 #undef GetContext
 #define _GetContext_defined
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "wmcodecdsp.h"
+#endif
 #ifdef _SetContext_defined
 #pragma pop_macro("SetContext")
 #undef _SetContext_defined
@@ -7055,7 +7156,7 @@ typedef void* HCERTSTORE;
 #pragma pop_macro("GetContext")
 #undef _GetContext_defined
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "wmcontainer.h"
 #include "wmdm.h"
 #include "wmdmlog.h"
@@ -7065,7 +7166,7 @@ typedef void* HCERTSTORE;
 #if TOOLSET > 90
 #include "wmlss.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "wmpdevices.h"
 #include "wmpids.h"
 #include "wmpplug.h"
@@ -7099,7 +7200,7 @@ typedef void* HCERTSTORE;
 #include <wow64apiset.h>
 #include <wlclient.h>
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "wpc.h"
 #include "wpcapi.h"
 #include "wpcevent.h"
@@ -7110,10 +7211,10 @@ typedef void* HCERTSTORE;
 #include "wrl.h"
 #endif
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "ws2bth.h"
-#endif
 #include "ws2ipdef.h"
+#endif
 #if TOOLSET > 90
 #include "wsbapp.h"
 #endif
@@ -7145,7 +7246,7 @@ typedef void* HCERTSTORE;
 #if TOOLSET > 90
 #include "wtsprotocol.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "wuapi.h"
 #endif
 #if VS_VER > VS_2003
@@ -7173,13 +7274,13 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include "xenroll.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "xmllite.h"
 #endif
 #if VS_VER > VC_5
 #include "xoleHlp.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "xprtdefs.h"
 #endif
 #if TOOLSET > 90
@@ -7207,19 +7308,21 @@ typedef void* HCERTSTORE;
 #if VS_VER > VS_2002
 #include "advpub.h"
 #endif
-#if VS_VER > VS_2005
+#if SDK_VER > TOOLSET_VS_2005
 #include "ahadmin.h"
 #endif
 //#include "adojet.h"
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "AsyncInfo.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "ahadmin_i.c"
+#endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include "BdaTypes.h"
 #endif
 //#include "CodeAnalysis/sourceannotations.h"
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include "DirectXCollision.inl"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -7406,7 +7509,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include "adodef.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include "adoint_backcompat.h"
 #endif
 #if VS_VER > VC_5
@@ -7459,7 +7562,7 @@ typedef void* HCERTSTORE;
 #endif
 // a test avoidation
 // LPCOMPONENT was defined in shlobj_core.h already.
-#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT	&& SDK_VER != TOOLSET_VS_2012 && SDK_VER != TOOLSET_100	&& SDK_VER != TOOLSET_90
+#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT	&& SDK_VER != TOOLSET_VS_2012 && SDK_VER != TOOLSET_100	&& SDK_VER != TOOLSET_90 && SDK_VER != TOOLSET_VS_2005 && SDK_VER != TOOLSET_VS_2003
 #include "mmc.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -7509,8 +7612,10 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include "idlmulti.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "AudioClient.h"
 #include "dvbsiparser.h"
+#endif
 #if MSVC_VER > VS_2013
 using namespace Gdiplus;
 #include "GdiplusMatrix.h"
@@ -7534,11 +7639,13 @@ typedef UCHAR KIRQL;
 #if !defined D3D10_IGNORE_SDK_LAYERS && SDK_VER == TOOLSET_90
 #define D3D10_IGNORE_SDK_LAYERS
 #endif
+#if SDK_VER > TOOLSET_VS_2005
 #include "d3d10.h"
 #if SDK_VER != TOOLSET_90
 #include "d3d11.h"
 #endif
-#if !IS_XP_TOOLSET_SUPPORT && SDK_VER != TOOLSET_100 && SDK_VER != TOOLSET_90
+#endif
+#if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include "d3d11_1.h"
 #if SDK_VER > TOOLSET_VS_2012
 #include "d3d11_2.h"
@@ -7547,7 +7654,9 @@ typedef UCHAR KIRQL;
 #if SDK_VER > SDK_8_1
 #include "d3d11_3.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2003
 #include "dciddi.h"         // interface to the DCI provider
+#endif
 #include "msi.h"  // INSTALLSTATE
 
 // extensions
@@ -7563,7 +7672,6 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #endif
 
-// libraries
 #if defined LINK_ALL
 #if ARCH_X86
 #pragma comment(lib,"ASycFilt.Lib")
@@ -7669,7 +7777,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"CoreMessaging.lib")
 #endif
+#if SDK_VER > TOOLSET_VS_2003
 #pragma comment(lib,"Credui.lib")
+#endif
 #pragma comment(lib,"Crypt32.Lib")
 #pragma comment(lib,"CryptNet.Lib")
 #pragma comment(lib,"DSProp.Lib")
@@ -7970,7 +8080,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"devmgr.lib")
 #pragma comment(lib,"dflayout.lib")
 #endif
+#if SDK_VER > TOOLSET_VS_2003
 #pragma comment(lib,"dhcpsapi.lib")
+#endif
 #if SDK_VER > TOOLSET_90
 #pragma comment(lib,"dinput8.lib")
 #endif
@@ -8059,7 +8171,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"glmf32.lib")
 #endif
+#if SDK_VER > TOOLSET_VS_2003
 #pragma comment(lib,"gpmuuid.lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"hbaapi.lib")
 #pragma comment(lib,"hhsetup.lib")
@@ -8068,7 +8182,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"hrtfapo.lib")
 #endif
+#if SDK_VER > TOOLSET_VS_2003
 #pragma comment(lib,"httpapi.lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"iashlpr.lib")
 #endif
@@ -8166,7 +8282,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"msxml6.lib")
 #endif
+#if SDK_VER > TOOLSET_VS_2003
 #pragma comment(lib,"mtxdm.lib")
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"muiload.lib")
 #pragma comment(lib,"ncrypt.lib")
