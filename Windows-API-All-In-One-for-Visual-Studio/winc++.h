@@ -35,21 +35,6 @@
 #include <con/unexist.hppx>
 #endif
 
-//#define ALLOW_CLR_EXPERIMENTAL
-#ifndef ALLOW_CLR_EXPERIMENTAL
-#ifdef _MANAGED
-#if SDK_VER > TOOLSET_VS_2022
-#error Fatal error: /clr is intentionally blocked by def.h.
-#include <con/unexist.hppx>
-#else
-#pragma warning(disable: 5308)
-#undef _MANAGED
-#pragma message("Note: Limited testing indicates that some native C++ code can compile and run correctly under /clr after bypassing the _MANAGED check, but they are blocked by the #error directive in def.h.")
-#pragma message("Use at your own risk in a managed C++/CLI environment. This configuration has not been fully validated in managed C++/CLI projects.")
-#endif
-#endif
-#endif
-
 // scsi.h requires _NTSCSI_USER_MODE_ only when compiling in pure user-mode.
 // Do NOT define it if any kernel/driver mode macro is active.
 #if (!defined _KERNEL_MODE) && (!defined _NTSRB_) && (!defined _NTSRB_) && (!defined _MINIPORT_) && (!defined _NTDDK_)
@@ -139,6 +124,22 @@
 #define VS_VER VS_VERSION
 #define MSVC_VER VS_VERSION
 #define MSVC_VERSION VS_VERSION
+
+#ifndef ALLOW_CLR_EXPERIMENTAL
+#ifdef _MANAGED
+#if SDK_VER > TOOLSET_VS_2022
+#error Fatal error: /clr is intentionally blocked by def.h.
+#include <con/unexist.hppx>
+#else
+#if VS_VER > VS_2002
+#pragma warning(disable: 5308)
+#endif
+#undef _MANAGED
+#pragma message("Note: Limited testing indicates that some native C++ code can compile and run correctly under /clr after bypassing the _MANAGED check, but they are blocked by the #error directive in def.h.")
+#pragma message("Use at your own risk in a managed C++/CLI environment. This configuration has not been fully validated in managed C++/CLI projects.")
+#endif
+#endif
+#endif
 
 #ifdef _WIN32_WINNT
 #define __WIN32_WINNT WIN32_WINNT
@@ -1963,7 +1964,7 @@ DECLARE_HANDLE(HSZ);
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include <dx95type.h>
 #endif
-#if IS_XP_TOOLSET_SUPPORT || SDK_VER < TOOLSET_VS_2013
+#if IS_XP_TOOLSET_SUPPORT || SDK_VER < TOOLSET_VS_2013 && SDK_VER > TOOLSET_VS_2002
 // Copied from C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ddrawi.h. Line number has been reserved.
 // dmemmgr.h and ddraw.h (Visual Studio 2005 and below) are from the same directory.
 // Copied from ddrawi.h by default if no file name mentioned.
@@ -2404,8 +2405,8 @@ typedef struct _DDHALINFO
 typedef DDHALINFO FAR* LPDDHALINFO;
 // line 2987
 #endif
-#endif
 #include "ddrawgdi.h"
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include <ddrawi.h>
 #endif
@@ -3003,7 +3004,9 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "il21dec.h"
 #include "iisrsta.h"
 #endif
+#if SDK_VER > TOOLSET_VS_2002
 #include "iisext_i.c"
+#endif
 #if VS_VER > VC_5
 #include "IIScnfg.h"
 #endif
@@ -7562,7 +7565,7 @@ typedef void* HCERTSTORE;
 #endif
 // a test avoidation
 // LPCOMPONENT was defined in shlobj_core.h already.
-#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT	&& SDK_VER != TOOLSET_VS_2012 && SDK_VER != TOOLSET_100	&& SDK_VER != TOOLSET_90 && SDK_VER != TOOLSET_VS_2005 && SDK_VER != TOOLSET_VS_2003
+#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT	&& SDK_VER != TOOLSET_VS_2012 && SDK_VER != TOOLSET_100	&& SDK_VER != TOOLSET_90 && SDK_VER != TOOLSET_VS_2005 && SDK_VER != TOOLSET_VS_2003 && SDK_VER != TOOLSET_VS_2002
 #include "mmc.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -8624,3 +8627,4 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 
 #endif
+
