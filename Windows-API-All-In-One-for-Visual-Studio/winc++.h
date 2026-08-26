@@ -181,6 +181,7 @@
 #define SDK_10_0_19041_0 0x0A000008
 #define SDK_10_0_22621_0 0x0A00000C
 #define SDK_10_0_26100_0 0x0A000010
+#define TOOLSET_VC_6 0x0400
 #define TOOLSET_VS_2003 0x04000000
 #define TOOLSET_VS_2005 0x05000000
 #define TOOLSET_VS_2008 TOOLSET_90
@@ -455,6 +456,7 @@ typedef struct IUnknown IUnknown;
 #include <WbemProv.h>
 #endif
 class CFramework_Exception;
+#if SDK_VER > TOOLSET_VC_6
 #if defined _MSVC_NON_PERMISSIVE_MODE
 #ifdef PURE
 #pragma push_macro("PURE")
@@ -463,6 +465,7 @@ class CFramework_Exception;
 #pragma pop_macro("PURE")
 #else
 #include "FwCommon.h"
+#endif
 #endif
 #endif
 //#include "kxarm64unw.h"
@@ -483,9 +486,10 @@ class CFramework_Exception;
 #endif
 template <class TYPED_PTR> class TRefPointerCollection;
 //template <class ThreadModel> class CComObjectRootEx;
+#if SDK_VER > TOOLSET_VC_6
 #include <Polarity.h>
 #include <ThrdBase.h>
-
+#endif
 #if VS_VER > VC_5
 #include "mstask.h"
 #endif
@@ -783,7 +787,9 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if VS_VERSION > VC_2
 #include "Richedit.h"
 #endif
+#if SDK_VER > TOOLSET_VC_6
 #include "TextServ.h"
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #include "TipAutoComplete.h"
 #endif
@@ -1406,7 +1412,9 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_1
 #include "basetyps.h"
 #endif
-#include "batclass.h"
+#if SDK_VER > TOOLSET_VC_6
+#include "batclass.h"	  
+#endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <bcrypt.h>
 #include <bthdef.h>
@@ -3139,6 +3147,14 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if VS_VER > VC_5
 #pragma warning(push)
 #pragma warning(disable: 4005)
+#if SDK_VER <= TOOLSET_VC_6
+#ifdef FACILITY_NULL
+#undef FACILITY_NULL
+#endif
+#ifdef FACILITY_ITF
+#undef FACILITY_ITF
+#endif
+#endif
 #include <issper16.h>
 #pragma warning(push)
 #endif
@@ -3281,8 +3297,10 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include <lmwksta.h>    // Workstation class"       
 #endif
 class CInstance;
+#if SDK_VER > TOOLSET_VC_6
 #include <MethodCo.h>
 #include <Instance.h>
+#endif
 #if VS_VER > VC_4
 #include "LoadPerf.h"
 #endif
@@ -3384,14 +3402,15 @@ typedef struct _UNICODE_STRING {
 #if TOOLSET > 90
 #include "mbnapi.h"
 #endif
-#if VS_VER > VC_5 // VC++ 5 cannot recoginze push_macro but no such error in this compiler
+#if VS_VER > VC_6 // VC++ 5 cannot recoginze push_macro but no such error in this compiler
+// And VC++ 6 did not defined _MP at all
 #pragma push_macro("_MP")
 #undef _MP
 #endif       
 #if VS_VER > VC_1
 #include "mbctype.h"
 #endif
-#if VS_VER > VC_5
+#if VS_VER > VC_6
 #pragma pop_macro("_MP")
 #endif      
 #if VS_VER > VC_1
@@ -4531,7 +4550,9 @@ interface IXMLDOMDocument2;
 #if VS_VER > VC_6
 #include "ProvExce.h"
 #endif
+#if SDK_VER > TOOLSET_VC_6
 #include <FRQuery.h>
+#endif
 //#include "Provider.h"
 #if VS_VER > VC_6
 #include "Psapi.h"
@@ -4752,9 +4773,11 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #endif
 #include "Raseapif.h"
 #endif
+/*
 #if VS_VER == VC_6 // redefinition
 #include "RassHost.h"
 #endif
+*/
 #if VS_VER > VC_5
 #include "Ratings.h"
 #endif
@@ -5003,6 +5026,24 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "SmtpGuid.h"
 #endif     
 #if VS_VER > VC_1
+#ifdef ASN_UNIVERSAL
+#undef ASN_UNIVERSAL
+#endif
+#ifdef ASN_APPLICATION
+#undef ASN_APPLICATION
+#endif
+#ifdef ASN_CONTEXT
+#undef ASN_CONTEXT
+#endif
+#ifdef ASN_PRIVATE
+#undef ASN_PRIVATE
+#endif
+#ifdef ASN_PRIMITIVE
+#undef ASN_PRIMITIVE
+#endif
+#ifdef ASN_CONSTRUCTOR
+#undef ASN_CONSTRUCTOR
+#endif
 #include <snmp.h>
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -5266,8 +5307,10 @@ typedef unsigned __int64   uintmax_t;
 #define SIG_ATOMIC_MIN   INT32_MIN
 #define SIG_ATOMIC_MAX   INT32_MAX
 
+#if SDK_VER > TOOLSET_VC_6
 #define WCHAR_MIN        0x0000
 #define WCHAR_MAX        0xffff
+#endif
 
 #define WINT_MIN         0x0000
 #define WINT_MAX         0xffff
@@ -5728,7 +5771,7 @@ typedef unsigned __int64   uintmax_t;
 #endif   
 #if VS_VER > VC_1
 #include "wingdi.h"      
-#endif
+#endif	   
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 // redefinition
 #include "winhttp.h"
@@ -5880,7 +5923,7 @@ typedef unsigned short ushort;
 #if VS_VER > VC_5
 #include "Transact.h"
 #endif
-#if (defined NOWARNINGS) || (VS_VER != VS_2013 && SDK_VER != TOOLSET_VS_2012)
+#if ((defined NOWARNINGS) || (VS_VER != VS_2013 && SDK_VER != TOOLSET_VS_2012)) && SDK_VER > TOOLSET_VC_6 
 #include <atlcomcli.h>
 #endif
 #if SDK_VER != SDK_8_1 && SDK_VER != TOOLSET_VS_2012
@@ -6003,7 +6046,9 @@ typedef unsigned short ushort;
 #include <usbspec.h>
 #include <utilapiset.h>
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #include "usp10.h"
+#endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "utilapiset.h"
 #endif
@@ -6629,7 +6674,9 @@ enum Gender {
 #include "WbemAds.h"
 #endif
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #if defined _MSVC_NON_PERMISSIVE_MODE
+#endif
 #include <wbemcli.h>
 #if VS_VER > VC_6
 #include "wbemdisp.h"
@@ -6732,11 +6779,15 @@ typedef LPVOID* PPVOID;
 #if SDK_VER > TOOLSET_VS_2005
 #include "wiawsdsc.h"
 #endif
-#include "winbase.inl" 
+#if SDK_VER > TOOLSET_VC_6 
+#include "winbase.inl"
+#endif 
 #if VS_VER > VC_1
 #include "WinBase.h"
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #include "WinBer.h"
+#endif
 #ifndef ARGUMENT_PRESENT
 // Copied from ntdef.h
 #define ARGUMENT_PRESENT(ArgumentPointer) \
@@ -6903,7 +6954,9 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_1
 #include "WinUser.h"
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #include "winuser.inl"
+#endif
 #if VS_VERSION > VC_2
 #include "WinWlx.h"
 #endif
@@ -6940,7 +6993,9 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_1
 #include "WSNwLink.h"
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #include "WSPiApi.h"  
+#endif
 #if VS_VER > VC_1
 #include "WShisotp.h"
 #include "WSipx.h"
@@ -7062,7 +7117,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_1
 #include <winreg.h>
 #endif
-#include "winres.h"
+//#include "winres.h"
 #if VS_VER > VC_4
 #include <winresrc.h>
 #endif
@@ -7534,7 +7589,9 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_5
 #include "basetsd.h"
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #include "bits.h"
+#endif
 #if VS_VER > VC_6
 #include "bitsmsg.h"
 #include "cdosysstr.h"
@@ -7549,11 +7606,9 @@ typedef void* HCERTSTORE;
 #include "commctrl.inl"
 #include "commdlg.inl"
 #endif
-#if VS_VER > VC_6
+#if SDK_VER > TOOLSET_VC_6 
 #include "comsvcs.h"
-#endif
 #include "dbgprop.h"
-#if VS_VER > VC_6
 #include "dbgprop.h"
 #endif
 #include "exdisp.h"
@@ -7677,7 +7732,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 
 #if defined LINK_ALL
 #if ARCH_X86
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"ASycFilt.Lib")
+#endif
 #pragma comment(lib,"OlePro32.Lib")
 #pragma comment(lib,"Thunk32.Lib")
 #pragma comment(lib,"VdmDbg.Lib")
@@ -7694,7 +7751,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"twain_32.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"unicows.lib")
+#endif
 #endif
 
 #if ARCH_X64
@@ -7716,7 +7775,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"d3dcsx.lib")
 #pragma comment(lib,"d3dcsxd.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"dciman32.lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100 && SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"easregprov.lib")
 #endif
@@ -7749,20 +7810,26 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 
 #pragma comment(lib,"ADSIid.Lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"AclUI.Lib")
+#endif
 #pragma comment(lib,"ActiveDS.Lib")
 #pragma comment(lib,"AdvAPI32.Lib")
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"AudioBaseProcessingObjectV140.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"AuthZ.Lib")
 #pragma comment(lib,"Bits.Lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"BluetoothApis.lib")
 #pragma comment(lib,"BufferOverflow.lib")
 #pragma comment(lib,"BufferOverflowU.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"Cabinet.Lib")
+#endif
 #pragma comment(lib,"CertIdl.Lib")
 #if SDK_VER > TOOLSET_90
 #pragma comment(lib,"CertPolEng.Lib")
@@ -7773,7 +7840,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"ClusApi.Lib")
 #pragma comment(lib,"ComCtl32.Lib")
 #pragma comment(lib,"ComDlg32.Lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"ComSvcs.Lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100 && SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"CompPkgSup.lib")
 #endif
@@ -7784,49 +7853,65 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"Credui.lib")
 #endif
 #pragma comment(lib,"Crypt32.Lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"CryptNet.Lib")
 #pragma comment(lib,"DSProp.Lib")
 #pragma comment(lib,"DSUIExt.Lib")
 #pragma comment(lib,"DbgEng.Lib")
 #pragma comment(lib,"DbgHelp.Lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"DbgModel.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"DhcpCSvc.Lib")
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"DhcpCSvc6.Lib")
 #endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"DiagnosticDataQuery.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"DnsAPI.Lib")
+#endif
 #pragma comment(lib,"DtcHelp.Lib")
 #if SDK_VER > TOOLSET_90
 #pragma comment(lib,"ElsCore.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"FaultRep.Lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"FhSvcCtl.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"FrameDyd.Lib")
 #pragma comment(lib,"FrameDyn.Lib")
 #pragma comment(lib,"GPEdit.lib")
+#endif
 #pragma comment(lib,"Gdi32.Lib")
 #pragma comment(lib,"GlU32.Lib")
 #pragma comment(lib,"HLink.Lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"Htmlhelp.Lib")
+#endif
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"HwReqChk.lib")
 #endif
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"IEPMAPI.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"Icm32.Lib")
+#endif
 #pragma comment(lib,"Icmui.Lib")
 #pragma comment(lib,"ImageHlp.Lib")
 #pragma comment(lib,"Imm32.Lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"Iprop.Lib")
 #pragma comment(lib,"KSProxy.Lib")
+#endif
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"LicenseProtection.Lib")
 #endif
@@ -7865,7 +7950,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"MsCtfMonitor.lib")
 #endif
 #pragma comment(lib,"MsWSock.Lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"MsXml2.Lib")
+#endif
 #pragma comment(lib,"Mscms.Lib")
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"Msi.Lib")
@@ -7875,7 +7962,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"NetSh.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"NtDsAPI.Lib")
+#endif
 #pragma comment(lib,"NtQuery.Lib")
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"OemLicense.lib")
@@ -7921,32 +8010,46 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"SearchSDK.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"Secur32.Lib")
 #pragma comment(lib,"SensAPI.Lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"SensorsUtils.lib")
 #endif
 #pragma comment(lib,"SetupAPI.Lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"Sfc.Lib")
 #pragma comment(lib,"ShFolder.Lib")
+#endif
 #pragma comment(lib,"ShLwApi.Lib")
 #pragma comment(lib,"SnmpAPI.Lib")
 #pragma comment(lib,"SpOrder.Lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"SrClient.lib")
 #pragma comment(lib,"Sti.Lib")
 #pragma comment(lib,"Svcguid.Lib")
+#endif
 #pragma comment(lib,"Tapi32.Lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"Traffic.Lib")
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"TranscodeImageUID.lib")
 #pragma comment(lib,"UIAutomationCore.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"USP10.Lib")
+#endif
 #pragma comment(lib,"Urlmon.Lib")
 #pragma comment(lib,"User32.Lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"UserEnv.Lib")
+#endif
 #pragma comment(lib,"Uuid.Lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"Uxtheme.lib")
+#endif
 #pragma comment(lib,"Version.Lib")
 #pragma comment(lib,"Vfw32.Lib")
 #if SDK_VER > TOOLSET_90
@@ -7961,7 +8064,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"Wer.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"WiaGuid.Lib")
+#endif
 #if SDK_VER > TOOLSET_90
 #pragma comment(lib,"WinBio.lib")
 #endif
@@ -7977,7 +8082,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"Wldp.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"WtsApi32.Lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"Xinput9_1_0.lib")
 #endif
@@ -8023,7 +8130,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"bthprops.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"certadm.lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"certca.lib")
 #pragma comment(lib,"certcli.lib")
@@ -8045,7 +8154,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"cryptdll.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"cryptui.lib")
+#endif
 #if SDK_VER > TOOLSET_90
 #pragma comment(lib,"cryptxml.lib")
 #pragma comment(lib,"cscapi.lib")
@@ -8170,7 +8281,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"gameinput.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"gdiplus.lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"glmf32.lib")
 #endif
@@ -8208,7 +8321,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"inseng.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"iphlpapi.lib")
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"iscsidsc.lib")
 #endif
@@ -8222,7 +8337,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"keycredmgr.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"ksuser.lib")
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"ktmw32.lib")
 #endif
@@ -8327,7 +8444,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"objsel.lib")
 #endif
 #pragma comment(lib,"odbc32.lib")
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"odbcbcp.lib")
+#endif
 #pragma comment(lib,"odbccp32.lib")
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"olecli32.lib")
@@ -8343,12 +8462,16 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"pathcch.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"powrprof.lib")
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"prntvpt.lib")
 #pragma comment(lib,"propsys.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"psapi.lib")
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"quartz.lib")
 #endif
@@ -8419,7 +8542,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"strmiids.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"strsafe.lib")
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"structuredquery.lib")
 #endif
@@ -8476,7 +8601,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"vssapi.lib")
 #pragma comment(lib,"vstorinterface.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"wbemuuid.lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"wcmapi.lib")
 #endif
@@ -8559,7 +8686,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"wmip.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"wmiutils.lib")
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"wmvcore.lib")
 #endif
