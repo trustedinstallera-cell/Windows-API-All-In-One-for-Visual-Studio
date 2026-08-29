@@ -37,7 +37,7 @@
 
 // scsi.h requires _NTSCSI_USER_MODE_ only when compiling in pure user-mode.
 // Do NOT define it if any kernel/driver mode macro is active.
-#if (!defined _KERNEL_MODE) && (!defined _NTSRB_) && (!defined _NTSRB_) && (!defined _MINIPORT_) && (!defined _NTDDK_)
+#if (!defined _KERNEL_MODE) && (!defined _NTSRB_) && (!defined _MINIPORT_) && (!defined _NTDDK_)
 #ifndef _NTSCSI_USER_MODE_
 #define _NTSCSI_USER_MODE_  1
 #endif
