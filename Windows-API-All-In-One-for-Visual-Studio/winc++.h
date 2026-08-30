@@ -106,6 +106,7 @@
 #define VC_1     800
 #define VC_2     900
 #define VC_4     1000
+#define VC_4_2   1020
 #define VC_5     1100
 #define VC_6     1200
 #define VS_2002  1300
@@ -149,6 +150,10 @@
 #ifndef _WIN32_WINNT
 #define TIP "Note: _WIN32_WINNT is not defined. Assuming to default operation system "
 // Tip: Visual C++ 4 should match Windows 3.1 (0x030A). Not a reliable result currently.
+#if VS_VER == VC_4_2
+#pragma message(TIP"Windows 3.51 (0x03EE to identify different SDKs, actual value should be 0x0351)")
+#define _WIN32_WINNT 0x03EE
+#endif
 #if VS_VER == VC_5
 #pragma message(TIP"Windows 3.51 (0x03FF to identify different SDKs, actual value should be 0x0351)")
 #define _WIN32_WINNT 0x03FF
@@ -191,6 +196,7 @@
 #define SDK_10_0_19041_0 0x0A000008
 #define SDK_10_0_22621_0 0x0A00000C
 #define SDK_10_0_26100_0 0x0A000010
+#define TOOLSET_VC_4_2 0x03EE
 #define TOOLSET_VC_5 0x03FF
 #define TOOLSET_VC_6 0x0400
 #define TOOLSET_VS_2003 0x04000000
@@ -229,6 +235,8 @@
 #define SDK_VERSION TOOLSET_VS_2005
 #elif VS_VER == VS_2003
 #define SDK_VERSION TOOLSET_VS_2003
+#elif SDK_VERSION == VC_4_2
+#define SDK_VERSION TOOLSET_VC_4_2
 #else
 #define SDK_VERSION /*TOOLSET_90*/ \
 0
@@ -559,7 +567,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "txdtc.h"
 #endif
 //#include "uconfig_local.h"
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_2
 #include "AclAPI.h"
 #endif
 #if NTDDI_VERSION >= 0x0A00000C // 10.0.22621.0
@@ -1250,7 +1258,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include <WpcEvent.h>
 // #include <_dbdao.h> // internal implements
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_2
 #include <accctrl.h>
 #endif
 #if VS_VER > VC_6
@@ -1685,6 +1693,8 @@ typedef enum _SECURITY_LOGON_TYPE {
 #endif
 #if VS_VER > VC_4
 #include <comcat.h>
+#endif
+#if SDK_VER > TOOLSET_VC_4_2
 #include <comdef.h>
 #endif
 #if defined(NTDDI_WIN10_VB) && NTDDI_VERSION > NTDDI_WIN10_VB
@@ -2675,6 +2685,8 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #endif
 #if VS_VER > VC_4
 #include "ExDisp.h"
+#endif
+#if SDK_VER > TOOLSET_VC_4_2
 #include "ExDispid.h"
 #endif
 //#include "event.h"
@@ -3271,10 +3283,11 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #include "LicenseProtection.h"
 #endif
+/*
 #include <limits.h>
 #if VS_VER > VC_4
 #include <limits>
-#endif
+#endif*/
 #if SDK_VER > TOOLSET_VS_2005
 #include "listeneradapter.h"
 #endif                           
@@ -3720,7 +3733,7 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #if VS_VER > VC_5
 #include "mssip.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_2
 #include "msstkppg.h"
 #endif
 #if VS_VER > VC_6
@@ -4988,7 +5001,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include <set>
 #endif
 #include <setjmp.h>
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_2
 #include <setupapi.h>
 #endif
 #if VS_VER > VC_6
@@ -6968,7 +6981,7 @@ typedef struct _CMSG_SIGNER_INFO {
 } CMSG_SIGNER_INFO, * PCMSG_SIGNER_INFO;
 typedef void* HCERTSTORE;
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_2
 #include "WinTrust.h"
 #endif               
 #if VS_VER > VC_1
@@ -6990,9 +7003,16 @@ typedef void* HCERTSTORE;
 #include "WpdMtpExtensions.h"
 #include "WpdShellExtension.h"
 #endif
+#if SDK_VER > TOOLSET_VC_4_2
 #include "WS2atm.h"
+#endif
+// you should leave a comment for #define set here.
+#define set pfdset
 #include "WS2spi.h"
+#undef set
+#if SDK_VER > TOOLSET_VC_4_2
 #include "WS2tcpip.h"
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #include "Wsdapi.h"
 #include "Wsdattachment.h"
@@ -7060,7 +7080,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include "AF_Irda.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_2
 #include "AccCtrl.h"
 #endif
 #if VS_VER > VC_5
@@ -7138,7 +7158,7 @@ typedef void* HCERTSTORE;
 #include <winreg.h>
 #endif
 //#include "winres.h"
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_2
 #ifdef HDS_HORZ
 #undef HDS_HORZ
 #endif
@@ -7641,7 +7661,7 @@ typedef void* HCERTSTORE;
 #include "dbgprop.h"
 #endif
 #include "exdisp.h"
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_2
 #include "exdispid.h"
 #endif
 #if VS_VER > VC_5
@@ -8012,7 +8032,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"Msi.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_4_2
 #pragma comment(lib,"Mtx.Lib")
+#endif
 #pragma comment(lib,"NetAPI32.Lib")
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"NetSh.Lib")
@@ -8041,7 +8063,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"OneCore_downlevel.Lib")
 #endif
 #pragma comment(lib,"OpenGL32.Lib")
+#if SDK_VER > TOOLSET_VC_4_2
 #pragma comment(lib,"Pdh.Lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #pragma comment(lib,"PeerDist.lib")
 #endif
@@ -8080,7 +8104,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"SensorsUtils.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_4_2
 #pragma comment(lib,"SetupAPI.Lib")
+#endif
 #if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"Sfc.Lib")
 #pragma comment(lib,"ShFolder.Lib")
@@ -8089,7 +8115,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"ShLwApi.Lib")
 #endif
 #pragma comment(lib,"SnmpAPI.Lib")
+#if SDK_VER > TOOLSET_VC_4_2
 #pragma comment(lib,"SpOrder.Lib")
+#endif
 #if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"SrClient.lib")
 #pragma comment(lib,"Sti.Lib")
