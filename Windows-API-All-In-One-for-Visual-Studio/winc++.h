@@ -5239,7 +5239,6 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 //
 // The C Standard Library <stdint.h> header.
 //
-#pragma once
 #define _STDINT
 
 // C1083 in VS2008: no such file
