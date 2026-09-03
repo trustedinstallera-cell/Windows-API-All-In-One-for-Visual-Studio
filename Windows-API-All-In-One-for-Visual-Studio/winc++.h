@@ -1,4 +1,4 @@
-#if _MSC_VER > 1000
+﻿#if _MSC_VER > 1000
 #pragma once
 #endif   
 
@@ -106,6 +106,7 @@
 #define VC_1     800
 #define VC_2     900
 #define VC_4     1000
+#define VC_4_1   1010
 #define VC_4_2   1020
 #define VC_5     1100
 #define VC_6     1200
@@ -150,6 +151,10 @@
 #ifndef _WIN32_WINNT
 #define TIP "Note: _WIN32_WINNT is not defined. Assuming to default operation system "
 // Tip: Visual C++ 4 should match Windows 3.1 (0x030A). Not a reliable result currently.
+#if VS_VER == VC_4_1
+#pragma message(TIP"Windows 3.51 (0x03DD to identify different SDKs, actual value should be 0x0351)")
+#define _WIN32_WINNT 0x03DD
+#endif
 #if VS_VER == VC_4_2
 #pragma message(TIP"Windows 3.51 (0x03EE to identify different SDKs, actual value should be 0x0351)")
 #define _WIN32_WINNT 0x03EE
@@ -164,6 +169,12 @@
 #define _WIN32_WINNT 0x0400
 #endif
 */
+#if VS_VER == VS_2002
+#ifndef WINVER
+#pragma message(TIP"Windows 95 (0x0400)")
+#define _WIN32_WINNT 0x0400
+#endif
+#endif
 #if VS_VER == VS_2003
 #ifndef WINVER
 #pragma message(TIP"Windows 95 (0x0400)")
@@ -196,9 +207,11 @@
 #define SDK_10_0_19041_0 0x0A000008
 #define SDK_10_0_22621_0 0x0A00000C
 #define SDK_10_0_26100_0 0x0A000010
+#define TOOLSET_VC_4_1 0x03DD
 #define TOOLSET_VC_4_2 0x03EE
 #define TOOLSET_VC_5 0x03FF
 #define TOOLSET_VC_6 0x0400
+#define TOOLSET_VS_2002 0x04000000
 #define TOOLSET_VS_2003 0x04000000
 #define TOOLSET_VS_2005 0x05000000
 #define TOOLSET_VS_2008 TOOLSET_90
@@ -235,8 +248,10 @@
 #define SDK_VERSION TOOLSET_VS_2005
 #elif VS_VER == VS_2003
 #define SDK_VERSION TOOLSET_VS_2003
-#elif SDK_VERSION == VC_4_2
+#elif SDK_VERSION == VC_4_2 // todo recheck
 #define SDK_VERSION TOOLSET_VC_4_2
+#elif VS_VER == VC_4_1
+#define SDK_VERSION TOOLSET_VC_4_1
 #else
 #define SDK_VERSION /*TOOLSET_90*/ \
 0
@@ -381,7 +396,9 @@ struct IUnknown;
 typedef struct IUnknown IUnknown;
 #endif
 #include <tchar.h>
+#if SDK_VER > TOOLSET_VC_4_1
 #include "WinSock2.h"
+#endif
 #if (defined _USING_V110_SDK71_ /*XP support*/) || (SDK_VERSION <= SDK_10_0_10240_0)
 typedef struct IUnknown IUnknown;
 #endif
@@ -390,7 +407,7 @@ typedef struct IUnknown IUnknown;
 #else
 #include <Windows.h>
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <Wininet.h>
 #endif
 #if VS_VER > VC_5
@@ -442,7 +459,7 @@ typedef struct IUnknown IUnknown;
 // todo: check in XP system or toolset
 //#include <wiamindr_xp.h>
 //#include <initguid.h>
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <wincrypt.h>
 #endif
 #if TOOLSET > 90
@@ -465,7 +482,7 @@ typedef struct IUnknown IUnknown;
 #include "activeds.h"
 #include "filter.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "hlink.h"
 #endif
 #include "Ole2Ver.h"
@@ -679,13 +696,13 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #if SDK_VER > TOOLSET_VS_2005
 #include "ImageTranscode.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "Ime.h"
 #endif
 #if VS_VER > VC_5
 #include "InetReg.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "InetSDK.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -890,7 +907,7 @@ template <class TYPED_PTR> class TRefPointerCollection;
 #include "adhoc.h"
 #include "alg.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <wincrypt.h>
 #endif
 #if VS_VER > VC_6
@@ -1264,7 +1281,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if VS_VER > VC_6
 #include <aclui.h> 
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "activscp.h"
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -1308,9 +1325,11 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #include "DSRole.h"
 #include "DbgHelp.h"
 #endif
+#if SDK_VER > TOOLSET_VC_4_1
 // ObjectContext has been defined before
 #define __ObjectContext_FWD_DEFINED__
 #include <exception>
+#endif
 #if SDK_VER > SDK_8_1
 #include "DbgModel.h"
 #endif
@@ -1320,7 +1339,7 @@ defined _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <ahadmin.h>
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <algorithm>
 #endif
 #ifdef DXSDK_DIR // Microsoft DirectX SDK required
@@ -1677,7 +1696,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <clusapi.h>
 //#include <clfslsn.h>
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <cmath>
 #endif
 #if NTDDI_VERSION >= 0x06000000	 // Windows Vista
@@ -1691,7 +1710,7 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <combaseapi.h>
 #include <assert.h>
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <comcat.h>
 #endif
 #if SDK_VER > TOOLSET_VC_4_2
@@ -1811,13 +1830,13 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include "cscobj.h"
 #include "cscsearchapiif.hxx"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <cstddef>
 #endif
 #if cppver >= 2011
 #include <cstdint>
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <cstring>
 #endif
 #if SDK_VER > TOOLSET_VS_2005
@@ -1997,7 +2016,7 @@ DECLARE_HANDLE(HSZ);
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
 #include <dx95type.h>
 #endif
-#if IS_XP_TOOLSET_SUPPORT || SDK_VER < TOOLSET_VS_2013 && SDK_VER > TOOLSET_VS_2002
+#if SDK_VER > TOOLSET_VC_4_1 && (IS_XP_TOOLSET_SUPPORT || SDK_VER < TOOLSET_VS_2013 && SDK_VER > TOOLSET_VS_2002)
 // Copied from C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ddrawi.h. Line number has been reserved.
 // dmemmgr.h and ddraw.h (Visual Studio 2005 and below) are from the same directory.
 // Copied from ddrawi.h by default if no file name mentioned.
@@ -2683,7 +2702,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "evcode.h"
 #include "EvColl.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "ExDisp.h"
 #endif
 #if SDK_VER > TOOLSET_VC_4_2
@@ -2837,13 +2856,13 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include "highlevelmonitorconfigurationapi.h"
 #endif
 //#include "hintsdeviceservice.h"
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "HLink.h"
 #endif
 #if VS_VER > VC_5
 #include "HlGuids.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "HlIface.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -2918,7 +2937,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if VS_VER > VC_6
 #include "IDLMULTI.H"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "IDispIds.h"
 #endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100
@@ -2979,13 +2998,15 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include <evntprov.h>
 #include <evntrace.h>
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <exception>
 #endif               
 #if VS_VER > VC_1
 #include <excpt.h> 
 #endif
+#if SDK_VER > TOOLSET_VC_4_1
 #include <exdisp.h>
+#endif
 #ifdef _SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
 #if cppver == 2017
 #include <experimental/coroutine>
@@ -3025,7 +3046,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if SDK_VER > TOOLSET_VS_2003
 #include <http.h>
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <idispids.h>
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -3157,7 +3178,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include <ipxtfflt.h>
 #endif
 //#include "iscsidsc.h"
-#if VS_VER > VC_4 // IsGuids.h(13) : error C2374: 'IID_IUniformResourceLocator' : redefinition; multiple initialization
+#if VS_VER > VC_4_1 // IsGuids.h(13) : error C2374: 'IID_IUniformResourceLocator' : redefinition; multiple initialization
 #if VS_VER <= VC_6
 // redefinition errors in VC++ 6 and below
 #ifndef CLSID_InternetShortcut
@@ -3183,7 +3204,7 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #include <issper16.h>
 #pragma warning(push)
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <iterator>
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -3327,7 +3348,7 @@ class CInstance;
 #include <MethodCo.h>
 #include <Instance.h>
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "LoadPerf.h"
 #endif
 #include "locale.h"
@@ -3397,7 +3418,7 @@ typedef struct _UNICODE_STRING {
 #include "manipulations_i.c"
 #endif
 #include <malloc.h>             // calloc()"
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <map>
 #endif
 #ifdef FLAGS
@@ -3466,7 +3487,7 @@ typedef struct _UNICODE_STRING {
 #include "medparam.h"
 #endif
 #include <memory.h>
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <memory>
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -3551,7 +3572,7 @@ typedef struct _UNICODE_STRING {
 #include <mmiscapi.h>
 #include <mmiscapi2.h>
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #ifndef NOMINMAX
 #include "minmax.h"
 #endif
@@ -3754,7 +3775,9 @@ typedef ENCRYPTED_NT_OWF_PASSWORD* PENCRYPTED_NT_OWF_PASSWORD;
 #include <mstcpip.h>
 #endif
 #endif
+#if SDK_VER > TOOLSET_VC_4_1
 #include "MSWSock.h"
+#endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
 #include <mswsockdef.h>
 #endif
@@ -4216,7 +4239,7 @@ interface ICommandTree
 #include "networkisolation.h"
 #endif
 #include <new.h>
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <new>
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -4323,7 +4346,7 @@ interface ICommandTree
 #if VS_VERSION > VC_2
 #include <objidl.h> // for IStream"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <ocidl.h>
 #endif
 #include "odbcinst.h"
@@ -4588,7 +4611,7 @@ interface IXMLDOMDocument2;
 #if cppver >= 2017
 #include <optional>
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <ostream>
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -4675,7 +4698,7 @@ interface IXMLDOMDocument2;
 #if VS_VER > VC_1
 #include <ras.h> 
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "RasDlg.h"
 #endif       
 #if VS_VER > VC_1
@@ -4997,7 +5020,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #if TOOLSET > 90
 #include "sessdirpublictypes.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <set>
 #endif
 #include <setjmp.h>
@@ -5202,7 +5225,7 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include <stdbool.h>
 #endif
 #include <stddef.h>
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <stdexcept>
 #endif
 #if _MSC_VER > 1500
@@ -5379,7 +5402,7 @@ typedef unsigned __int64   uintmax_t;
 #include <stralign.h>
 #endif
 #include <string.h> 
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <string>
 #endif
 #if cppver >= 2017
@@ -5809,7 +5832,7 @@ typedef unsigned __int64   uintmax_t;
 // redefinition
 #include "winhttp.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "wininet.h"
 #endif
 //#include "winioctl.h"
@@ -5934,7 +5957,9 @@ typedef unsigned short ushort;
 #include "TSGPolicyEngine_i.c"
 #endif
 #if VS_VERSION > VC_2
+#if SDK_VER != TOOLSET_VC_4_1
 #include "TSPI.h"
+#endif
 #include "Tapi.h"
 #endif
 //#include "Tapi3.h"
@@ -6065,7 +6090,7 @@ typedef unsigned short ushort;
 #if cppver >= 2011
 #include <unordered_map>
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <urlmon.h>
 #endif
 #if defined(NTDDI_WIN8) && (NTDDI_VERSION >= NTDDI_WIN8)
@@ -6085,7 +6110,7 @@ typedef unsigned short ushort;
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "utilapiset.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <utility>
 #endif
 #include "sys/utime.h"
@@ -6145,7 +6170,7 @@ typedef unsigned short ushort;
 #if SDK_VER > TOOLSET_VS_2005
 #include "vsserror.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include <vector>
 #endif
 //#include <veinterop_kcm.h>
@@ -6746,7 +6771,7 @@ enum Gender {
 #include "wcsplugin.h"
 #include "wct.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "wctype.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -6900,7 +6925,7 @@ typedef VOID* WHV_EMULATOR_HANDLE;
 #if VS_VER > VC_1
 #include "WinNls.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "WinNls32.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (MSVC_VER > 2015)
@@ -7007,9 +7032,11 @@ typedef void* HCERTSTORE;
 #include "WS2atm.h"
 #endif
 // you should leave a comment for #define set here.
+#if SDK_VER > TOOLSET_VC_4_1
 #define set pfdset
 #include "WS2spi.h"
 #undef set
+#endif
 #if SDK_VER > TOOLSET_VC_4_2
 #include "WS2tcpip.h"
 #endif
@@ -7041,7 +7068,7 @@ typedef void* HCERTSTORE;
 #include "WSipx.h"
 #include "WSnetbs.h"  
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "WSvns.h"
 #endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
@@ -7612,7 +7639,7 @@ typedef void* HCERTSTORE;
 #include "Windows.Web.h"
 #endif
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "activscp.h"
 #endif
 #if VS_VER > VC_6
@@ -7660,7 +7687,9 @@ typedef void* HCERTSTORE;
 #include "dbgprop.h"
 #include "dbgprop.h"
 #endif
+#if SDK_VER > TOOLSET_VC_4_1
 #include "exdisp.h"
+#endif
 #if SDK_VER > TOOLSET_VC_4_2
 #include "exdispid.h"
 #endif
@@ -7669,7 +7698,7 @@ typedef void* HCERTSTORE;
 #endif
 // a test avoidation
 // LPCOMPONENT was defined in shlobj_core.h already.
-#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT	&& SDK_VER != TOOLSET_VS_2012 && SDK_VER != TOOLSET_100	&& SDK_VER != TOOLSET_90 && SDK_VER != TOOLSET_VS_2005 && SDK_VER != TOOLSET_VS_2003 && SDK_VER != TOOLSET_VS_2002
+#if SDK_VER < SDK_8_1 && !IS_XP_TOOLSET_SUPPORT	&& SDK_VER != TOOLSET_VS_2012 && SDK_VER != TOOLSET_100	&& SDK_VER != TOOLSET_90 && SDK_VER != TOOLSET_VS_2005 && SDK_VER != TOOLSET_VS_2003 && SDK_VER != TOOLSET_VS_2002 && SDK_VER > TOOLSET_VC_4_1
 #include "mmc.h"
 #endif
 #if defined(_MSC_VER) && (_MSC_VER > 1400)
@@ -7708,7 +7737,7 @@ typedef void* HCERTSTORE;
 #if VS_VER > VC_6
 #include "xmldomdid.h"
 #endif
-#if VS_VER > VC_4
+#if SDK_VER > TOOLSET_VC_4_1
 #include "exdisp.h"
 #endif
 //#include "guids.h"
@@ -7957,7 +7986,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #endif
 #pragma comment(lib,"Gdi32.Lib")
 #pragma comment(lib,"GlU32.Lib")
+#if SDK_VER > TOOLSET_VC_4_1
 #pragma comment(lib,"HLink.Lib")
+#endif
 #if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"Htmlhelp.Lib")
 #endif
@@ -7973,7 +8004,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VC_5
 #pragma comment(lib,"Icmui.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_4_1
 #pragma comment(lib,"ImageHlp.Lib")
+#endif
 #pragma comment(lib,"Imm32.Lib")
 #if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"Iprop.Lib")
@@ -7982,7 +8015,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if NTDDI_VERSION >= 0x0A000010 // 10.0.26100.0
 #pragma comment(lib,"LicenseProtection.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_4_1
 #pragma comment(lib,"LoadPerf.Lib")
+#endif
 #pragma comment(lib,"Lz32.Lib")
 #pragma comment(lib,"MAPI32.Lib")
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100 && SDK_VER > TOOLSET_VS_2012
@@ -8022,7 +8057,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VS_2005
 #pragma comment(lib,"MsCtfMonitor.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_4_1
 #pragma comment(lib,"MsWSock.Lib")
+#endif
 #if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"MsXml2.Lib")
 #endif
@@ -8077,7 +8114,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"ProjectedFSLib.lib")
 #endif
 #pragma comment(lib,"RASAPI32.Lib")
+#if SDK_VER > TOOLSET_VC_4_1
 #pragma comment(lib,"RASDlg.Lib")
+#endif
 #if !IS_XP_TOOLSET_SUPPORT && SDK_VER > TOOLSET_100 && SDK_VER > TOOLSET_VS_2012
 #pragma comment(lib,"RTWorkQ.lib")
 #endif
@@ -8114,7 +8153,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VC_5
 #pragma comment(lib,"ShLwApi.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_4_1
 #pragma comment(lib,"SnmpAPI.Lib")
+#endif
 #if SDK_VER > TOOLSET_VC_4_2
 #pragma comment(lib,"SpOrder.Lib")
 #endif
@@ -8134,7 +8175,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"USP10.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_4_1
 #pragma comment(lib,"Urlmon.Lib")
+#endif
 #pragma comment(lib,"User32.Lib")
 #if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"UserEnv.Lib")
@@ -8148,7 +8191,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_90
 #pragma comment(lib,"Virtdisk.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_4_1
 #pragma comment(lib,"WS2_32.Lib")
+#endif
 #if SDK_VER > TOOLSET_VC_5
 #pragma comment(lib,"WSnmp32.Lib")
 #endif
@@ -8168,7 +8213,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"WinMM.Lib")
 #pragma comment(lib,"WinSpool.Lib")
 #pragma comment(lib,"WinStrm.Lib")
+#if SDK_VER > TOOLSET_VC_4_1
 #pragma comment(lib,"WinTrust.Lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"WindowsApp.lib")
 #pragma comment(lib,"WindowsApp_downlevel.lib")
@@ -8770,7 +8817,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #pragma comment(lib,"windowssideshowguids.lib")
 #pragma comment(lib,"winhttp.lib")
 #endif
+#if SDK_VER > TOOLSET_VC_4_1
 #pragma comment(lib,"wininet.Lib")
+#endif
 #if SDK_VER > SDK_8_1
 #pragma comment(lib,"winml.lib")
 #endif
@@ -8867,6 +8916,5 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #ifndef COMPILE_MULTIMON_STUBS
 #undef GetSystemMetrics
 #endif
-
 #endif
 
