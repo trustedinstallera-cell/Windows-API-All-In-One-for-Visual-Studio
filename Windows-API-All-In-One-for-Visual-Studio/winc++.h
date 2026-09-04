@@ -150,6 +150,10 @@
 #if VS_VER <= VS_2005
 #ifndef _WIN32_WINNT
 #define TIP "Note: _WIN32_WINNT is not defined. Assuming to default operation system "
+#if VS_VER == VC_2
+#pragma message(TIP"Windows 3.51 (0x03CC to identify different SDKs, actual value should be 0x0351)")
+#define _WIN32_WINNT 0x03CC
+#endif
 // Tip: Visual C++ 4 should match Windows 3.1 (0x030A). Not a reliable result currently.
 #if VS_VER == VC_4_1
 #pragma message(TIP"Windows 3.51 (0x03DD to identify different SDKs, actual value should be 0x0351)")
@@ -207,6 +211,7 @@
 #define SDK_10_0_19041_0 0x0A000008
 #define SDK_10_0_22621_0 0x0A00000C
 #define SDK_10_0_26100_0 0x0A000010
+#define TOOLSET_VC_2 0x03CC
 #define TOOLSET_VC_4_1 0x03DD
 #define TOOLSET_VC_4_2 0x03EE
 #define TOOLSET_VC_5 0x03FF
@@ -7816,7 +7821,9 @@ extern "C" DWORD WINAPI GetConsoleProcessList(LPDWORD lpdwProcessList, DWORD dwP
 #if SDK_VER > TOOLSET_VC_6 
 #pragma comment(lib,"ASycFilt.Lib")
 #endif
+#if SDK_VER > TOOLSET_VC_2
 #pragma comment(lib,"OlePro32.Lib")
+#endif
 #pragma comment(lib,"Thunk32.Lib")
 #pragma comment(lib,"VdmDbg.Lib")
 #pragma comment(lib,"Wow32.Lib")
