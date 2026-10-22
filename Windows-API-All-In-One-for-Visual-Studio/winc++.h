@@ -399,8 +399,10 @@
 #if SDK_VER == SDK_8_1
 struct IUnknown;
 typedef struct IUnknown IUnknown;
+#endif         
+#if (defined COMPILER_IS_VC152) || (VS_VER > VC_1)
+#include <tchar.h>                       
 #endif
-#include <tchar.h>
 #if SDK_VER > TOOLSET_VC_4_1
 #include "WinSock2.h"
 #endif
@@ -489,8 +491,10 @@ typedef struct IUnknown IUnknown;
 #endif
 #if SDK_VER > TOOLSET_VC_4_1
 #include "hlink.h"
+#endif   
+#if (defined COMPILER_IS_VC152) || (VS_VER > VC_1)
+#include "Ole2Ver.h"                              
 #endif
-#include "Ole2Ver.h"
 #if VS_VER > VC_6
 #include <WbemCli.h>
 #include "WmiUtils.h"
@@ -524,8 +528,10 @@ class CFramework_Exception;
 #if (defined _MANAGED)
 #error err
 #endif
-#endif
+#endif                                                             
+#if VS_VER > VC_1
 template <class TYPED_PTR> class TRefPointerCollection;
+#endif
 //template <class ThreadModel> class CComObjectRootEx;
 #if SDK_VER > TOOLSET_VC_6
 #include <Polarity.h>
@@ -2000,10 +2006,12 @@ typedef enum _SECURITY_LOGON_TYPE {
 #include <dde.h>
 #if VS_VER > VC_5
 #include <dde.rh>
-#endif       
-#if VS_VER == VC_1    
+#endif 
+/*
+#if VS_VER == VC_1     // redefinition in VC++ 1
 DECLARE_HANDLE(HSZ);
 #endif
+*/
 #include <ddeml.h>
 #ifdef _JSRT_
 #include "ddkmapi.h"
@@ -3102,7 +3110,9 @@ typedef DDHALINFO FAR* LPDDHALINFO;
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "infstr.h"
 #endif
-#include <initguid.h>   
+#if (defined COMPILER_IS_VC152) || (VS_VER > VC_1)
+#include <initguid.h>                             
+#endif
 #if SDK_VER > TOOLSET_VS_2005
 #include "inked.h"
 #endif
@@ -4354,7 +4364,9 @@ interface ICommandTree
 #if SDK_VER > TOOLSET_VC_4_1
 #include <ocidl.h>
 #endif
-#include "odbcinst.h"
+#if (defined COMPILER_IS_VC152) || (VS_VER > VC_1)
+#include "odbcinst.h"                             
+#endif
 #if VS_VER > VC_5
 #include "odbcss.h"
 #endif
@@ -4363,8 +4375,10 @@ interface ICommandTree
 #endif
 //#include "offloadtypes.h"
 //#include "oidtypes.h"
-//#include <ole.h>
+//#include <ole.h>       
+#if (defined COMPILER_IS_VC152) || (VS_VER > VC_1)
 #include <ole2.h>      // for DECLARE_INTERFACE_ and HRESULT"
+#endif
 #if VS_VER > VC_5
 #include "oleTx2xa.h"
 #endif         
@@ -5167,7 +5181,9 @@ typedef struct _RAS_AUTH_ATTRIBUTE
 #include "spuihelp.h"
 #endif
 #endif
-#include "sqlext.h"
+#if (defined COMPILER_IS_VC152) || (VS_VER > VC_1)
+#include "sqlext.h"                               
+#endif
 #if SDK_VER > TOOLSET_VC_5
 #ifdef SUCCESS
 #pragma push_macro("SUCCESS")
@@ -7216,7 +7232,9 @@ typedef void* HCERTSTORE;
 #if TOOLSET > 90
 #include "winsdkver.h"
 #endif
-#include <winsock.h>
+#if (defined COMPILER_IS_VC152) || (VS_VER > VC_1)
+#include <winsock.h>                              
+#endif
 #if (!defined _USING_V110_SDK71_) && (SDK_VER > TOOLSET_100)
 #include "winsplp.h"
 #endif    
